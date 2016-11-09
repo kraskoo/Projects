@@ -14,6 +14,8 @@
         private static readonly ConcurrentQueue<int[]> PositionTrails = new ConcurrentQueue<int[]>();
         private static readonly Random RandomGenerator = new Random();
         private static ConcurrentDictionary<int, Entity> scroll;
+        private static IEnumerable<Entity> rightPartScroll;
+        private static IEnumerable<Entity> leftPartScroll;
         private static bool isRunningGame = true;
         private static bool hasBallTopDirection = true;
         private static bool hasBallLeftDirection = true;
@@ -35,6 +37,13 @@
             int middleHeight = height / 2;
             IntializeBlocks();
             IntilizeScroll(middleWidth, height, '=', ConsoleColor.White);
+            leftPartScroll = scroll
+                .Take(scroll.Count / 2)
+                .Select(e => e.Value);
+            rightPartScroll = scroll
+                .Skip(scroll.Count / 2)
+                .Take(scroll.Count - scroll.Count / 2 - 1)
+                .Select(e => e.Value);
             Console.BufferWidth = width;
             Console.BufferHeight = height;
             InitializeBall(middleWidth, middleHeight);
@@ -213,6 +222,12 @@
                 hasBallTopDirection ? ball.Y - 1 : ball.Y + 1);
             ball.MoveLeftDirectionOnPosition(
                 hasBallLeftDirection ? ball.X - 1 : ball.X + 1);
+            if (hasLastActionMove)
+            {
+                hasLastActionMove = false;
+                lastMoveAtEndPointOfScroll();
+            }
+
             if (ball.X == 1)
             {
                 hasBallLeftDirection = false;
@@ -222,76 +237,49 @@
                 hasBallLeftDirection = true;
             }
 
-            if (hasLastActionMove)
-            {
-                hasLastActionMove = false;
-                lastMoveAtEndPointOfScroll();
-                lastMoveAtEndPointOfScroll = null;
-            }
-
             if (ball.Y == 0)
             {
                 hasBallTopDirection = false;
             }
             else if (ball.Y == height - 2)
             {
-                int nextBallYPosition = ball.Y + 1;
-                int nextBallXPosition;
-                if (scroll[scroll.Count - 1].X <= ball.X && scroll[0].X >= ball.X)
+                if (scroll.Any(s => s.Value.X == ball.X))
                 {
-                    nextBallXPosition = (!hasBallLeftDirection) ?
-                        (ball.X == 1 ? 1 : ball.X + 1) :
-                        (ball.X == playScreenWidth ? playScreenWidth : ball.X - 1);
-                }
-                else
-                {
-                    nextBallXPosition = (hasBallLeftDirection) ?
-                        (ball.X == playScreenWidth ? playScreenWidth : ball.X + 1):
-                        (ball.X == 1 ? 1 : ball.X - 1);
-                }
-
-                if (scroll.Any(s =>
-                            s.Value.Y == nextBallYPosition &&
-                            nextBallXPosition == s.Value.X))
-                {
-
-                    if (scroll
-                    .Where(s => s.Key > scroll.Count / 2)
-                    .Any(s =>
-                        s.Value.Y == nextBallYPosition &&
-                        nextBallXPosition == s.Value.X))
-                    {
-                        hasBallLeftDirection = false;
-                        //if (nextBallXPosition == scroll[scroll.Count - 1].X)
-                        //{
-                        //    hasLastActionMove = true;
-                        //    lastMoveAtEndPointOfScroll += MoveOnceBallToRight;
-                        //}
-                    }
-                    else if (scroll
-                        .Where(s => s.Key <= scroll.Count / 2)
-                        .Any(s =>
-                            s.Value.Y == nextBallYPosition &&
-                            nextBallXPosition == s.Value.X))
+                    hasBallTopDirection = true;
+                    if (leftPartScroll.Any(p => p.X == ball.X) &&
+                        ball.X > 1)
                     {
                         hasBallLeftDirection = true;
-                        //if (nextBallXPosition == scroll[0].X)
-                        //{
-                        //    hasLastActionMove = true;
-                        //    lastMoveAtEndPointOfScroll += MoveOnceBallToLeft;
-                        //}
+                        if (ball.X > 2 &&
+                            leftPartScroll.First().X == ball.X - 1)
+                        {
+                            lastMoveAtEndPointOfScroll = null;
+                            lastMoveAtEndPointOfScroll += MoveOnceBallToLeft;
+                            hasLastActionMove = true;
+                        }
+                    }
+                    else if (rightPartScroll.Any(p => p.X == ball.X) &&
+                        ball.X < playScreenWidth - 1)
+                    {
+                        hasBallLeftDirection = false;
+                        if (ball.X < playScreenWidth - 2 &&
+                            rightPartScroll.Last().X == ball.X + 1)
+                        {
+                            lastMoveAtEndPointOfScroll = null;
+                            lastMoveAtEndPointOfScroll += MoveOnceBallToRight;
+                            hasLastActionMove = true;
+                        }
                     }
                 }
-                else
-                {
-                    InitializeBall(
-                        RandomGenerator
-                            .Next(
-                                playScreenWidth - (playScreenWidth - 25),
-                                playScreenWidth - 24),
-                        height - 5);
-                }
-
+            }
+            else if (ball.Y == height - 1)
+            {
+                InitializeBall(
+                    RandomGenerator
+                        .Next(
+                            playScreenWidth - (playScreenWidth - 25),
+                            playScreenWidth - 24),
+                    height - 5);
                 hasBallTopDirection = true;
             }
         }
@@ -345,11 +333,13 @@
         private static void MoveOnceBallToLeft()
         {
             ball.MoveLeftDirectionOnPosition(ball.X - 1);
+            PositionTrails.Enqueue(new[] { ball.Y, ball.X - 1 });
         }
 
         private static void MoveOnceBallToRight()
         {
             ball.MoveLeftDirectionOnPosition(ball.X + 1);
+            PositionTrails.Enqueue(new[] { ball.Y, ball.X + 1 });
         }
     }
 }
