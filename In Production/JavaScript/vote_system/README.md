@@ -1,6 +1,6 @@
 # Vote System
 
-Source code with basic voting system for non-commercial purposes.
+Source code with basic voting system with non-commercial purposes.
 Set of page(s) with 25 articles for vote, with images and information about article
 
 Based on JavaScript Local Storage, for saving vote progress.
