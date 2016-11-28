@@ -1,7 +1,8 @@
 # Vote System
 
 Source code for basic voting system with non-commercial purposes.
-Set of page(s) with 25 articles for vote, with images and information about article
+Present articles with images and information about them. Access to context menu is binding on left mouse button.
+Finally present result set of vote.
 
 Based on JavaScript Local Storage, for saving vote progress.
 
