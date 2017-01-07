@@ -1,0 +1,84 @@
+﻿{
+	"1940":
+	{
+		"january":
+		{
+			"1":
+			[
+				{
+					"title":"Заглавийце",
+					"source":"pages/1940/january/january1st.xml"
+				},
+				{
+					"title":"Заглавийце 2 От първи",
+					"source":"pages/1940/january/january1st.xml"
+				},
+				{
+					"title":"Трето заглавие от първи",
+					"source":"pages/1940/january/january1st.xml"
+				},
+				{
+					"title":"Четвърто",
+					"source":"pages/1940/january/january1st.xml"
+				}
+			],
+			"8":
+			{
+				"title":"8ми януари",
+				"source":"pages/1940/january/january8th.xml"
+			}
+		},
+		"february":
+		{  
+			"6":
+			{
+				"title":"6ти февруари",
+				"source":"pages/1940/february/february06th.xml"
+			},
+			"8":
+			{
+				"title":"8ми февруари",
+				"source":"pages/1940/february/february28th.xml"
+			}
+		},
+		"march":
+		{
+			"1":
+			{
+				"title":"1ви март",
+				"source":"pages/1940/march/march1st.xml"
+			},
+			"5":
+			{
+				"title":"5ти март",
+				"source":"pages/1940/march/march5th.xml"
+			},
+			"9":
+			{
+				"title":"9ти март",
+				"source":"pages/1940/march/march9th.xml"
+			}
+		},
+		"april":
+		{  
+			"1":
+			{
+				"title":"1ви април",
+				"source":"pages/1940/april/april1st.xml"
+			},
+			"8":
+			{
+				"title":"Нещо което ще е станало на 8ми април",
+				"source":"pages/1940/april/8th.xml"
+			}
+		},
+		"december":
+		{
+			"4":
+			{
+				"title":"4ти декември",
+				"source":"pages/1940/december/december4th.xml"
+			}
+		}
+	}
+}

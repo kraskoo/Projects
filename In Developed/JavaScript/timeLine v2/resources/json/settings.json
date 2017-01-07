@@ -1,0 +1,7 @@
+﻿{
+	"normalZoom" : 500,
+	"dividerPerZoomLevel" : 5,
+	"zoomOnScroll" : true,
+	"zoomButtonsOn" : true,
+	"framesSortOrder" : "asc"
+}

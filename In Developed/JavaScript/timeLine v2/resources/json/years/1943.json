@@ -1,0 +1,70 @@
+{
+	"1943":
+	{
+		"january":
+		{
+			"1":
+			{
+				"title":"От първи другата година",
+				"source":"pages/1943/january/january1st.xml"
+			},
+			"8":
+			{
+				"title":"8ми януари",
+				"source":"https://www.youtube.com/embed/watch?v=SxvYLMKPSTg"
+			}
+		},
+		"february":
+		{  
+			"6":
+			{
+				"title":"6ти февруари",
+				"source":"pages/1943/february/february06th.xml"
+			},
+			"8":
+			{
+				"title":"8ми февруари",
+				"source":"pages/1943/february/february28th.xml"
+			}
+		},
+		"march":
+		{
+			"1":
+			{
+				"title":"1ви март",
+				"source":"pages/1943/march/march1st.xml"
+			},
+			"5":
+			{
+				"title":"5ти март",
+				"source":"pages/1943/march/march5th.xml"
+			},
+			"9":
+			{
+				"title":"9ти март",
+				"source":"pages/1943/march/march9th.xml"
+			}
+		},
+		"april":
+		{  
+			"1":
+			{
+				"title":"1ви април",
+				"source":"pages/1943/april/april1st.xml"
+			},
+			"8":
+			{
+				"title":"8ми април",
+				"source":"pages/1943/april/8th.xml"
+			}
+		},
+		"december":
+		{
+			"4":
+			{
+				"title":"След 27 дена идва нова година",
+				"source":"pages/1943/december/december4th.xml"
+			}
+		}
+	}
+}

@@ -1,0 +1,70 @@
+{
+	"1941":
+	{
+		"january":
+		{
+			"1":
+			{
+				"title":"От първи другата година",
+				"source":"https://www.youtube.com/embed/XGSy3_Czz8k"
+			},
+			"8":
+			{
+				"title":"8ми януари",
+				"source":"http://www.militarymuseum.bg/"
+			}
+		},
+		"february":
+		{  
+			"6":
+			{
+				"title":"6ти февруари",
+				"source":"pages/1941/february/february06th.xml"
+			},
+			"8":
+			{
+				"title":"8ми февруари",
+				"source":"pages/1941/february/february28th.xml"
+			}
+		},
+		"march":
+		{
+			"1":
+			{
+				"title":"1ви март",
+				"source":"pages/1941/march/march1st.xml"
+			},
+			"5":
+			{
+				"title":"5ти март",
+				"source":"pages/1941/march/march5th.xml"
+			},
+			"9":
+			{
+				"title":"9ти март",
+				"source":"pages/1941/march/march9th.xml"
+			}
+		},
+		"april":
+		{  
+			"1":
+			{
+				"title":"1ви април",
+				"source":"pages/1941/april/april1st.xml"
+			},
+			"8":
+			{
+				"title":"8ми април",
+				"source":"pages/1941/april/8th.xml"
+			}
+		},
+		"december":
+		{
+			"4":
+			{
+				"title":"4ти декември",
+				"source":"pages/1941/december/december4th.xml"
+			}
+		}
+	}
+}

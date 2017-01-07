@@ -1,0 +1,244 @@
+﻿@font-face {
+	font-family: "Arsenal";
+	src: url("font/Arsenal-Regular.woff") format("woff");
+	font-style: normal;
+	font-size: 10px;
+}
+
+@font-face {
+	font-family: "Arsenal";
+	src: url("font/Arsenal-Bold.woff") format("woff");
+	font-weight: bold;
+}
+
+@font-face {
+	font-family: "Arsenal";
+	src: url("font/Arsenal-BoldItalic.woff") format("woff");
+	font-weight: bold;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: "Arsenal";
+	src: url("font/Arsenal-Italic.woff") format("woff");
+	font-style: italic;
+}
+
+*, *::before, *::after {
+	cursor: default;
+	font-family: Arsenal;
+	-moz-appearance: none!important;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+body {
+	background-color: #F5F5F5;
+}
+
+#top {
+	width: 70vw;
+	height: 65vh;
+	margin: 10vh auto;
+	padding: 4vh;
+	-webkit-box-shadow: 0px 2px 3px 1px rgba(175,175,175,0.6);
+	-moz-box-shadow: 0px 2px 3px 1px rgba(175,175,175,0.6);
+	box-shadow: 0px 2px 3px 1px rgba(175,175,175,0.6);
+	background-color: rgba(238, 238, 238, 0.85);
+}
+
+#bottom {
+	width: 100vw;
+	height: 16vh;
+	position: fixed;
+	bottom: 0;
+	-webkit-box-shadow: inset 0px 65px 5px -65px rgba(0,0,0,1);
+	-moz-box-shadow: inset 0px 65px 5px -65px rgba(0,0,0,1);
+	box-shadow: inset 0px 65px 5px -65px rgba(0,0,0,1);
+	background-color: rgba(238, 238, 238, 0.85);
+}
+
+#bottom > #middle-line::after {
+	content: "";
+	position: absolute;
+	bottom: calc(13vh - 19px);
+	left: calc(50vw - 12px);
+	width: 24px;
+	height: 21px;
+	background: url("images/1.png");
+	z-index: 100999;
+}
+
+#bottom > #middle-line {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 13vh;
+	-webkit-box-shadow: inset 0px -1px 2px -1px rgba(0,0,0,1);
+	-moz-box-shadow: inset 0px -1px 2px -1px rgba(0,0,0,1);
+	box-shadow: inset 0px -1px 2px -1px rgba(0,0,0,1);
+}
+
+#bottom > #middle-line::before {
+	content: "";
+	position: absolute;
+	z-index: 100998;
+	bottom: 0;
+	left: calc(50vw - 2px);
+	width: 4px;
+	height: 12vh;
+	background: #0D80AC;
+}
+
+#bottom > #inner-line {
+	height: 13vh;
+	width: 100vw;
+	position: relative;
+	white-space: nowrap;
+	overflow: hidden;
+	margin-left: 3vw;
+}
+
+#bottom > #inner-line > #frame {
+	height: 13vh;
+	/* border-right: 1px solid black; */
+	position: absolute;
+	top: 0;
+	display: inline-block;
+}
+
+#bottom > #years-line {
+	height: 3vh;
+	width: 100vw;
+	position: relative;
+	-webkit-box-shadow: 0px 0 3px -1px rgba(50,50,50,1);
+	-moz-box-shadow: 0px 0 3px -1px rgba(50,50,50,1);
+	box-shadow: 0px 0 3px -1px rgba(50,50,50,1);
+	background: white;
+	display: block;
+	margin-left: 3vw;
+}
+
+#bottom > #years-line::before {
+	position: absolute;
+	bottom: 2vh;
+	left: 0;
+	content: "";
+	height: 0.9vh;
+	width: 100vw;
+	background-image: url("images/tinyline.png");
+}
+
+#bottom > #years-line > #year-frame::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 1.5vh;
+	width: 0.8vw;
+	background-image: url("images/tinyline.png");
+	background-repeat: no-repeat;
+}
+
+#bottom > #years-line > #year-frame {
+	position: absolute;
+	top: 0;
+	height: 2vh;
+	width: 1vw;
+	padding: 1.2vh 0 0 0;
+	font-size: 10px;
+	font-weight: bold;
+	text-indent: -7px;
+}
+
+#bottom > #zoom {
+	width: 1.6vw;
+	height: 5.5vh;
+	min-width: 30px;
+	min-height: 54px;
+	background: white;
+	position: fixed;
+	left: 0;
+	bottom: 6.5vh;
+	display: block;
+	border-top-right-radius: 8px;
+	border-bottom-right-radius: 8px;
+	-webkit-box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.2);
+	-moz-box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.2);
+	box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.2);
+	z-index: 999;
+}
+
+.zoom-in, .zoom-out, .zoom-in-hover, .zoom-out-hover {
+	margin-left: 2px;
+	margin-top: 1px;
+	width: 24px;
+	height: 24px;
+	display: block;
+}
+
+.zoom-in {
+	background: url("images/zoom.png") 27px 1px;
+}
+
+.zoom-out {
+	background: url("images/zoom.png") 27px 27px;
+}
+
+.zoom-in-hover, .zoom-out-hover {
+	cursor: pointer;
+}
+
+.zoom-in-hover {
+	background: url("images/zoom.png") 1px 1px;
+}
+
+.zoom-out-hover {
+	background: url("images/zoom.png") 1px 27px;
+	display: block;
+}
+
+#bottom > #inner-line > #inner-event {
+	position: absolute;
+	top: calc(13vh - 50px);
+	height: 46px;
+	width: 138px;
+	background: url("images/closebox.png");
+	padding: 5px 10px 10px 5px;
+}
+
+#bottom > #inner-line > #inner-event > p {
+	width: 120px;
+	height: 30px;
+	overflow: hidden;
+    text-overflow: ellipsis;
+	font-size: 10px;
+	color: gray;
+	display: block;
+	margin: 0 auto;
+}
+
+#bottom > #years-line > #dot-event {
+	position: absolute;
+	top: 0;
+	width: 5px;
+	height: 5px;
+	border-radius: 50%;
+	background-color: black;
+}
+
+h1, h2, h3, h4, h5 {
+	text-align: center;
+}
+
+p {
+	text-align: justify;
+}
