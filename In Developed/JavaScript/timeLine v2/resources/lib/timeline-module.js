@@ -15,6 +15,18 @@
 		return { title: title, source: source };
 	};
 	
+	module.getDateObject = function(day, month, year) {
+		if(typeof(day) !== "string" || typeof(month) !== "string" || typeof(year) !== "string") {
+			throw new TypeError("Instances of day, month and year must be string type.");
+		}
+		
+		return { day: day, month: month, year: year };
+	};
+	
+	module.containsDotPosition = function(dates, position, frame) {
+		return dates.length > 0 && parseInt(dates[dates.length - 1].style.left) === parseInt(frame.style.left);
+	};
+	
 	module.setZoomIn = function(domTokenList) {
 		replaceClassName(domTokenList, "zoom-in", "zoom-in-hover");
 	};

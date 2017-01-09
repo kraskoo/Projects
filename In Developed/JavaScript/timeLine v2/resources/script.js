@@ -326,10 +326,11 @@
 		}
 		
 		innerLine.appendChild(dayFrame);
-		createDotDayFrame(dayPosition);
+		if(!timeLine.containsDotPosition(currentlySelectedDates, dayPosition, dayFrame)) createDotDayFrame(dayPosition);
 		var paragraph = document.createElement("p");
+		var dayDate = timeLine.getDateObject(dayKey, monthKey, yearKey);
 		dayFrame.setAttribute(
-			"title", (dayKey + " " + timeLine.getMonthAsBGNames(monthKey) + " " + yearKey + " г."));
+			"title", (dayDate.day + " " + timeLine.getMonthAsBGNames(dayDate.month) + " " + dayDate.year + " г."));
 		dayFrame.setAttribute("fTitle", title);
 		paragraph.innerHTML = title;
 		dayFrame.appendChild(paragraph);
@@ -384,6 +385,7 @@
 	function repositionEvents(newWidth) {
 		var lastIndent = 0;
 		var index = 0;
+		var dots = [];
 		for(year in dayFrames) {
 			lastIndent += newWidth;
 			for(monthKey in dayFrames[year]) {
@@ -393,7 +395,8 @@
 					var monthFootprints = newWidth / 12;
 					var monthStartPosition = lastIndent - newWidth - monthFootprints + (monthAsNum * monthFootprints);
 					var monthEndPosition = (monthStartPosition + monthFootprints);
-					var dayPosition = ((monthFootprints / dayInMonth) * day) + monthStartPosition;
+					var framePosition = (monthFootprints / dayInMonth);
+					var dayPosition = (framePosition * day) + monthStartPosition;
 					dayFrames[year][monthKey][day].style.left = dayPosition + "px";
 					currentlySelectedDates[index].style.left = dayPosition + "px";
 					index++;
