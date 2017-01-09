@@ -385,7 +385,6 @@
 	function repositionEvents(newWidth) {
 		var lastIndent = 0;
 		var index = 0;
-		var dots = [];
 		for(year in dayFrames) {
 			lastIndent += newWidth;
 			for(monthKey in dayFrames[year]) {
