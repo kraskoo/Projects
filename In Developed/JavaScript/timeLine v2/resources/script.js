@@ -384,7 +384,7 @@
 	
 	function repositionEvents(newWidth) {
 		var lastIndent = 0;
-		var index = 0;
+		var index = -1;
 		for(year in dayFrames) {
 			lastIndent += newWidth;
 			for(monthKey in dayFrames[year]) {
@@ -397,8 +397,7 @@
 					var framePosition = (monthFootprints / dayInMonth);
 					var dayPosition = (framePosition * day) + monthStartPosition;
 					dayFrames[year][monthKey][day].style.left = dayPosition + "px";
-					currentlySelectedDates[index].style.left = dayPosition + "px";
-					index++;
+					currentlySelectedDates[++index].style.left = dayPosition + "px";
 				}
 			}
 		}
