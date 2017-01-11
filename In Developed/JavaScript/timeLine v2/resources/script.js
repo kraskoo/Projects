@@ -16,20 +16,35 @@
 		httpRequest.send();
 	};
 	
-	function loadScript(url, callback) {
-		var head = document.getElementsByTagName('head')[0];
-		var script = document.createElement('script');
-		script.type = 'text/javascript';
-		script.src = url;
-		script.onreadystatechange = callback;
-		script.onload = callback;
-		head.appendChild(script);
+	function loadScript(urls, callback) {
+		if(!(urls instanceof Array)) {
+			throw new Error('Instance of `urls` must be an Array type.');
+		}
+		
+		for(var i = 0; i < urls.length; i++) {
+			var head = document.getElementsByTagName('head')[0];
+			var script = document.createElement('script');
+			script.type = 'text/javascript';
+			script.src = urls[i];
+			if(i < urls.length - 1) {
+				script.onload = () => { return true; };
+			} else if(i === urls.length - 1) {
+				script.onreadystatechange = callback;
+				script.onload = callback;
+			}
+			
+			head.appendChild(script);
+		}
 	};
 	
 	function startUp() {
 		if(hasLoadedData && hasLoadedSettings)
 			loadScript(
-				'resources/lib/timeline-module.js',
+				['resources/lib/css.extensions-module.js',
+				'resources/lib/string.extensions-module.js',
+				'resources/lib/math.extensions-module.js',
+				'resources/lib/animate-module.js',
+				'resources/lib/timeline-module.js'],
 				() => load(yearObjects, settingObjects));
 	};
 	
