@@ -27,29 +27,6 @@
 		return dates.length > 0 && parseInt(dates[dates.length - 1].style.left) === parseInt(frame.style.left);
 	};
 	
-	module.setZoomIn = function(domTokenList) {
-		replaceClassName(domTokenList, "zoom-in", "zoom-in-hover");
-	};
-	
-	module.setZoomOut = function(domTokenList) {
-		replaceClassName(domTokenList, "zoom-out", "zoom-out-hover");
-	};
-	
-	module.unsetZoomIn = function(domTokenList) {
-		replaceClassName(domTokenList, "zoom-in-hover", "zoom-in");
-	};
-	
-	module.unsetZoomOut = function(domTokenList) {
-		replaceClassName(domTokenList, "zoom-out-hover", "zoom-out");
-	};
-	
-	function replaceClassName (elementClassList, oldClass, newClass) {
-		if((elementClassList instanceof DOMTokenList) && elementClassList.contains(oldClass)) {
-			elementClassList.remove(oldClass);
-			elementClassList.add(newClass);
-		}
-	};
-	
 	module.createTextPage = function(page, divContent) {
 		var font = page.getAttribute("font");
 		var index = 1;

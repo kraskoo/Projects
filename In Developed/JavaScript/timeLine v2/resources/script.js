@@ -43,6 +43,7 @@
 				['resources/lib/css.extensions-module.js',
 				'resources/lib/string.extensions-module.js',
 				'resources/lib/math.extensions-module.js',
+				'resources/lib/object.extensions-module.js',
 				'resources/lib/animate-module.js',
 				'resources/lib/timeline-module.js'],
 				() => load(yearObjects, settingObjects));
@@ -249,42 +250,42 @@
 		zIn.addEventListener("mouseover", function(ev) {
 			if(checkIfCanZoomIn()) {
 				var target = ev.currentTarget;
-				timeLine.setZoomIn(target.classList);
+				css.setZoomIn(target.classList);
 			}
 		}, false);
 		zIn.addEventListener("mouseout", function(ev) {
 			var target = ev.currentTarget;
-			timeLine.unsetZoomIn(target.classList);
+			css.unsetZoomIn(target.classList);
 		}, false);
 		zIn.addEventListener("click", function(ev) {
 			var target = ev.currentTarget;
 			if(checkIfCanZoomIn()) {
-				timeLine.setZoomIn(target.classList);
+				css.setZoomIn(target.classList);
 				currentZoom = getLowerZoomLevel();
 				resizeFrames(currentZoom, true);
 			} 
 
-			if(!checkIfCanZoomIn()) timeLine.unsetZoomIn(target.classList);
+			if(!checkIfCanZoomIn()) css.unsetZoomIn(target.classList);
 		}, false);
 		zOut.addEventListener("mouseover", function(ev) {
 			if(checkIfCanZoomOut()) {
 				var target = ev.currentTarget;
-				timeLine.setZoomOut(target.classList);
+				css.setZoomOut(target.classList);
 			}
 		}, false);
 		zOut.addEventListener("mouseout", function(ev) {
 			var target = ev.currentTarget;
-			timeLine.unsetZoomOut(target.classList);
+			css.unsetZoomOut(target.classList);
 		}, false);
 		zOut.addEventListener("click", function(ev) {
 			var target = ev.currentTarget;
 			if(checkIfCanZoomOut()) {
-				timeLine.setZoomOut(target.classList);
+				css.setZoomOut(target.classList);
 				currentZoom = getHigherZoomLevel();
 				resizeFrames(currentZoom, false);
 			} 
 			
-			if(!checkIfCanZoomOut()) timeLine.unsetZoomOut(target.classList);
+			if(!checkIfCanZoomOut()) css.unsetZoomOut(target.classList);
 		}, false);
 	}
 	

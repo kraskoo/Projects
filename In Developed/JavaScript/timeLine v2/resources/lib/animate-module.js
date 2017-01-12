@@ -24,6 +24,18 @@ let animate;
 		var style = element.getAttribute('style');
 		var left = toX === 0 ? 0 : (parseFloat(str.leftStyleRegex.exec(style)[1]));
 		var top = toY === 0 ? 0 : (parseFloat(str.topStyleRegex.exec(style)[1]));
+		var elementProperties = {
+			this: function(left, top) {
+				elementProperties.left = left;
+				elementProperties.top = top;
+			}
+		};
+		
+		elementProperties.constructor(3, 2)
+		elementProperties.left = -10;
+		
+		console.log(elementProperties);
+		
 		var condition =
 			((left !== 0 && top !== 0) ?
 				(left < toX && top < toY) : (left !== 0 ? left < toX : top < toY));
