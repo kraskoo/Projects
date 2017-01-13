@@ -43,7 +43,6 @@
 				['resources/lib/css.extensions-module.js',
 				'resources/lib/string.extensions-module.js',
 				'resources/lib/math.extensions-module.js',
-				'resources/lib/object.extensions-module.js',
 				'resources/lib/animate-module.js',
 				'resources/lib/timeline-module.js'],
 				() => load(yearObjects, settingObjects));

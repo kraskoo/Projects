@@ -32,7 +32,8 @@ let animate;
 		};
 		
 		elementProperties.constructor(3, 2)
-		elementProperties.left = -10;
+		console.log(elementProperties.left);
+		console.log(elementProperties.top);
 		
 		console.log(elementProperties);
 		
