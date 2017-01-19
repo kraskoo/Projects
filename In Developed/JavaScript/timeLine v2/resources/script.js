@@ -4,7 +4,7 @@
 	let moduleNames = [];
 	
 	function hasFullyLoadedModules() {
-		moduleCount === countOfLoadedScripts;
+		return moduleCount === countOfLoadedScripts;
 	};
 	
 	function extendModules(pathByName, callback) {
@@ -34,7 +34,7 @@
 	
 	function proceedToNextState(callback) {
 		while(hasFullyLoadedModules()) {
-			setTimeout(hasFullyLoadedModules, 5);
+			setTimeout(hasFullyLoadedModules, 1);
 		}
 		
 		callback();
