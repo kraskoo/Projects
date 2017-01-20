@@ -1,6 +1,6 @@
 ﻿let extmdl = {};
 (function(onExtendedModules) {
-	// In my humble opinion, this should called 'state machine' :)
+	// In my unpretentious view, this should called 'state machine' :)
 	const jsonYearsPath = "resources/json/years/";
 	const settings = "resources/json/settings.json";
 	const initialize = "resources/json/initialize.json";
@@ -39,16 +39,41 @@
 							let jsonDays = jsonMonths[month];
 							for(day in jsonDays) {
 								if(jsonDays[day] instanceof Array) {
-									// console.log(jsonDays[day]);
+									jsonDays[day] = [];
+									let dayEvents = jsonDays[day];
+									for(let i = 0; i < dayEvents.length; i++) {
+										
+									}
 								} else if(jsonDays[day] instanceof Object) {
-									// console.log("object");
+									parseDay(pushedData["data"], jsonYear, month, day, jsonDays);
 								} else {
-									// console.log("else");
+									pushedData["data"][jsonYear][month][day] = jsonDays[day];
 								}
 							}
 						}
 					}
 				});
+		}
+		
+		function parseDay(data, year, month, day, jsonDays, array = null) {
+			let tryParse = parseInt(day);
+			if(tryParse !== NaN) {
+				data[year][month][tryParse] = {};
+				data[jsonYear][month][tryParse]["title"] = jsonDays[day]["title"];
+				let url = jsonDays[day]["source"];
+				if(!url.endsWith(".xml")) {
+					data[year][month][tryParse]["url"] = url;
+				} else {
+					data[year][month][tryParse]["day"] = {};
+					let dayValue = data[year][month][tryParse]["day"];
+					// console.log(data[year][month][tryParse]);
+					extmdl.parser.acceptXml(url, (xml) => {
+						for(xmlElements in xml) {
+							dayValue[xmlElements] = xml[xmlElements];
+						}
+					});
+				}
+			}
 		}
 	};
 	
