@@ -1,5 +1,6 @@
 ﻿let extmdl = {};
 (function(onExtendedModules) {
+	// In my humble opinion, this should called 'state machine' :)
 	const jsonYearsPath = "resources/json/years/";
 	const settings = "resources/json/settings.json";
 	const initialize = "resources/json/initialize.json";
@@ -24,15 +25,38 @@
 	}
 	
 	function onLoadedStartupFiles() {
-		console.log("hello from there!");
-		console.log(pushedData);
+		pushedData["data"] = {};
+		let initializeYears = pushedData["initialize"];
+		for(year in initializeYears) {
+			extmdl.parser.acceptJson(
+				(jsonYearsPath + initializeYears[year]),
+				(json) => {
+					for(jsonYear in json) {
+						pushedData["data"][jsonYear] = {};
+						let jsonMonths = json[jsonYear];
+						for(month in jsonMonths) {
+							pushedData["data"][jsonYear][month] = {};
+							let jsonDays = jsonMonths[month];
+							for(day in jsonDays) {
+								if(jsonDays[day] instanceof Array) {
+									// console.log(jsonDays[day]);
+								} else if(jsonDays[day] instanceof Object) {
+									// console.log("object");
+								} else {
+									// console.log("else");
+								}
+							}
+						}
+					}
+				});
+		}
 	};
 	
 	(function(nextState) {
 		let moduleCount = 0;
 		let moduleNames = [];
 		
-		function extendModules(pathByNames, callback) {
+		function extendModules(pathByNames) {
 			moduleCount = Object.keys(pathByNames).length;
 			for(module in pathByNames) {
 				if(!moduleNames.includes(module)) {
@@ -41,8 +65,6 @@
 					extendOn(pathByNames[module], extmdl[module]);
 				}
 			}
-			
-			callback();
 		};
 		
 		function runOnExtend() {
@@ -52,7 +74,9 @@
 				'parser': 'resources/lib/parser.js',
 				'string': 'resources/lib/string.extensions-module.js',
 				'timeLine': 'resources/lib/timeline-module.js'
-			}, () => proceedToNextState());
+			});
+			
+			proceedToNextState();
 		};
 		
 		function proceedToNextState() {
