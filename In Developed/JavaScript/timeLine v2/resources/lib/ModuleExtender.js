@@ -21,7 +21,18 @@
 		delete context[name];
 	};
 	
-	context.countOfLoadedScripts = countOfLoadedScripts;
+	context.proceedLoading = function(statement, callback) {
+		let interval = setInterval(function() {
+			if (statement) {
+				callback();
+				clearInterval(interval);
+			}
+		}, 1);
+	};
+	
+	context.countOfLoadedScripts = function() {
+		return countOfLoadedScripts;
+	};
 	
 	context.extendOn = function(url, instance, callback = __innerSetter) {
 		let client = new XMLHttpRequest();

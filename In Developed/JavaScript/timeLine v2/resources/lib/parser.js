@@ -1,4 +1,9 @@
 ﻿let parser = (function() {
+	const months = [ "january", "february", "march",
+					"april", "may", "june", "july",
+					"august", "september", "octomber",
+					"november", "december" ];
+	
 	function parseTextPageXml(xml, onResponse) {
 		let page = {};
 		page.children = {};
@@ -50,10 +55,44 @@
 		}
 	};
 	
-	function redirectToXmlWorker(text, onResponse) {
+	function redirectToXmlWorker(response, onResponse) {
 		let domParser = new DOMParser();
-		let xml = domParser.parseFromString(text, "application/xml");
+		let xml = domParser.parseFromString(response, "application/xml");
 		parseTextPageXml(xml, onResponse);
+	};
+	
+	function redirectToJsonWorker(response, onResponse) {
+		let json = JSON.parse(response);
+		let jsonKeys = Object.keys(json);
+		let jsonLength = jsonKeys.length;
+		for(yearKey in json) {
+			if(jsonLength !== 1 && parseInt(jsonKeys[0]) !== NaN) break;
+			let year = json[yearKey];
+			let yearAsNumber = parseInt(yearKey);
+			for(monthKey in months) {
+				let month = months[monthKey];
+				if(year[month] === undefined) {
+					year[month] = {};
+				}
+				
+				let monthIndex = timeLine.getMonthAsNumber(month);
+				year[month]["index"] = monthIndex;
+				year[month]["days"] = timeLine.getDaysOfMonth(yearAsNumber, monthIndex - 1);
+				if(Object.keys(year[months[monthIndex - 1]]).length > 2) {
+					let currentMonth = (year[months[monthIndex - 1]]);
+					for(dayKey in currentMonth) {
+						if(dayKey !== "index" && dayKey !== "days") {
+							let day = parseInt(dayKey);
+							if(day < 1 || day > year[month]["days"]) {
+								throw new Error("Day must be in month's range!");
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		onResponse(json);
 	};
 	
 	function redirectResponse(url, callback, onResponse) {
@@ -72,7 +111,7 @@
 			redirectResponse(url, redirectToXmlWorker, onParsedResponse);
 		},
 		acceptJson: function(url, onParsedResponse) {
-			redirectResponse(url, onParsedResponse);
+			redirectResponse(url, redirectToJsonWorker, onParsedResponse);
 		}
 	};
 }());

@@ -1,48 +1,69 @@
 ﻿let extmdl = {};
 (function(onExtendedModules) {
-	let moduleCount = 0;
-	let moduleNames = [];
+	const jsonYearsPath = "resources/json/years/";
+	const settings = "resources/json/settings.json";
+	const initialize = "resources/json/initialize.json";
+	let pushedData = {};
 	
 	function hasFullyLoadedModules() {
-		return moduleCount === countOfLoadedScripts;
+		return countOfLoadedScripts() === moduleCount;
 	};
 	
-	function extendModules(pathByName, callback) {
-		moduleCount = Object.keys(pathByName).length;
-		for(module in pathByName) {
-			if(!moduleNames.includes(module)) {
-				moduleNames.push(module);
-				extmdl[module] = {};
-				extendOn(pathByName[module], extmdl[module]);
+	function loadStartupFiles() {
+		extmdl.parser.acceptJson(settings, (accepted) => { pushedData["settings"] = accepted });
+		extmdl.parser.acceptJson(initialize, (accepted) => { pushedData["initialize"] = accepted });
+		proceedOnLoadedStartup();
+	};
+	
+	function checkStartupFiles() {
+		return Object.keys(pushedData).length === 2;
+	};
+	
+	function proceedOnLoadedStartup() {
+		proceedLoading(checkStartupFiles, onLoadedStartupFiles);
+	}
+	
+	function onLoadedStartupFiles() {
+		console.log("hello from there!");
+		console.log(pushedData);
+	};
+	
+	(function(nextState) {
+		let moduleCount = 0;
+		let moduleNames = [];
+		
+		function extendModules(pathByNames, callback) {
+			moduleCount = Object.keys(pathByNames).length;
+			for(module in pathByNames) {
+				if(!moduleNames.includes(module)) {
+					moduleNames.push(module);
+					extmdl[module] = {};
+					extendOn(pathByNames[module], extmdl[module]);
+				}
 			}
-		}
+			
+			callback();
+		};
 		
-		proceedToNextState(onExtendedModules);
-	};
-	
-	function runOnExtend() {
-		extendModules({
-			'animate': 'resources/lib/animate-module.js',
-			'css': 'resources/lib/css.extensions-module.js',
-			'parser': 'resources/lib/parser.js',
-			'string': 'resources/lib/string.extensions-module.js',
-			'timeLine': 'resources/lib/timeline-module.js'
-		}, () => {
-			proceedToNextState(onExtendedModules);
-		});
-	};
-	
-	function proceedToNextState(callback) {
-		while(hasFullyLoadedModules()) {
-			setTimeout(hasFullyLoadedModules, 1);
-		}
+		function runOnExtend() {
+			extendModules({
+				'animate': 'resources/lib/animate-module.js',
+				'css': 'resources/lib/css.extensions-module.js',
+				'parser': 'resources/lib/parser.js',
+				'string': 'resources/lib/string.extensions-module.js',
+				'timeLine': 'resources/lib/timeline-module.js'
+			}, () => proceedToNextState());
+		};
 		
-		callback();
-	};
-	
-	runOnExtend();
+		function proceedToNextState() {
+			proceedLoading(hasFullyLoadedModules, nextState);
+		};
+		
+		runOnExtend();
+	}(loadStartupFiles));
 } (function() {
 	console.log("hello from there!");
+	extmdl.animate.createTestDiv();
 }));
 
 //////////////////////////////////////////////////////////////////////////////////
