@@ -28,7 +28,7 @@
 				throw new TypeError("Instances of day, month and year must be string type.");
 			}
 			
-			return { day: day, month: month, year: year };
+			return { day: Number(day), month: month, year: Number(year) };
 		},
 		'containsDotPosition': function(dates, position, frame) {
 			return dates.length > 0 && parseInt(dates[dates.length - 1].style.left) === parseInt(frame.style.left);
@@ -88,7 +88,7 @@
 		'getDaysOfYear': function(year) {
 			let firstDate = new Date(year, 1, 0);
 			let secondDate = new Date(year, 12, 31);
-			return Math.round(Math.abs((firstDate.getTime() - secondDate.getTime()) / (oneDay)));
+			return Math.round(Math.abs((firstDate.getTime() - secondDate.getTime()) / oneDay));
 		},
 		'getDaysOfMonth': function(year, month) {
 			let monthStart = new Date(year, month, 1);
