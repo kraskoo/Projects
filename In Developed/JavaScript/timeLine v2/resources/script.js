@@ -1,7 +1,6 @@
 ﻿let extmdl = {};
-(function(onExtendedModules) {
+(function(onRun) {
 	// In my unpretentious view, this should called 'state machine' :)
-	const jsonYearsPath = "resources/json/years/";
 	const settings = "resources/json/settings.json";
 	const initialize = "resources/json/initialize.json";
 	let pushedData = {};
@@ -10,74 +9,37 @@
 		return countOfLoadedScripts() === moduleCount;
 	};
 	
-	function loadStartupFiles() {
+	function initializing() {
 		extmdl.parser.acceptJson(settings, (accepted) => { pushedData["settings"] = accepted });
 		extmdl.parser.acceptJson(initialize, (accepted) => { pushedData["initialize"] = accepted });
-		proceedOnLoadedStartup();
+		proceedOnLoad();
 	};
 	
-	function checkStartupFiles() {
+	function checkLoadedFiles() {
 		return Object.keys(pushedData).length === 2;
 	};
 	
-	function proceedOnLoadedStartup() {
-		proceedLoading(checkStartupFiles, onLoadedStartupFiles);
-	}
-	
-	function onLoadedStartupFiles() {
-		pushedData["data"] = {};
-		let initializeYears = pushedData["initialize"];
-		for(year in initializeYears) {
-			extmdl.parser.acceptJson(
-				(jsonYearsPath + initializeYears[year]),
-				(json) => {
-					for(jsonYear in json) {
-						pushedData["data"][jsonYear] = {};
-						let jsonMonths = json[jsonYear];
-						for(month in jsonMonths) {
-							pushedData["data"][jsonYear][month] = {};
-							let jsonDays = jsonMonths[month];
-							for(day in jsonDays) {
-								if(jsonDays[day] instanceof Array) {
-									jsonDays[day] = [];
-									let dayEvents = jsonDays[day];
-									for(let i = 0; i < dayEvents.length; i++) {
-										
-									}
-								} else if(jsonDays[day] instanceof Object) {
-									parseDay(pushedData["data"], jsonYear, month, day, jsonDays);
-								} else {
-									pushedData["data"][jsonYear][month][day] = jsonDays[day];
-								}
-							}
-						}
-					}
-				});
-		}
-		
-		function parseDay(data, year, month, day, jsonDays, array = null) {
-			let tryParse = parseInt(day);
-			if(tryParse !== NaN) {
-				data[year][month][tryParse] = {};
-				data[jsonYear][month][tryParse]["title"] = jsonDays[day]["title"];
-				let url = jsonDays[day]["source"];
-				if(!url.endsWith(".xml")) {
-					data[year][month][tryParse]["url"] = url;
-				} else {
-					data[year][month][tryParse]["day"] = {};
-					let dayValue = data[year][month][tryParse]["day"];
-					// console.log(data[year][month][tryParse]);
-					extmdl.parser.acceptXml(url, (xml) => {
-						for(xmlElements in xml) {
-							dayValue[xmlElements] = xml[xmlElements];
-						}
-					});
-				}
-			}
-		}
+	function proceedOnLoad() {
+		proceedLoading(checkLoadedFiles, onLoad);
 	};
 	
-	(function(nextState) {
+	function proceedOnRun() {
+		proceedLoading(extmdl.repository.checkDataFiles, startup)
+	}
+	
+	function onLoad() {
+		pushedData["data"] = {};
+		let pushed = pushedData["data"];
+		let initializeYears = pushedData["initialize"];
+		extmdl.repository.setYearsData(initializeYears, pushed);
+		proceedOnRun();
+	};
+	
+	function startup() {
+		onRun(pushedData);
+	};
+	
+	(function(initialState) {
 		let moduleCount = 0;
 		let moduleNames = [];
 		
@@ -92,27 +54,34 @@
 			}
 		};
 		
-		function runOnExtend() {
+		function setupModules() {
 			extendModules({
 				'animate': 'resources/lib/animate-module.js',
 				'css': 'resources/lib/css.extensions-module.js',
 				'parser': 'resources/lib/parser.js',
+				'repository': 'resources/lib/repository-module.js',
 				'string': 'resources/lib/string.extensions-module.js',
 				'timeLine': 'resources/lib/timeline-module.js'
 			});
 			
-			proceedToNextState();
+			proceedToInitialState();
 		};
 		
-		function proceedToNextState() {
-			proceedLoading(hasFullyLoadedModules, nextState);
+		function proceedToInitialState() {
+			proceedLoading(hasFullyLoadedModules, initialState);
 		};
 		
-		runOnExtend();
-	}(loadStartupFiles));
-} (function() {
-	console.log("hello from there!");
-	extmdl.animate.createTestDiv();
+		setupModules();
+	}(initializing));
+} (function(data) {
+	let settings = data.settings;
+	let framesSortOrder = settings["framesSortOrder"];
+	let zIndex = 100000;
+	if(framesSortOrder === "desc") {
+		zIndex = 1000;
+	}
+	
+	
 }));
 
 //////////////////////////////////////////////////////////////////////////////////
