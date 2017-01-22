@@ -3,6 +3,10 @@
 	
 	const oneDay = 24 * 60 * 60 * 1000;
 	const maxZIndex = 100001;
+	const months = [ "january", "february", "march",
+				"april", "may", "june", "july",
+				"august", "september", "octomber",
+				"november", "december" ];
 	
 	function appendTextPropertiesByXmlElement(element, xml, font, textAlign) {
 		element.innerHTML = xml.innerHTML;
@@ -14,6 +18,7 @@
 	};
 	
 	return {
+		'months': months,
 		'oneDay': oneDay,
 		'maxZIndex': maxZIndex,
 		'getDayObject': function(title, source) {

@@ -1,9 +1,4 @@
 ﻿let parser = (function() {
-	const months = [ "january", "february", "march",
-					"april", "may", "june", "july",
-					"august", "september", "octomber",
-					"november", "december" ];
-	
 	function parseTextPageXml(xml, onResponse) {
 		let page = {};
 		page.children = {};
@@ -69,6 +64,7 @@
 			if(jsonLength !== 1 && parseInt(jsonKeys[0]) !== NaN) break;
 			let year = json[yearKey];
 			let yearAsNumber = parseInt(yearKey);
+			let months = extmdl.timeLine.months;
 			for(monthKey in months) {
 				let month = months[monthKey];
 				if(year[month] === undefined) {

@@ -23,11 +23,11 @@
 	
 	context.proceedLoading = function(statement, callback) {
 		let interval = setInterval(function() {
-			if (statement) {
-				callback();
+			if (statement && callback) {
 				clearInterval(interval);
+				callback();
 			}
-		}, 1);
+		}, 5);
 	};
 	
 	context.countOfLoadedScripts = function() {

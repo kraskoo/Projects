@@ -2,7 +2,10 @@
 	const defaultYearPath = "resources/json/years/";
 	
 	let yearsCount = 0;
+	let eventCount = 0;
 	let count = 0;
+	let id = 1;
+	let daysById = {};
 	
 	function setDayData(value, day, dateObject) {
 		if(!value["source"].endsWith("xml")) {
@@ -19,6 +22,9 @@
 		
 		day["title"] = value["title"];
 		day["date"] = dateObject;
+		day["id"] = id;
+		daysById[id++] = day;
+		count++;
 	};
 	
 	function buildYear(json, data) {
@@ -40,6 +46,7 @@
 						let currentDay = data[year][month][day];
 						if(monthValue instanceof Array) {
 							let dayEvents = currentDay["day-events"] = [];
+							eventCount += monthValue.length;
 							for(let i = 0; i < monthValue.length; i++) {
 								dayEvents[i] = {};
 								setDayData(
@@ -48,6 +55,7 @@
 									extmdl.timeLine.getDateObject(day, month, year));
 							}
 						} else if(monthValue instanceof Object) {
+							eventCount++;
 							setDayData(
 								monthValue,
 								currentDay,
@@ -55,13 +63,12 @@
 						}
 					} else {
 						if(!Object.keys(data[year]).includes("yearDays")) {
+							eventCount++;
 							data[year]["yearDays"] = extmdl.timeLine.getDaysOfYear(parseInt(year));
 						}
 					}
 				}
 			}
-			
-			count++;
 		}
 	}
 	
@@ -73,10 +80,12 @@
 					(defaultYearPath + years[jsonYear]),
 					(json) => { buildYear(json, data) });
 			}
-			console.log(data);
 		},
-		checkDataFiles: function() {
-			return yearsCount === count;
+		getDayById: function(id) {
+			return daysById[id];
+		},
+		checkDataFiles: function(outterDataCount) {
+			return eventCount === count && outterDataCount === yearsCount;
 		}
 	}
 }());
