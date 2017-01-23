@@ -1,6 +1,6 @@
 ﻿let parser = (function() {
 	function parseXml(xml, onResponse) {
-		let xmlType = xml.children[0].attributes.type.nodeValue;
+		let xmlType = xml.children[0].attributes[0].value;
 		switch(xmlType) {
 			case "text":
 				parseTextPageXml(xml, onResponse);
@@ -15,7 +15,6 @@
 		let page = {};
 		let pageNode = xml.children[0];
 		let attributes = pageNode.attributes;
-		
 		for(let i = 0; i < attributes.length; i++) {
 			page[attributes[i].nodeName] = attributes[i].nodeValue;
 		}
@@ -43,6 +42,7 @@
 		let page = {};
 		page.paragraphs = [];
 		let pageNode = xml.children[0];
+		page["type"] = pageNode.attributes["type"];
 		let attributes = pageNode.attributes;
 		for(let i = 0; i < attributes.length; i++) {
 			page[attributes[i].nodeName] = attributes[i].nodeValue;
@@ -68,8 +68,6 @@
 				for(let j = 0; j < childAttributes.length; j++) {
 					paragraph[childAttributes[j].nodeName] = childAttributes[j].nodeValue;
 				}
-				
-				
 				
 				if(children[i].textContent !== "") {
 					paragraph["text"] = children[i].textContent;

@@ -15,7 +15,7 @@
 			day["day"] = {};
 			let url = value["source"];
 			extmdl.parser.acceptXml(url, (xml) => {
-				let xmlType = xml["type"];
+				day["type"] = xml["type"];
 				for(xmlElement in xml) {
 					if(typeof(xml[xmlElement]) === "string") {
 						day[xmlElement] = xml[xmlElement];
@@ -24,9 +24,6 @@
 					}
 				}
 			});
-			
-		
-			day["type"] = value["type"];
 		}
 		
 		day["title"] = value["title"];

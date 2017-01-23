@@ -48,20 +48,17 @@
 	};
 	
 	function getImagePageContainerType(model) {
-		console.log(model);
 		let container = document.createElement("div");
 		let dayImage = model.day.image;
 		let titleParagraph = document.createElement("p");
 		let url = (sourceImagesPath + dayImage.source);
-		console.log(url);
 		let img = new Image();
 		img.addEventListener("load", function() {
-			
+			container.appendChild(img);
 		}, false);
 		img.src = url;
 		img.width = dayImage.width;
 		img.height = dayImage.height;
-		container.appendChild(img);
 		defaultContainerValue(container);
 		return container;
 	};
@@ -71,7 +68,6 @@
 			let container = null;
 			switch(model.type) {
 				case "image":
-					console.log(model);
 					container = getImagePageContainerType(model);
 					break;
 				case "url":
