@@ -1,47 +1,81 @@
 ﻿let parser = (function() {
-	function parseTextPageXml(xml, onResponse) {
+	function parseXml(xml, onResponse) {
+		let xmlType = xml.children[0].attributes.type.nodeValue;
+		switch(xmlType) {
+			case "text":
+				parseTextPageXml(xml, onResponse);
+				break;
+			case "image":
+				parseImagePageXml(xml, onResponse);
+				break;
+		}
+	};
+	
+	function parseImagePageXml(xml, onResponse) {
 		let page = {};
-		page.children = {};
 		let pageNode = xml.children[0];
 		let attributes = pageNode.attributes;
-		page.attributes = {};
+		
 		for(let i = 0; i < attributes.length; i++) {
-			page.attributes[attributes[i].nodeName] = attributes[i].nodeValue;
+			page[attributes[i].nodeName] = attributes[i].nodeValue;
 		}
 		
 		let children = pageNode.children;
 		for(let i = 0; i < children.length; i++) {
-			if(children[i].nodeName === "title") {
-				let title = children[i];
-				let titleNode = {};
-				let titleAttributes = title.attributes;
-				for(let j = 0; j < titleAttributes.length; j++) {
-					if(titleAttributes[j].nodeName === "size") {
-						titleNode[titleAttributes[j].nodeName] = Number(titleAttributes[j].nodeValue);
-					} else {
-						titleNode[titleAttributes[j].nodeName] = Boolean(titleAttributes[j].nodeValue);
-					}
+			page[children[i].nodeName] = {};
+			let childAttributes = children[i].attributes;
+			for(let j = 0; j < childAttributes.length; j++) {
+				page[children[i].nodeName][childAttributes[j].nodeName] =
+					childAttributes[j].nodeValue;
+			}
+			
+			if(children[i].textContent !== "") {
+				page[children[i].nodeName]["text"] = children[i].textContent;
+			}
+		}
+		
+		if(onResponse) {
+			onResponse(page);
+		}
+	};
+	
+	function parseTextPageXml(xml, onResponse) {
+		let page = {};
+		page.paragraphs = [];
+		let pageNode = xml.children[0];
+		let attributes = pageNode.attributes;
+		for(let i = 0; i < attributes.length; i++) {
+			page[attributes[i].nodeName] = attributes[i].nodeValue;
+		}
+		
+		let children = pageNode.children;
+		for(let i = 0; i < children.length; i++) {
+			
+			if(children[i].nodeName !== "paragraph") {
+				page[children[i].nodeName] = {};
+				let childAttributes = children[i].attributes;
+				for(let j = 0; j < childAttributes.length; j++) {
+					page[children[i].nodeName][childAttributes[j].nodeName] =
+						childAttributes[j].nodeValue;
 				}
 				
-				page.children[children[i].nodeName] = titleNode;
+				if(children[i].textContent !== "") {
+					page[children[i].nodeName]["text"] = children[i].textContent;
+				}
 			} else {
-				if(page.children[children[i].nodeName] === undefined) {
-					page.children[children[i].nodeName] = [];
+				let paragraph = {};
+				let childAttributes = children[i].attributes;
+				for(let j = 0; j < childAttributes.length; j++) {
+					paragraph[childAttributes[j].nodeName] = childAttributes[j].nodeValue;
 				}
 				
-				let paragraph = children[i];
-				let paragraphNode = {};
-				let paragraphAttributes = paragraph.attributes;
-				for(let j = 0; j < paragraphAttributes.length; j++) {
-					if(paragraphNode[paragraphAttributes[j].nodeName] === "size") {
-						paragraphNode[paragraphAttributes[j].nodeName] = Number(paragraphAttributes[j].nodeValue);
-					} else {
-						paragraphNode[paragraphAttributes[j].nodeName] = Boolean(paragraphAttributes[j].nodeValue);
-					}
+				
+				
+				if(children[i].textContent !== "") {
+					paragraph["text"] = children[i].textContent;
 				}
 				
-				paragraphNode["text"] = children[i].textContent;
-				page.children[children[i].nodeName].push(paragraphNode);
+				page.paragraphs.push(paragraph);
 			}
 		}
 		
@@ -53,7 +87,7 @@
 	function redirectToXmlWorker(response, onResponse) {
 		let domParser = new DOMParser();
 		let xml = domParser.parseFromString(response, "application/xml");
-		parseTextPageXml(xml, onResponse);
+		parseXml(xml, onResponse);
 	};
 	
 	function redirectToJsonWorker(response, onResponse) {
@@ -73,7 +107,7 @@
 				
 				let monthIndex = timeLine.getMonthAsNumber(month);
 				year[month]["index"] = monthIndex;
-				year[month]["days"] = timeLine.getDaysOfMonth(yearAsNumber, monthIndex - 1);
+				year[month]["days"] = extmdl.timeLine.getDaysOfMonth(yearAsNumber, monthIndex - 1);
 				if(Object.keys(year[months[monthIndex - 1]]).length > 2) {
 					let currentMonth = (year[months[monthIndex - 1]]);
 					for(dayKey in currentMonth) {

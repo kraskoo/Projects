@@ -8,21 +8,30 @@
 	let daysById = {};
 	
 	function setDayData(value, day, dateObject) {
-		if(!value["source"].endsWith("xml")) {
-			day["url"] = value["source"];
-		} else {
+		if(value["source"].match(extmdl.string.outterLinkRegex) !== null) {
+			day["type"] = "url";
+			day["link"] = value["source"];
+		} else if(value["source"].endsWith("xml")) {
 			day["day"] = {};
 			let url = value["source"];
 			extmdl.parser.acceptXml(url, (xml) => {
+				let xmlType = xml["type"];
 				for(xmlElement in xml) {
-					day["day"][xmlElement] = xml[xmlElement];
+					if(typeof(xml[xmlElement]) === "string") {
+						day[xmlElement] = xml[xmlElement];
+					} else {
+						day["day"][xmlElement] = xml[xmlElement];
+					}
 				}
 			});
+			
+		
+			day["type"] = value["type"];
 		}
 		
 		day["title"] = value["title"];
-		day["date"] = dateObject;
 		day["id"] = id;
+		day["date"] = dateObject;
 		daysById[id++] = day;
 		count++;
 	};

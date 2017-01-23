@@ -79,6 +79,13 @@
 				"title":"4ти декември",
 				"source":"pages/1940/december/december4th.xml"
 			}
+		},
+		"august":
+		{
+			"25": {
+				"title":"25ти април",
+				"source":"pages/1940/august/event-with-image.xml"
+			}
 		}
 	}
 }

@@ -113,7 +113,6 @@
 	let innerLine = document.getElementById("inner-line");
 	let yearLine = document.getElementById("years-line");
 	function renderYearAndEvents(indent) {
-		let dataId = 1;
 		let width = indent;
 		let lastIndent = 0;
 		let years = data.data;
@@ -298,27 +297,11 @@
 		allInnerEvents[i].addEventListener("click", function(ev) {
 			if(top.childNodes.length > 0) top.removeChild(top.childNodes[0]);
 			let current = ev.currentTarget;
-			console.log(current.getAttribute("data-id"));
 			let dayEventId = parseInt(current.getAttribute("data-id"));
-			console.log(extmdl.repository.getDayById(dayEventId));
-			// let iframe = document.createElement("iframe");
-			// iframe.setAttribute("src", current.getAttribute("source"));
-			// iframe.style.display = "none";
-			// let divContent = document.createElement("div");
-			// iframe.addEventListener("load", function(ev) {
-				// if(ev.target["contentDocument"] !== null) {
-					// let page = ev.target.contentDocument.childNodes[0];
-					// if(page.getAttribute("type") === "text") extmdl.timeLine.createTextPage(page, divContent);
-					// top.appendChild(divContent);
-					// top.removeChild(iframe);
-				// } else {
-					// iframe.style.width = "100%";
-					// iframe.style.height = "100%";
-					// iframe.style.display = "block";
-					// iframe.setAttribute("frameborder", "0");
-				// }
-			// }, false);
-			// top.appendChild(iframe);
+			let model = extmdl.repository.getDayById(dayEventId);
+			let container = extmdl.data.getContainerByModel(model);
+			console.log(container);
+			// top.appendChild(container);
 		}, false);
 	}
 	

@@ -8,15 +8,6 @@
 				"august", "september", "octomber",
 				"november", "december" ];
 	
-	function appendTextPropertiesByXmlElement(element, xml, font, textAlign) {
-		element.innerHTML = xml.innerHTML;
-		element.style.fontSize = xml.getAttribute("size") + "px";
-		if(xml.getAttribute("bold") === "true") element.style.fontWeight = "bold";
-		if(xml.getAttribute("italic") === "true") element.style.fontStyle = "oblique";
-		if(font !== "default") element.style.fontFamily = font;
-		element.style.textAlign = textAlign;
-	};
-	
 	return {
 		'months': months,
 		'oneDay': oneDay,
@@ -37,24 +28,6 @@
 		},
 		'containsDotPosition': function(dates, position, frame) {
 			return dates.length > 0 && parseInt(dates[dates.length - 1].style.left) === parseInt(frame.style.left);
-		},
-		'createTextPage': function(page, divContent) {
-			let font = page.getAttribute("font");
-			let index = 1;
-			let title = page.childNodes[index];
-			let titleParagraph = document.createElement("p");
-			titleParagraph.innerHTML = title.innerHTML;
-			appendTextPropertiesByXmlElement(titleParagraph, title, font, "center");
-			titleParagraph.style.paddingBottom = "40px";
-			divContent.appendChild(titleParagraph);
-			index += 2;
-			while(page.childNodes[index] !== undefined) {
-				let paragraph = document.createElement("p");
-				let xmlParagraph = page.childNodes[index];
-				appendTextPropertiesByXmlElement(paragraph, xmlParagraph, font, "justify");
-				divContent.appendChild(paragraph);
-				index += 2;
-			}
 		},
 		'getMonthAsNumber': function(month) {
 			switch(month) {
