@@ -15,10 +15,11 @@
 		script.textContent = response;
 		let head = document.getElementsByTagName("head")[0];
 		head.appendChild(script);
-		context[name] = eval(name);
-		Object.assign(instance, context[name]);
+		let newObj = {};
+		newObj[name] = eval(name);
+		Object.assign(instance, newObj[name]);
 		head.removeChild(script);
-		delete context[name];
+		delete newObj[name];
 	};
 	
 	context.proceedLoading = function(statement, callback) {
@@ -27,7 +28,7 @@
 				clearInterval(interval);
 				callback();
 			}
-		}, 5);
+		}, 13);
 	};
 	
 	context.countOfLoadedScripts = function() {

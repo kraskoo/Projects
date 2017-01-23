@@ -5,13 +5,9 @@
 	const initialize = "resources/json/initialize.json";
 	let pushedData = {};
 	
-	function hasFullyLoadedModules() {
-		return countOfLoadedScripts() === moduleCount;
-	};
-	
 	function initializing() {
-		extmdl.parser.acceptJson(settings, (accepted) => { pushedData["settings"] = accepted });
-		extmdl.parser.acceptJson(initialize, (accepted) => { pushedData["initialize"] = accepted });
+		extmdl.parser.acceptJson(settings, (accepted) => { pushedData["settings"] = accepted; });
+		extmdl.parser.acceptJson(initialize, (accepted) => { pushedData["initialize"] = accepted; });
 		proceedOnLoad();
 	};
 	
@@ -27,7 +23,9 @@
 			}
 		}
 		
-		return extmdl.repository.checkDataFiles(Object.keys(pushed).length);
+		return extmdl
+			.repository
+			.checkDataFiles(() => { return Object.keys(pushed).length; });
 	};
 	
 	function proceedOnLoad() {
@@ -50,42 +48,55 @@
 		onRun(pushedData);
 	};
 	
-	(function(initialState) {
-		let moduleCount = 0;
-		let moduleNames = [];
+	let moduleCount = 0;
+	let moduleNames = [];
+
+	function hasFullyLoadedModules() {
+		let keys = Object.keys(extmdl);
+		if(!(extmdl instanceof Object) || keys.length === 0) {
+			return false;
+		}
 		
-		function extendModules(pathByNames) {
-			moduleCount = Object.keys(pathByNames).length;
-			for(module in pathByNames) {
-				if(!moduleNames.includes(module)) {
-					moduleNames.push(module);
-					extmdl[module] = {};
-					extendOn(pathByNames[module], extmdl[module]);
-				}
+		for(mod in extmdl) {
+			if(!(extmdl[mod] instanceof Object) || Object.keys(extmdl[mod]).length === 0) {
+				return false;
 			}
-		};
+		}
 		
-		function setupModules() {
-			extendModules({
-				'animate': 'resources/lib/animate-module.js',
-				'css': 'resources/lib/css.extensions-module.js',
-				'data': 'resources/lib/data.service-module.js',
-				'parser': 'resources/lib/parser.js',
-				'repository': 'resources/lib/repository-module.js',
-				'string': 'resources/lib/string.extensions-module.js',
-				'timeLine': 'resources/lib/timeline-module.js',
-				'view': 'resources/lib/view-module.js'
-			});
-			
-			proceedToInitialState();
-		};
+		return countOfLoadedScripts() === moduleCount;
+	};
+	
+	function extendModules(pathByNames) {
+		moduleCount = Object.keys(pathByNames).length;
+		for(module in pathByNames) {
+			if(!moduleNames.includes(module)) {
+				moduleNames.push(module);
+				extmdl[module] = {};
+				extendOn(pathByNames[module], extmdl[module]);
+			}
+		}
+	};
+	
+	function setupModules() {
+		extendModules({
+			'animate': 'resources/lib/animate-module.js',
+			'css': 'resources/lib/css.extensions-module.js',
+			'data': 'resources/lib/data.service-module.js',
+			'parser': 'resources/lib/parser.js',
+			'repository': 'resources/lib/repository-module.js',
+			'string': 'resources/lib/string.extensions-module.js',
+			'timeLine': 'resources/lib/timeline-module.js',
+			'view': 'resources/lib/view-module.js'
+		});
 		
-		function proceedToInitialState() {
-			proceedLoading(hasFullyLoadedModules, initialState);
-		};
-		
-		setupModules();
-	}(initializing));
+		proceedToInitialState();
+	};
+	
+	function proceedToInitialState() {
+		proceedLoading(hasFullyLoadedModules, initializing);
+	};
+	
+	setupModules();
 } (function(data) {
 	let settings = data.settings;
 	data["dayFrames"] = {}

@@ -104,10 +104,16 @@
 	
 	return {
 		acceptXml: function(url, onParsedResponse) {
-			redirectResponse(url, redirectToXmlWorker, onParsedResponse);
+			redirectResponse(
+				url,
+				redirectToXmlWorker,
+				onParsedResponse);
 		},
 		acceptJson: function(url, onParsedResponse) {
-			redirectResponse(url, redirectToJsonWorker, onParsedResponse);
+			redirectResponse(
+				url,
+				redirectToJsonWorker,
+				onParsedResponse);
 		}
 	};
 }());
