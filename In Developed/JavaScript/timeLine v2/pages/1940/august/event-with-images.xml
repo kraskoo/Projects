@@ -1,7 +1,0 @@
-﻿<?xml version="1.0"?>
-<page type="image">
-	<title size="30" bold="true" italic="false">Някво си заглавие със снимки</title>
-	<image source="space-age.png" width="432" height="322" alignment="left" />
-	<extra-info alignment="right">Text, text text.... more text, some more text...</extra-info>
-	<description size="30" bold="true" italic="false">Space Age</description>
-</page>
