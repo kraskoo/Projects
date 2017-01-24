@@ -19,7 +19,6 @@
 	};
 	
 	function appendTextPropertiesByNodeElement(element, node, textAlign) {
-		element.textContext = node.text;
 		element.style.fontSize = node.size + "px";
 		if(node.bold === "true") element.style.fontWeight = "bold";
 		if(node.italic === "true") element.style.fontStyle = "oblique";
@@ -29,12 +28,12 @@
 	function getTextPageContainerType(model) {
 		let container = document.createElement("div");
 		let font = model.font;
-		let titleParagraph = document.createElement("p");
+		let header = document.createElement("p");
 		if(font !== "default") container.style.fontFamily = font;
-		appendTextPropertiesByNodeElement(titleParagraph, model.day.title, "center");
-		titleParagraph.textContent = model.title;
-		titleParagraph.style.paddingBottom = "40px";
-		container.appendChild(titleParagraph);
+		header.textContent = model.day.title.text;
+		appendTextPropertiesByNodeElement(header, model.day.title, "center");
+		header.style.paddingBottom = "40px";
+		container.appendChild(header);
 		let paragraphs = model.day.paragraphs;
 		for(let p = 0; p < paragraphs.length; p++) {
 			let paragraph = document.createElement("p");
@@ -50,15 +49,34 @@
 	function getImagePageContainerType(model) {
 		let container = document.createElement("div");
 		let dayImage = model.day.image;
-		let titleParagraph = document.createElement("p");
+		let header = document.createElement("p");
+		let title = model.day.title;
+		header.textContent = title.text;
+		appendTextPropertiesByNodeElement(header, title, "center");
 		let url = (sourceImagesPath + dayImage.source);
 		let img = new Image();
+		let imageWrapper = document.createElement("div");
+		imageWrapper.style.display = "block";
+		imageWrapper.appendChild(img);
 		img.addEventListener("load", function() {
-			container.appendChild(img);
+			parentContainer = container.parentNode;
+			let parentContainerWidth = parseInt(
+				extmdl.css.getStyleValueByElement(parentContainer, "width")) - 4;
+			let parentContainerHeight = parseInt(
+				extmdl.css.getStyleValueByElement(parentContainer, "height")) - 4;
+			container.style.width = "100%";
+			container.style.height = "100%";
+			let halfWidth = parentContainerWidth / 2;
+			let halfHeight = parentContainerHeight / 2;
+			let oneSixteen = (halfWidth / 8);
+			imageWrapper.style.width = halfWidth + "px";
+			imageWrapper.style.height = (parentContainerHeight - 78) + "px";
+			img.style.maxWidth = imageWrapper.style.maxWidth = (halfWidth - oneSixteen) + "px";
+			img.style.marginTop = ((Math.abs(img.height - halfHeight) * 0.4)) + "px";
 		}, false);
 		img.src = url;
-		img.width = dayImage.width;
-		img.height = dayImage.height;
+		container.appendChild(header);
+		container.appendChild(imageWrapper);
 		defaultContainerValue(container);
 		return container;
 	};

@@ -337,42 +337,42 @@
 		zIn.addEventListener("mouseover", function(ev) {
 			if(checkIfCanZoomIn()) {
 				let target = ev.currentTarget;
-				css.setZoomIn(target.classList);
+				extmdl.css.setZoomIn(target.classList);
 			}
 		}, false);
 		zIn.addEventListener("mouseout", function(ev) {
 			let target = ev.currentTarget;
-			css.unsetZoomIn(target.classList);
+			extmdl.css.unsetZoomIn(target.classList);
 		}, false);
 		zIn.addEventListener("click", function(ev) {
 			let target = ev.currentTarget;
 			if(checkIfCanZoomIn()) {
-				css.setZoomIn(target.classList);
+				extmdl.css.setZoomIn(target.classList);
 				currentZoom = getLowerZoomLevel();
 				resizeFrames(currentZoom, true);
 			} 
 
-			if(!checkIfCanZoomIn()) css.unsetZoomIn(target.classList);
+			if(!checkIfCanZoomIn()) extmdl.css.unsetZoomIn(target.classList);
 		}, false);
 		zOut.addEventListener("mouseover", function(ev) {
 			if(checkIfCanZoomOut()) {
 				let target = ev.currentTarget;
-				css.setZoomOut(target.classList);
+				extmdl.css.setZoomOut(target.classList);
 			}
 		}, false);
 		zOut.addEventListener("mouseout", function(ev) {
 			let target = ev.currentTarget;
-			css.unsetZoomOut(target.classList);
+			extmdl.css.unsetZoomOut(target.classList);
 		}, false);
 		zOut.addEventListener("click", function(ev) {
 			let target = ev.currentTarget;
 			if(checkIfCanZoomOut()) {
-				css.setZoomOut(target.classList);
+				extmdl.css.setZoomOut(target.classList);
 				currentZoom = getHigherZoomLevel();
 				resizeFrames(currentZoom, false);
 			} 
 			
-			if(!checkIfCanZoomOut()) css.unsetZoomOut(target.classList);
+			if(!checkIfCanZoomOut()) extmdl.css.unsetZoomOut(target.classList);
 		}, false);
 	};
 	
