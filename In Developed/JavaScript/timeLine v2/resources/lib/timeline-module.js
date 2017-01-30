@@ -1,4 +1,4 @@
-﻿let timeLine = (function() {
+﻿(function() {
 	'use strict';
 	
 	const oneDay = 24 * 60 * 60 * 1000;

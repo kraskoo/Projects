@@ -1,4 +1,4 @@
-﻿let string = (function() {
+﻿(function() {
 	const outterLinkRegex = new RegExp(/(http.*?\w+?\.\w+?\/|www\.\w+\.\w+)/);
 	const leftStyleRegex = new RegExp(/left:.*?(\d+\.?\d+)/);
 	const topStyleRegex = new RegExp(/top:.*?(\d+\.?\d+)/);

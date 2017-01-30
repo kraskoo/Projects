@@ -1,4 +1,4 @@
-﻿let parser = (function() {
+﻿(function() {
 	function parseXml(xml, onResponse) {
 		let xmlType = xml.children[0].attributes[0].value;
 		switch(xmlType) {
@@ -128,7 +128,7 @@
 					year[month] = {};
 				}
 				
-				let monthIndex = timeLine.getMonthAsNumber(month);
+				let monthIndex = extmdl.timeLine.getMonthAsNumber(month);
 				year[month]["index"] = monthIndex;
 				year[month]["days"] = extmdl.timeLine.getDaysOfMonth(yearAsNumber, monthIndex - 1);
 				if(Object.keys(year[months[monthIndex - 1]]).length > 2) {

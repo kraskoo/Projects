@@ -1,4 +1,4 @@
-﻿let css = (function() {
+﻿(function() {
 	function replaceClassName(elementClassList, oldClass, newClass) {
 		if((elementClassList instanceof DOMTokenList) && elementClassList.contains(oldClass)) {
 			elementClassList.remove(oldClass);

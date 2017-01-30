@@ -1,4 +1,4 @@
-﻿let repository = (function() {
+﻿(function() {
 	const defaultYearPath = "resources/json/years/";
 	
 	let yearsCount = 0;

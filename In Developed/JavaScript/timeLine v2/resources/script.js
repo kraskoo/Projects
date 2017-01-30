@@ -33,7 +33,7 @@
 	};
 	
 	function proceedOnRun() {
-		proceedLoading(checkData, startup)
+		proceedLoading(checkData, startup);
 	}
 	
 	function onLoad() {
@@ -52,13 +52,8 @@
 	let moduleNames = [];
 
 	function hasFullyLoadedModules() {
-		let keys = Object.keys(extmdl);
-		if(!(extmdl instanceof Object) || keys.length === 0) {
-			return false;
-		}
-		
-		for(mod in extmdl) {
-			if(!(extmdl[mod] instanceof Object) || Object.keys(extmdl[mod]).length === 0) {
+		for(module in extmdl) {
+			if(Object.keys(extmdl[module]).length < 1) {
 				return false;
 			}
 		}
@@ -72,7 +67,7 @@
 			if(!moduleNames.includes(module)) {
 				moduleNames.push(module);
 				extmdl[module] = {};
-				extendOn(pathByNames[module], extmdl[module]);
+				extendOn(pathByNames[module], extmdl[module], module);
 			}
 		}
 	};
@@ -286,7 +281,7 @@
 			current.style.background = "url('resources/images/openbox.png')";
 			current.style.color = "black";
 			lastSelectedZIndex = current.style.zIndex;
-			current.style.zIndex = timeLine.maxZIndex;
+			current.style.zIndex = extmdl.timeLine.maxZIndex;
 		}, false);
 		allInnerEvents[i].addEventListener("mouseout", function(ev) {
 			let current = ev.currentTarget;

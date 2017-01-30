@@ -1,4 +1,4 @@
-﻿let dataService = (function() {
+﻿(function() {
 	const sourceImagesPath = "source-images/";
 	
 	function getIFrameContainerType(model) {

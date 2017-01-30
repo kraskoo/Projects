@@ -7,54 +7,57 @@
 } (typeof window !== "undefined" ? window : this, function(context) {
 	const namePattern = new RegExp(/(let|var) (\w+)(\s|;)/gi);
 	let countOfLoadedScripts = 0;
-	
 	function __innerSetter(response, instance, name) {
-		// Unresolved scope pollution :(
-		let script = document.createElement("script");
-		script.type = "text/javascript";
-		script.textContent = response;
-		let head = document.getElementsByTagName("head")[0];
-		head.appendChild(script);
-		let newObj = {};
-		newObj[name] = eval(name);
-		Object.assign(instance, newObj[name]);
-		head.removeChild(script);
-		delete newObj[name];
+		// Resolved scope pollution :)
+		(function() {
+			let script = document.createElement("script");
+			script.type = "text/javascript";
+			script.textContent = response;
+			let head = document.getElementsByTagName("head")[0];
+			head.appendChild(script);
+			console.log(name);
+			let scrResult = new Function("return " + response + ";");
+			let moduleInstance = {};
+			moduleInstance = scrResult();
+			for(method in moduleInstance) {
+				instance[method] = moduleInstance[method];
+			}
+			
+			head.removeChild(script);
+			delete moduleInstance;
+		}());
 	};
 	
 	context.proceedLoading = function(statement, callback) {
-		let interval = setInterval(function() {
-			if (statement && callback) {
-				clearInterval(interval);
-				callback();
-			}
-		}, 13);
+		return function() {
+				let interval = setInterval(function() {
+				if (callback) {
+					if(typeof(statement) === "function" && statement()) {
+						clearInterval(interval);
+						callback();
+					} else if(statement) {
+						clearInterval(interval);
+						callback();
+					}
+				}
+			}, 13);
+		}();
 	};
 	
 	context.countOfLoadedScripts = function() {
 		return countOfLoadedScripts;
 	};
 	
-	context.extendOn = function(url, instance, callback = __innerSetter) {
+	context.extendOn = function(url, instance, name, callback = __innerSetter) {
 		let client = new XMLHttpRequest();
-		client.open("GET", url, true);
-		client.send();
 		client.addEventListener("readystatechange", function() {
 			if(client.readyState === this.DONE && client.status === 200) {
 				let response = client.response;
-				let matches = response.match(namePattern);
-				if(matches === null) {
-					throw new Error("The script you try to load must start with variable, which should exports the script functionality.");
-				}
-				
-				response = response.replace(/\s+/g, " ");
-				let name = matches[0];
-				name = name.replace(/(var|let)/, "");
-				name = name.replace(";", "");
-				name = name.replace(/\s+/g, "");
 				callback(response, instance, name);
 				countOfLoadedScripts++;
 			}
 		}, false);
+		client.open("GET", url, true);
+		client.send(null);
 	};
 }));

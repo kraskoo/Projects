@@ -1,4 +1,4 @@
-let view = (function() {
+(function() {
 	return {
 		hi: function() {
 			return "hi";
