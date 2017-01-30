@@ -82,9 +82,18 @@
 		},
 		"august":
 		{
-			"25": {
+			"25":
+			{
 				"title":"25ти август",
 				"source":"pages/1940/august/eventwithimages.xml"
+			}
+		},
+		"november":
+		{
+			"7":
+			{
+				"title":"С повече от една снимка",
+				"source":"pages/1940/november/otherlayoutwithimages.xml"
 			}
 		}
 	}

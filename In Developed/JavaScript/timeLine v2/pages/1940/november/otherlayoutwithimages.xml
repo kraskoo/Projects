@@ -1,0 +1,12 @@
+﻿<?xml version="1.0"?>
+<page type="image">
+	<title size="28" bold="false" italic="false">Друго заглавие с повече от една снимка</title>
+	<images>
+		<image source="galaxy.jpg" />
+		<description size="16" bold="false" italic="true">NASA демонстира как се създават нови звезди от рентгеновия вятър от черните дупки</description>
+		<image source="outterspaceview.png" />
+		<description size="16" bold="false" italic="true">Wonderful Shiny Light Beam Outer Space View</description>
+		<image source="nebula.png" />
+		<description size="16" bold="false" italic="true">This infrared image from NASA's Spitzer Space Telescope shows the Helix nebula, a cosmic starlet</description>
+	</images>
+</page>

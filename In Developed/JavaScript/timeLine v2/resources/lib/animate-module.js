@@ -2,8 +2,8 @@
 	return {
 		'moveElementTo': function(element, interval, toX = 0, toY = 0) {
 			let style = element.getAttribute('style');
-			let left = toX === 0 ? 0 : (parseFloat(str.leftStyleRegex.exec(style)[1]));
-			let top = toY === 0 ? 0 : (parseFloat(str.topStyleRegex.exec(style)[1]));
+			let left = toX === 0 ? 0 : (parseFloat(string.leftStyleRegex.exec(style)[1]));
+			let top = toY === 0 ? 0 : (parseFloat(string.topStyleRegex.exec(style)[1]));
 			let condition =
 				((left !== 0 && top !== 0) ?
 					(left < toX && top < toY) : (left !== 0 ? left < toX : top < toY));
@@ -14,23 +14,23 @@
 			function loop() {
 				if(!stopped) {
 					if(left !== 0 && top !== 0) {
-						style = style.replace(str.leftStyleRegex, ("left: " + (left + interval)));
-						style = style.replace(str.topStyleRegex, ("top: " + (top + interval)));
+						style = style.replace(string.leftStyleRegex, ("left: " + (left + interval)));
+						style = style.replace(string.topStyleRegex, ("top: " + (top + interval)));
 						element.setAttribute('style', style);
-						left = parseFloat(str.leftStyleRegex.exec(style)[1]);
-						top = parseFloat(str.topStyleRegex.exec(style)[1]);
+						left = parseFloat(string.leftStyleRegex.exec(style)[1]);
+						top = parseFloat(string.topStyleRegex.exec(style)[1]);
 						condition = top < toY && left < toX;
 						if(!condition) stop();
 					} else if (left !== 0) {
-						style = style.replace(str.leftStyleRegex, ("left: " + (left + interval)));
+						style = style.replace(string.leftStyleRegex, ("left: " + (left + interval)));
 						element.setAttribute('style', style);
-						left = parseFloat(str.leftStyleRegex.exec(style)[1]);
+						left = parseFloat(string.leftStyleRegex.exec(style)[1]);
 						condition = left < toX;
 						if(!condition) stop();
 					} else if (top !== 0) {
-						style = style.replace(str.topStyleRegex, ("top: " + (top + interval)));
+						style = style.replace(string.topStyleRegex, ("top: " + (top + interval)));
 						element.setAttribute('style', style);
-						top = parseFloat(str.topStyleRegex.exec(style)[1]);
+						top = parseFloat(string.topStyleRegex.exec(style)[1]);
 						condition = top < toY;
 						if(!condition) stop();
 					}
@@ -45,7 +45,7 @@
 			};
 
 			function stop() {
-				if(request) window.cancelRequestAnimationFrame(request);
+				if(request) window.cancelAnimationFrame(request);
 				stopped = true;
 			};
 

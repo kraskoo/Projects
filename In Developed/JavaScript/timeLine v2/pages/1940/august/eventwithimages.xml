@@ -1,7 +1,9 @@
 ﻿<?xml version="1.0"?>
 <page type="image">
-	<title size="25" bold="false" italic="false">Някво си заглавие със снимки</title>
-	<image source="space-age.png" width="432" height="322" alignment="left" />
-	<extra-info alignment="right">Text, text text.... more text, some more text...</extra-info>
-	<description size="30" bold="true" italic="false">Space Age</description>
+	<title size="28" bold="false" italic="false">Някво си заглавие със снимки</title>
+	<images>
+		<image source="space-age.png" alignment="left" />
+		<description size="16" bold="false" italic="true">Space Age</description>
+	</images>
+	<extra-info alignment="right">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque egestas felis in sapien volutpat, vel porta est commodo. Nullam at metus ultricies, blandit dolor vel, tincidunt nisl. Aenean aliquet, massa condimentum commodo condimentum, magna eros sagittis orci, at volutpat nisl orci vitae enim. Praesent euismod vitae velit vitae eleifend. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nulla vestibulum consequat turpis, non finibus neque porttitor at. Integer sed lorem non diam euismod finibus. Suspendisse in laoreet nisi.</extra-info>
 </page>

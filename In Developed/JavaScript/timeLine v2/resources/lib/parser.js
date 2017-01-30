@@ -11,25 +11,50 @@
 		}
 	};
 	
+	function apendChildrenToNode(children, page, nodeName, index) {
+		let childAttributes = children[index].attributes;
+		appendAttributesToNode(page[nodeName], childAttributes);
+		if(children[index].textContent !== "") {
+			page[nodeName]["text"] = children[index].textContent;
+		}
+	};
+	
+	function appendAttributesToNode(page, attributes) {
+		for(let i = 0; i < attributes.length; i++) {
+			let attributeName = attributes[i].nodeName;
+			let attributeValue = attributes[i].nodeValue;
+			page[attributes[i].nodeName] = attributes[i].nodeValue;
+		}
+	};
+	
 	function parseImagePageXml(xml, onResponse) {
 		let page = {};
 		let pageNode = xml.children[0];
 		let attributes = pageNode.attributes;
-		for(let i = 0; i < attributes.length; i++) {
-			page[attributes[i].nodeName] = attributes[i].nodeValue;
-		}
-		
+		appendAttributesToNode(page, attributes);
 		let children = pageNode.children;
 		for(let i = 0; i < children.length; i++) {
-			page[children[i].nodeName] = {};
-			let childAttributes = children[i].attributes;
-			for(let j = 0; j < childAttributes.length; j++) {
-				page[children[i].nodeName][childAttributes[j].nodeName] =
-					childAttributes[j].nodeValue;
-			}
-			
-			if(children[i].textContent !== "") {
-				page[children[i].nodeName]["text"] = children[i].textContent;
+			let nodeName = children[i].nodeName;
+			if(children[i].attributes.length === 0) {
+				page[nodeName] = [];
+				let innerChildren = children[i].children;
+				for(let j = 0, idx = 0; j < innerChildren.length; j += 2, idx++) {
+					page[nodeName].push({});
+					let imageName = innerChildren[j].nodeName;
+					let descriptionName = innerChildren[j + 1].nodeName;
+					page[nodeName][idx][imageName] = {};
+					appendAttributesToNode(
+						page[nodeName][idx][imageName],
+						innerChildren[j].attributes);
+					page[nodeName][idx][descriptionName] = {};
+					appendAttributesToNode(
+						page[nodeName][idx][descriptionName],
+						innerChildren[j + 1].attributes);
+					page[nodeName][idx][descriptionName]["text"] = innerChildren[j + 1].textContent;
+				}
+			} else {
+				page[nodeName] = {};
+				apendChildrenToNode(children, page, nodeName, i);
 			}
 		}
 		
