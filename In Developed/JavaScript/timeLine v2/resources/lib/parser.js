@@ -150,13 +150,13 @@
 	
 	function redirectResponse(url, callback, onResponse) {
 		let xhttp = new XMLHttpRequest();
-		xhttp.open("GET", url, true);
-		xhttp.send();
 		xhttp.addEventListener("readystatechange", function() {
 			if(xhttp.readyState === this.DONE && xhttp.status === 200) {
 				callback(xhttp.response, onResponse);
 			}
 		}, false);
+		xhttp.open("GET", url, true);
+		xhttp.send(null);
 	};
 	
 	return {

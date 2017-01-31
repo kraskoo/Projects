@@ -21,19 +21,19 @@
 	};
 	
 	context.proceedLoading = function(statement, callback) {
-		return function() {
-				let interval = setInterval(function() {
-				if (callback) {
-					if(typeof(statement) === "function" && statement()) {
-						clearInterval(interval);
-						callback();
-					} else if(statement) {
-						clearInterval(interval);
-						callback();
-					}
+		let interval;
+		function releaseOnInterval() {
+			if (callback) {
+				if((typeof(statement) === "function" && statement()) || statement) {
+					callback();
+					clearInterval(interval);
 				}
-			}, 13);
-		}();
+			}
+		}
+		
+		setTimeout(function() {
+			interval = setInterval(releaseOnInterval, 30);
+		}, 30);
 	};
 	
 	context.countOfLoadedScripts = function() {
