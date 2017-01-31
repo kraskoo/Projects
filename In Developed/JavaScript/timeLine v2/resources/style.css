@@ -73,7 +73,7 @@ body {
 	left: calc(50vw - 12px);
 	width: 24px;
 	height: 21px;
-	background: url("images/1.png");
+	background: url("images/arrow.svg");
 	z-index: 100999;
 }
 
