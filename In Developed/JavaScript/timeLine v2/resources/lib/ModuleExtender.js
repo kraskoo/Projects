@@ -1,21 +1,14 @@
 // Steps:
 // var winst = {}
 // winst["animate"] = {}
-// extendOn('resources/lib/animate-module.js', winst["animate"]);
+// extendOn('resources/lib/animate-module.js', winst["animate"], 'animate');
 (function(global, factory) {
 	factory(global);
 } (typeof window !== "undefined" ? window : this, function(context) {
-	const namePattern = new RegExp(/(let|var) (\w+)(\s|;)/gi);
 	let countOfLoadedScripts = 0;
 	function __innerSetter(response, instance, name) {
 		// Resolved scope pollution :)
 		(function() {
-			let script = document.createElement("script");
-			script.type = "text/javascript";
-			script.textContent = response;
-			let head = document.getElementsByTagName("head")[0];
-			head.appendChild(script);
-			console.log(name);
 			let scrResult = new Function("return " + response + ";");
 			let moduleInstance = {};
 			moduleInstance = scrResult();
@@ -23,7 +16,6 @@
 				instance[method] = moduleInstance[method];
 			}
 			
-			head.removeChild(script);
 			delete moduleInstance;
 		}());
 	};
