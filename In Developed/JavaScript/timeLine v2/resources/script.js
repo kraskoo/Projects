@@ -279,14 +279,14 @@
 		for(let i = 0; i < allInnerEvents.length; i++) {
 			allInnerEvents[i].addEventListener("mouseover", function(ev) {
 				let current = ev.currentTarget;
-				current.style.background = "url('resources/images/openbox.png')";
+				current.style.background = "url('resources/images/openbox.svg') no-repeat 0 0";
 				current.style.color = "black";
 				lastSelectedZIndex = current.style.zIndex;
 				current.style.zIndex = extmdl.timeLine.maxZIndex;
 			}, false);
 			allInnerEvents[i].addEventListener("mouseout", function(ev) {
 				let current = ev.currentTarget;
-				current.style.background = "url('resources/images/closebox.png')";
+				current.style.background = "url('resources/images/closebox.svg') no-repeat 0 0";
 				current.style.color = "gray";
 				current.style.zIndex = lastSelectedZIndex;
 			}, false);

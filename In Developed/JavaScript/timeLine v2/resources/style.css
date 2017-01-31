@@ -211,7 +211,7 @@ body {
 	top: calc(13vh - 50px);
 	height: 46px;
 	width: 138px;
-	background: url("images/closebox.png");
+	background: url("images/closebox.svg") no-repeat 0 0;
 	padding: 5px 10px 10px 5px;
 }
 
