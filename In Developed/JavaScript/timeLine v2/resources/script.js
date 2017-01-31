@@ -95,6 +95,7 @@
 } (function(data) {
 	(function() {
 		let settings = data.settings;
+		let leftSideStartBound = settings.leftSideStartBound;
 		data["dayFrames"] = {}
 		let framesSortOrder = settings["framesSortOrder"];
 		let zIndex = 100000;
@@ -110,7 +111,7 @@
 		let yearLine = document.getElementById("years-line");
 		function renderYearAndEvents(indent) {
 			let width = indent;
-			let lastIndent = 0;
+			let lastIndent = leftSideStartBound;
 			let years = data.data;
 			for(year in years) {
 				data.dayFrames[year] = {};
@@ -223,7 +224,7 @@
 		};
 		
 		function repositionEvents(newWidth) {
-			let lastIndent = 0;
+			let lastIndent = leftSideStartBound;
 			let index = -1;
 			for(year in data.dayFrames) {
 				lastIndent += newWidth;
@@ -273,6 +274,10 @@
 		let anyZoomBounds = Math.round(normalZoom / (dividerPerZoomLevel + 1));
 		let currentZoom = normalZoom;
 		renderYearAndEvents(currentZoom);
+		// console.log(extmdl.css.getStyleValueByElement(innerLine, "width"));
+		console.log(window.innerWidth);
+		console.log(innerLine.scrollLeft);
+		console.log(innerLine.scrollWidth);
 		let allInnerEvents = document.querySelectorAll("#inner-event");
 		let lastSelectedZIndex = 0;
 		let top = document.getElementById("top");

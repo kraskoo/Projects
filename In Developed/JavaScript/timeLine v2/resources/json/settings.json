@@ -1,4 +1,5 @@
 ﻿{
+	"leftSideStartBound": 0,
 	"normalZoom" : 500,
 	"dividerPerZoomLevel" : 5,
 	"zoomOnScroll" : true,
