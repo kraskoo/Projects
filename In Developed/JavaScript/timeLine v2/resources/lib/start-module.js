@@ -1,7 +1,8 @@
 ﻿(function() {
 	let anyZoomBounds, currentFrameLeft, currentFrameWidth, currentlySelectedDates, currentZoom, data,
-		dividerPerZoomLevel, framesSortOrder, innerLine, innerLineFrames, lastFrameTopPosition, leftSideStartBound,
-		normalZoom, settings, yearFrames, yearLine, zIndex, zoomOnScroll, zoomButtonsOn
+		dividerPerZoomLevel, framesSortOrder, innerLine, innerLineFrames, lastFrameTopPosition,
+		leftSideStartBound, normalZoom, settings, yearFrames, yearLine,
+		zIndex, zoomOnScroll, zoomButtonsOn;
 	
 	function initialize(initializeData) {
 		data = initializeData;
