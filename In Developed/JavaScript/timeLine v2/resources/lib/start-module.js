@@ -139,6 +139,10 @@
 		let width = indent;
 		let lastIndent = leftSideStartBound;
 		let years = data.data;
+		setupYears(indent, width, lastIndent, years);
+	};
+	
+	function setupYears(indent, width, lastIndent, years) {
 		for(year in years) {
 			data.dayFrames[year] = {};
 			let currentYear = data.data[year];
@@ -146,32 +150,35 @@
 			let months = extmdl.timeLine.months;
 			createFrame(year, lastIndent, width);
 			lastIndent += indent;
-			for(let m = 0; m < months.length; m++) {
-				let month = months[m];
+			for(let monthIndex = 0; monthIndex < months.length; monthIndex++) {
+				let month = months[monthIndex];
 				let yearMonth = currentYear[month];
 				if(typeof(yearMonth) === "object" && Object.keys(yearMonth).length > 1) {
-					data.dayFrames[year][month] = {};
-					let currentMonth = currentYear[month];
-					let monthDays = currentMonth["days"];
-					let monthFootprints = indent / 12;
-					let monthStartPosition = lastIndent - width - monthFootprints + ((m + 1) * monthFootprints);
-					let monthEndPosition = (monthStartPosition + monthFootprints);
-					for(day in currentMonth) {
-						if(typeof(currentMonth[day]) === "object") {
-							let dayNum = Number(day);
-							let dayPosition = ((monthFootprints / monthDays) * day) + monthStartPosition;
-							let currentDay = currentMonth[day];
-							let dayKeys = Object.keys(currentDay);
-							if(dayKeys.includes("day-events")) {
-								let dayEvents = currentDay["day-events"];
-								for(let i = 0; i < dayEvents.length; i++) {
-									createDayFrame(dayPosition, dayEvents[i], dayEvents[i]["id"]);
-								}
-							} else {
-								createDayFrame(dayPosition, currentDay, currentDay["id"]);
-							}
-						}
+					setupFrames(year, month, yearMonth, monthIndex, indent, width, lastIndent);
+				}
+			}
+		}
+	};
+	
+	function setupFrames(year, month, yearMonth, monthIndex, indent, width, lastIndent) {
+		data.dayFrames[year][month] = {};
+		let monthDays = yearMonth["days"];
+		let monthFootprints = indent / 12;
+		let monthStartPosition = lastIndent - width - monthFootprints + ((monthIndex + 1) * monthFootprints);
+		let monthEndPosition = (monthStartPosition + monthFootprints);
+		for(day in yearMonth) {
+			if(typeof(yearMonth[day]) === "object") {
+				let dayNum = Number(day);
+				let dayPosition = ((monthFootprints / monthDays) * day) + monthStartPosition;
+				let currentDay = yearMonth[day];
+				let dayKeys = Object.keys(currentDay);
+				if(dayKeys.includes("day-events")) {
+					let dayEvents = currentDay["day-events"];
+					for(let i = 0; i < dayEvents.length; i++) {
+						createDayFrame(dayPosition, dayEvents[i], dayEvents[i]["id"]);
 					}
+				} else {
+					createDayFrame(dayPosition, currentDay, currentDay["id"]);
 				}
 			}
 		}
