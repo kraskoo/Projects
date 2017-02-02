@@ -92,8 +92,4 @@
 	};
 	
 	setupModules();
-} (function(data) {
-	(function() {
-		extmdl.start.run(data);
-	}());
-}));
+} ((data) => (() => extmdl.start.run(data))()));

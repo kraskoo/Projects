@@ -1,9 +1,11 @@
 ﻿(function() {
+	const defaultOpenBox = "url('resources/images/openbox.svg') no-repeat 0 0";
+	const defaultCloseBox = "url('resources/images/closebox.svg') no-repeat 0 0";
 	let anyZoomBounds, currentFrameLeft, currentFrameWidth, currentlySelectedDates, currentZoom, data,
 		dividerPerZoomLevel, framesSortOrder, innerLine, innerLineFrames, lastFrameTopPosition,
-		leftSideStartBound, normalZoom, settings, yearFrames, yearLine,
+		lastSelectedZIndex, leftSideStartBound, normalZoom, settings, top, yearFrames, yearLine,
 		zIndex, zoomOnScroll, zoomButtonsOn;
-	
+
 	function initialize(initializeData) {
 		data = initializeData;
 		settings = data.settings;
@@ -22,35 +24,31 @@
 		yearFrames = [];
 		innerLine = document.getElementById("inner-line");
 		yearLine = document.getElementById("years-line");
-		zIndex = 100000;
+		zIndex = (framesSortOrder === "desc") ? 1000 : 100000;
 		currentFrameLeft = 0;
 		currentFrameWidth = 0;
+		top = document.getElementById("top");
+		lastSelectedZIndex = 0;
 	};
 	
 	function run() {
-		if(framesSortOrder === "desc") {
-			zIndex = 1000;
-		}
-		
-		console.log(extmdl.css.getStyleValueByElement(innerLine, "width"));
-		console.log(window.innerWidth);
-		console.log(innerLine.scrollLeft);
-		console.log(innerLine.scrollWidth);
 		renderYearAndEvents(currentZoom);
+		initializeZoom();
+	};
+	
+	function initializeZoom() {
 		let allInnerEvents = document.querySelectorAll("#inner-event");
-		let lastSelectedZIndex = 0;
-		let top = document.getElementById("top");
 		for(let i = 0; i < allInnerEvents.length; i++) {
 			allInnerEvents[i].addEventListener("mouseover", function(ev) {
 				let current = ev.currentTarget;
-				current.style.background = "url('resources/images/openbox.svg') no-repeat 0 0";
+				current.style.background = defaultOpenBox;
 				current.style.color = "black";
 				lastSelectedZIndex = current.style.zIndex;
 				current.style.zIndex = extmdl.timeLine.maxZIndex;
 			}, false);
 			allInnerEvents[i].addEventListener("mouseout", function(ev) {
 				let current = ev.currentTarget;
-				current.style.background = "url('resources/images/closebox.svg') no-repeat 0 0";
+				current.style.background = defaultCloseBox;
 				current.style.color = "gray";
 				current.style.zIndex = lastSelectedZIndex;
 			}, false);
@@ -134,7 +132,7 @@
 				
 				if(!checkIfCanZoomOut()) extmdl.css.unsetZoomOut(target.classList);
 			}, false);
-		};
+		}
 	};
 	
 	function renderYearAndEvents(indent) {
