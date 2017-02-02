@@ -1,4 +1,4 @@
-(function() {
+﻿(function() {
 	function run(data) {
 		let settings = data.settings;
 		let leftSideStartBound = settings.leftSideStartBound;
@@ -77,7 +77,7 @@
 			
 			let paragraph = document.createElement("p");
 			let dateMonth = extmdl.timeLine.getMonthAsBGNames(date.month);
-			let dayFrameLabel = (date.day + " " + dateMonth + " " + date.year + " �.");
+			let dayFrameLabel = (date.day + " " + dateMonth + " " + date.year + " г.");
 			dayFrame.setAttribute("title", dayFrameLabel);
 			dayFrame.setAttribute("head-title", day.title);
 			paragraph.innerHTML = day.title;
