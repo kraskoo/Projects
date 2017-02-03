@@ -1,10 +1,10 @@
 ﻿(function() {
 	const defaultOpenBox = "url('resources/images/openbox.svg') no-repeat 0 0";
 	const defaultCloseBox = "url('resources/images/closebox.svg') no-repeat 0 0";
-	let anyZoomBounds, currentFrameLeft, currentFrameWidth, currentlySelectedDates, currentZoom, data,
+	let currentFrameLeft, currentFrameWidth, currentlySelectedDates, currentZoom, data,
 		dividerPerZoomLevel, framesSortOrder, innerLine, innerLineFrames, lastFrameTopPosition,
 		lastSelectedZIndex, leftSideStartBound, normalZoom, settings, top, yearFrames, yearLine,
-		zIndex, zoomOnScroll, zoomButtonsOn;
+		zIndex, zoomBound, zoomOnScroll, zoomButtonsOn;
 
 	function initialize(initializeData) {
 		data = initializeData;
@@ -14,7 +14,7 @@
 		normalZoom = settings["normalZoom"];
 		zoomOnScroll = settings["zoomOnScroll"];
 		zoomButtonsOn = settings["zoomButtonsOn"];
-		anyZoomBounds = Math.round(normalZoom / (dividerPerZoomLevel + 1));
+		zoomBound = Math.round(normalZoom / (dividerPerZoomLevel + 1));
 		currentZoom = normalZoom;
 		data["dayFrames"] = {};
 		framesSortOrder = settings["framesSortOrder"];
@@ -203,7 +203,7 @@
 		}
 		
 		let paragraph = document.createElement("p");
-		let dateMonth = extmdl.timeLine.getMonthAsBGNames(date.month);
+		let dateMonth = extmdl.timeLine.getMonthAsBGName(date.month);
 		let dayFrameLabel = (date.day + " " + dateMonth + " " + date.year + " г.");
 		dayFrame.setAttribute("title", dayFrameLabel);
 		dayFrame.setAttribute("head-title", day.title);
@@ -244,7 +244,7 @@
 	function repositionFrame(index, newWidth, isSetToIncrease) {
 		let style = innerLineFrames[index].getAttribute("style");
 		let width = newWidth;
-		let boundsByIndex = anyZoomBounds * index;
+		let boundsByIndex = zoomBound * index;
 		let left = isSetToIncrease ?
 			currentFrameLeft + boundsByIndex :
 			currentFrameLeft - boundsByIndex;
@@ -299,22 +299,22 @@
 	};
 	
 	function checkIfCanZoomIn() {
-		return currentZoom > anyZoomBounds * Math.round(dividerPerZoomLevel / 2);
+		return currentZoom > zoomBound * Math.round(dividerPerZoomLevel / 2);
 	};
 	
 	function checkIfCanZoomOut() {
-		return currentZoom < (anyZoomBounds * Math.round(dividerPerZoomLevel / 2)) + normalZoom;
+		return currentZoom < (zoomBound * Math.round(dividerPerZoomLevel / 2)) + normalZoom;
 	};
 		
 	function getLowerZoomLevel() {
 		if(checkIfCanZoomIn()) {
-			return currentZoom -= anyZoomBounds;
+			return currentZoom -= zoomBound;
 		}
 	};
 	
 	function getHigherZoomLevel() {
 		if(checkIfCanZoomOut()) {
-			return currentZoom += anyZoomBounds;
+			return currentZoom += zoomBound;
 		}
 	};
 	

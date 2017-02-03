@@ -9,27 +9,27 @@
 				"november", "december" ];
 	
 	return {
-		'months': months,
-		'oneDay': oneDay,
-		'maxZIndex': maxZIndex,
-		'getDayObject': function(title, source) {
+		months: months,
+		oneDay: oneDay,
+		maxZIndex: maxZIndex,
+		getDayObject: function(title, source) {
 			if(typeof(title) !== "string" || typeof(source) !== "string") {
 				throw new TypeError("Instances of title and source must be string type.");
 			}
 			
 			return { title: title, source: source };
 		},
-		'getDateObject': function(day, month, year) {
+		getDateObject: function(day, month, year) {
 			if(typeof(day) !== "string" || typeof(month) !== "string" || typeof(year) !== "string") {
 				throw new TypeError("Instances of day, month and year must be string type.");
 			}
 			
 			return { day: Number(day), month: month, year: Number(year) };
 		},
-		'containsDotPosition': function(dates, position, frame) {
+		containsDotPosition: function(dates, position, frame) {
 			return dates.length > 0 && parseInt(dates[dates.length - 1].style.left) === parseInt(frame.style.left);
 		},
-		'getMonthAsNumber': function(month) {
+		getMonthAsNumber: function(month) {
 			switch(month) {
 				case "january" : return 1;
 				case "february" : return 2;
@@ -46,7 +46,7 @@
 				default: throw new Error("Invalid month value exception.");
 			}
 		},
-		'getMonthAsBGNames': function(month) {
+		getMonthAsBGName: function(month) {
 			switch(month) {
 				case "january" : return "януари";
 				case "february" : return "февруари";
@@ -63,12 +63,12 @@
 				default: throw new Error("Invalid month cast value exception.");
 			}
 		},
-		'getDaysOfYear': function(year) {
+		getDaysOfYear: function(year) {
 			let firstDate = new Date(year, 1, 0);
 			let secondDate = new Date(year, 12, 31);
 			return Math.round(Math.abs((firstDate.getTime() - secondDate.getTime()) / oneDay));
 		},
-		'getDaysOfMonth': function(year, month) {
+		getDaysOfMonth: function(year, month) {
 			let monthStart = new Date(year, month, 1);
 			let monthEnd = new Date(year, month + 1, 1);
 			return Math.round((monthEnd - monthStart) / (oneDay));
