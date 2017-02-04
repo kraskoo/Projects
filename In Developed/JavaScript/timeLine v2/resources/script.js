@@ -77,11 +77,13 @@
 			'animate': 'resources/lib/animate-module.js',
 			'css': 'resources/lib/css.extensions-module.js',
 			'data': 'resources/lib/data.service-module.js',
+			'initial': 'resources/lib/initial-module.js',
 			'parser': 'resources/lib/parser.js',
 			'repository': 'resources/lib/repository-module.js',
 			'start': 'resources/lib/start-module.js',
 			'string': 'resources/lib/string.extensions-module.js',
-			'timeLine': 'resources/lib/timeline-module.js'
+			'timeLine': 'resources/lib/timeline-module.js',
+			'zoom': 'resources/lib/zoom-module.js'
 		});
 		
 		proceedToInitialState();
