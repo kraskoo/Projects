@@ -86,10 +86,10 @@
 		let left = isSetToIncrease ?
 			currentFrameLeft + boundsByIndex :
 			currentFrameLeft - boundsByIndex;
-		style = style.replace(/left:.*?(\d+)px;/, ("left: " + left + "px;"));
-		style = style.replace(/width:.*?(\d+)px;/, ("width: " + width + "px;"));			
+		style = style.replace(extmdl.string.leftStyleRegex, ("left: " + left));
+		style = style.replace(extmdl.string.widthStyleRegex, ("width: " + width));
 		let yearStyle = yearFrames[index].getAttribute("style");
-		yearStyle = yearStyle.replace(/left:.*?(\d+)px;/, ("left: " + (left + width - 3) + "px;"));
+		yearStyle = yearStyle.replace(extmdl.string.leftStyleRegex, ("left: " + (left + width - 3)));
 		innerLineFrames[index].setAttribute("style", style);
 		yearFrames[index].setAttribute("style", yearStyle);
 	};

@@ -1,6 +1,6 @@
 ﻿(function() {
 	return {
-		'moveElementTo': function(element, interval, toX = 0, toY = 0) {
+		moveElementTo: function(element, interval, toX = 0, toY = 0) {
 			let style = element.getAttribute('style');
 			let left = toX === 0 ? 0 : (parseFloat(extmdl.string.leftStyleRegex.exec(style)[1]));
 			let top = toY === 0 ? 0 : (parseFloat(extmdl.string.topStyleRegex.exec(style)[1]));
@@ -51,7 +51,7 @@
 
 			start();
 		},
-		'createTestDiv': function() {
+		createTestDiv: function() {
 			let div = document.createElement("div");
 			div.style.width = "100px";
 			div.style.height = "100px";
