@@ -1,8 +1,8 @@
 ﻿(function() {
 	const defaultCloseBox = "url('resources/images/closebox.svg') no-repeat 0 0";
 	const defaultOpenBox = "url('resources/images/openbox.svg') no-repeat 0 0";
-	let currentZoom, dividerPerZoomLevel, framesSortOrder, lastSelectedZIndex,
-		normalZoom, zoomBound, zoomOnScroll, zoomButtonsOn;
+	let currentZoom, dividerPerZoomLevel, lastSelectedZIndex, normalZoom,
+		zoomBound, zoomOnScroll, zoomButtonsOn;
 
 	function initialize() {
 		let settings = extmdl.initial.settings();

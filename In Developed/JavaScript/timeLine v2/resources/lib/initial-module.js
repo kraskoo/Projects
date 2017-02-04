@@ -142,24 +142,24 @@
 	};
 	
 	function createFrame(year, left, width) {
-		let elementToAppend = document.getElementById("inner-line");
+		let innerLine = document.getElementById("inner-line");
 		let frame = document.createElement("div");
 		frame.setAttribute("id", "frame");
 		frame.style.left = left + "px";
 		frame.style.width = width + "px";
-		elementToAppend.appendChild(frame);
+		innerLine.appendChild(frame);
 		innerLineFrames.push(frame);
 		createYearFrame(year, (left + width - 3));
 	};
 	
 	function createYearFrame(year, left) {
-		let elementToAppend = document.getElementById("years-line");
+		let yearsLine = document.getElementById("years-line");
 		let yearFrame = document.createElement("div");
 		yearFrame.setAttribute("id", "year-frame");
 		yearFrame.innerHTML = year;
 		yearFrame.style.left = left + "px";
 		yearFrames.push(yearFrame);
-		elementToAppend.appendChild(yearFrame);
+		yearsLine.appendChild(yearFrame);
 	};
 	
 	function setupFrames(year, month, yearMonth, monthIndex, indent, width, lastIndent) {
