@@ -1,5 +1,6 @@
 ﻿(function() {
 	const sourceImagesPath = "source-images/";
+	let eventsById = {};
 	
 	function getIFrameContainerType(model) {
 		let iframe = document.createElement("iframe");
@@ -154,6 +155,15 @@
 			}
 			
 			return container;
+		},
+		setEventFrame: function(id, dayFrame) {
+			eventsById[id] = dayFrame;
+		},
+		getFrameById: function(id) {
+			return eventsById[id];
+		},
+		getFrameCount: function() {
+			return Object.keys(eventsById).length;
 		}
 	};
 }());

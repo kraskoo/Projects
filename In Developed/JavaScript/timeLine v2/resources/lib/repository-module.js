@@ -92,6 +92,9 @@
 		},
 		checkDataFiles: function(outterDataCount) {
 			return eventCount === count && outterDataCount === yearsCount;
+		},
+		count: function() {
+			return count;
 		}
 	}
 }());

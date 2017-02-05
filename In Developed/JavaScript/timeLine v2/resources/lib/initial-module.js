@@ -12,7 +12,8 @@
 		data["dayFrames"] = {};
 		dayFrames = data["dayFrames"];
 		framesSortOrder = settings["framesSortOrder"];
-		leftSideStartBound = settings.leftSideStartBound;
+		leftSideStartBound = settings.leftSideStartBound + extmdl.movement.startPosition();
+		console.log(leftSideStartBound);
 		zIndex = (framesSortOrder === "desc") ? 1000 : 100000;
 		innerLineFrames = [];
 		yearFrames = [];
@@ -74,9 +75,6 @@
 				repositionFrame(index, newWidth, false, zoomBound);
 			}
 		}
-		
-		currentFrameLeft = 0;
-		currentFrameWidth = 0;
 	};
 	
 	function repositionFrame(index, newWidth, isSetToIncrease, zoomBound) {
@@ -86,12 +84,9 @@
 		let left = isSetToIncrease ?
 			currentFrameLeft + boundsByIndex :
 			currentFrameLeft - boundsByIndex;
-		style = style.replace(extmdl.string.leftStyleRegex, ("left: " + left));
-		style = style.replace(extmdl.string.widthStyleRegex, ("width: " + width));
-		let yearStyle = yearFrames[index].getAttribute("style");
-		yearStyle = yearStyle.replace(extmdl.string.leftStyleRegex, ("left: " + (left + width - 3)));
-		innerLineFrames[index].setAttribute("style", style);
-		yearFrames[index].setAttribute("style", yearStyle);
+		innerLineFrames[index].style.left = left + "px";
+		innerLineFrames[index].style.width = width + "px";
+		yearFrames[index].style.left = (left + width - 3) + "px";
 	};
 	
 	function repositionEvents(newWidth) {
@@ -213,6 +208,7 @@
 		paragraph.innerHTML = day.title;
 		dayFrame.appendChild(paragraph);
 		dayFrames[date.year][date.month][date.day] = dayFrame;
+		extmdl.data.setEventFrame(id, dayFrame);
 	};
 	
 	function createDotDayFrame(dotPosition) {

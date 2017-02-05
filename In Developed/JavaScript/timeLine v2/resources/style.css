@@ -135,6 +135,7 @@ body {
 	height: 0.9vh;
 	width: 100vw;
 	background-image: url("images/tinyline.png");
+	background-repeat: repeat-x;
 }
 
 #bottom > #years-line > #year-frame::before {
@@ -145,7 +146,7 @@ body {
 	height: 1.5vh;
 	width: 0.8vw;
 	background-image: url("images/tinyline.png");
-	background-repeat: no-repeat;
+	background-repeat: repeat-x;
 }
 
 #bottom > #years-line > #year-frame {
@@ -207,8 +208,11 @@ body {
 	display: block;
 }
 
-#bottom > #inner-line > #inner-event {
+#bottom > #inner-line > #inner-event, #bottom > #inner-line > #frame {
 	position: absolute;
+}
+
+#bottom > #inner-line > #inner-event {
 	top: calc(13vh - 50px);
 	height: 46px;
 	width: 138px;
@@ -234,12 +238,4 @@ body {
 	height: 5px;
 	border-radius: 50%;
 	background-color: black;
-}
-
-h1, h2, h3, h4, h5 {
-	text-align: center;
-}
-
-p {
-	text-align: justify;
 }
