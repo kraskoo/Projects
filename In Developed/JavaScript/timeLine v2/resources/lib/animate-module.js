@@ -2,6 +2,15 @@
 	let queue = [];
 	let element;
 	let currentAction;
+	let index = -1;
+	
+	function dequeue() {
+		if(index + 1 >= queue.length) {
+			return null;
+		}
+		
+		return queue[++index];
+	};
 	
 	function toX(el, interval, x) {
 		element = el;
@@ -33,10 +42,10 @@
 		function stop() {
 			if(request) window.cancelAnimationFrame(request);
 			stopped = true;
-			if(queue.length !== 0) {
-				let queueLast = queue.pop();
-				let key = Object.keys(queueLast)[0];
-				let value = queueLast[key];
+			let first = dequeue();
+			if(first !== null) {
+				let key = Object.keys(first)[0];
+				let value = first[key];
 				currentAction = toX(element, value, key);
 				return currentAction.start();
 			}
