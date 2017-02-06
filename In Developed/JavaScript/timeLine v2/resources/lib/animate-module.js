@@ -1,13 +1,4 @@
-﻿/*
-let div = extmdl.animate.createTestDiv();
-let act = extmdl.animate
-	.toX(div, 4, 400)
-	.nextToX(3, 450)
-	.nextToX(2, 500)
-	.nextToX(1, 600)
-	.nextToX(2, 50).start();
-*/
-(function() {
+﻿(function() {
 	let queue = [];
 	let element;
 	let currentAction;
@@ -27,16 +18,14 @@ let act = extmdl.animate
 		let stopped = true;
 		let style = element.getAttribute('style');
 		let left = parseFloat(extmdl.string.leftStyleRegex.exec(style)[1]);
-		let isSetToIncrease = left < x;
-		let condition = isSetToIncrease ? left < x : left > x;
+		let condition = left < x;
 
 		function loop() {
 			if(!stopped) {
-				let nextLeft = isSetToIncrease ? left + interval : left - interval;
-				style = style.replace(extmdl.string.leftStyleRegex, ("left: " + (nextLeft)));
+				style = style.replace(extmdl.string.leftStyleRegex, ("left: " + (left + interval)));
 				element.setAttribute('style', style);
 				left = parseFloat(extmdl.string.leftStyleRegex.exec(style)[1]);
-				condition = isSetToIncrease ? left < x : left > x;
+				condition = left < x;
 				if(!condition) {
 					stop();
 				}
