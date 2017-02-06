@@ -1,55 +1,74 @@
 ﻿(function() {
-	return {
-		moveElementTo: function(element, interval, toX = 0, toY = 0) {
-			let style = element.getAttribute('style');
-			let left = toX === 0 ? 0 : (parseFloat(extmdl.string.leftStyleRegex.exec(style)[1]));
-			let top = toY === 0 ? 0 : (parseFloat(extmdl.string.topStyleRegex.exec(style)[1]));
-			let condition =
-				((left !== 0 && top !== 0) ?
-					(left < toX && top < toY) : (left !== 0 ? left < toX : top < toY));
-			let stopped;
-			let request = 0;
-			let started;
+	let queue = [];
+	let element;
+	let currentAction;
+	
+	function toX(el, interval, x) {
+		element = el;
+		let request = 0;
+		let stopped = true;
+		let style = element.getAttribute('style');
+		let left = parseFloat(extmdl.string.leftStyleRegex.exec(style)[1]);
+		let condition = left < x;
 
-			function loop() {
-				if(!stopped) {
-					if(left !== 0 && top !== 0) {
-						style = style.replace(extmdl.string.leftStyleRegex, ("left: " + (left + interval)));
-						style = style.replace(extmdl.string.topStyleRegex, ("top: " + (top + interval)));
-						element.setAttribute('style', style);
-						left = parseFloat(extmdl.string.leftStyleRegex.exec(style)[1]);
-						top = parseFloat(extmdl.string.topStyleRegex.exec(style)[1]);
-						condition = top < toY && left < toX;
-						if(!condition) stop();
-					} else if (left !== 0) {
-						style = style.replace(extmdl.string.leftStyleRegex, ("left: " + (left + interval)));
-						element.setAttribute('style', style);
-						left = parseFloat(extmdl.string.leftStyleRegex.exec(style)[1]);
-						condition = left < toX;
-						if(!condition) stop();
-					} else if (top !== 0) {
-						style = style.replace(extmdl.string.topStyleRegex, ("top: " + (top + interval)));
-						element.setAttribute('style', style);
-						top = parseFloat(extmdl.string.topStyleRegex.exec(style)[1]);
-						condition = top < toY;
-						if(!condition) stop();
-					}
-					
-					request = window.requestAnimationFrame(loop);
+		function loop() {
+			if(!stopped) {
+				style = style.replace(extmdl.string.leftStyleRegex, ("left: " + (left + interval)));
+				element.setAttribute('style', style);
+				left = parseFloat(extmdl.string.leftStyleRegex.exec(style)[1]);
+				condition = left < x;
+				if(!condition) {
+					stop();
 				}
-			};
-
-			function start() {
+				
 				request = window.requestAnimationFrame(loop);
-				stopped = false;
-			};
+			}
+		};
 
-			function stop() {
-				if(request) window.cancelAnimationFrame(request);
-				stopped = true;
-			};
+		function start() {
+			request = window.requestAnimationFrame(loop);
+			stopped = false;
+		};
 
-			start();
+		function stop() {
+			if(request) window.cancelAnimationFrame(request);
+			stopped = true;
+			if(queue.length !== 0) {
+				let queueLast = queue.pop();
+				let key = Object.keys(queueLast)[0];
+				let value = queueLast[key];
+				currentAction = toX(element, value, key);
+				return currentAction.start();
+			}
+		};
+
+		return {
+			start: function() {
+				start();
+				return this;
+			},
+			stop: function() {
+				stop();
+				return this;
+			}
+		};
+	};
+	
+	return {
+		toX: function(element, interval, x) {
+			currentAction = toX(element, interval, x);
+			return this;
+		},
+		nextToX: function(interval, x) {
+			queue.push({});
+			queue[queue.length - 1][x] = interval;
+			return this;
+		},
+		start: function() {
+			return currentAction.start();
+		},
+		stop: function() {
+			return currentAction.stop();
 		},
 		createTestDiv: function() {
 			let div = document.createElement("div");

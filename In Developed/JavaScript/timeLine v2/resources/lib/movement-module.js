@@ -94,6 +94,8 @@
 	};
 	
 	function isInRange(next) {
+		console.log(lowerBound());
+		console.log(upperBound());
 		return lowerBound() <= next && next <= upperBound()
 	};
 	
