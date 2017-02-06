@@ -1,6 +1,4 @@
 ﻿(function() {
-	const defaultCloseBox = "url('resources/images/closebox.svg') no-repeat 0 0";
-	const defaultOpenBox = "url('resources/images/openbox.svg') no-repeat 0 0";
 	let currentZoom, dividerPerZoomLevel, lastSelectedZIndex, normalZoom,
 		middleLinePosition, screenWidth, zoomBound, zoomOnScroll, zoomButtonsOn;
 
@@ -26,15 +24,13 @@
 		for(let i = 0; i < allInnerEvents.length; i++) {
 			allInnerEvents[i].addEventListener("mouseover", function(ev) {
 				let current = ev.currentTarget;
-				current.style.background = defaultOpenBox;
-				current.style.color = "black";
+				extmdl.css.setOpenbox(current.classList);
 				lastSelectedZIndex = current.style.zIndex;
 				current.style.zIndex = extmdl.timeLine.maxZIndex;
 			}, false);
 			allInnerEvents[i].addEventListener("mouseout", function(ev) {
 				let current = ev.currentTarget;
-				current.style.background = defaultCloseBox;
-				current.style.color = "gray";
+				extmdl.css.setClosebox(current.classList);
 				current.style.zIndex = lastSelectedZIndex;
 			}, false);
 			let top = document.getElementById("top");

@@ -17,6 +17,10 @@
 		innerLineFrames = [];
 		yearFrames = [];
 		lastFrameTopPosition = -2;
+		let theme = document.createElement("link");
+		theme.rel = "stylesheet";
+		theme.href = settings["theme"];
+		document.head.appendChild(theme);
 	};
 	
 	function getSelectedDates() {
@@ -183,6 +187,7 @@
 	function createDayFrame(dayPosition, day, id) {
 		let date = day.date;
 		let dayFrame = document.createElement("div");
+		extmdl.css.setClosebox(dayFrame.classList);
 		dayFrame.setAttribute("id", "inner-event");
 		dayFrame.setAttribute("data-id", id);
 		dayFrame.style.top = getCurrentEventTopPosition();

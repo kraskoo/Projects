@@ -40,10 +40,6 @@
     user-select: none;
 }
 
-body {
-	background-color: #F5F5F5;
-}
-
 #top {
 	width: 70vw;
 	height: 65vh;
@@ -52,7 +48,6 @@ body {
 	-webkit-box-shadow: 0px 2px 3px 1px rgba(175,175,175,0.6);
 	-moz-box-shadow: 0px 2px 3px 1px rgba(175,175,175,0.6);
 	box-shadow: 0px 2px 3px 1px rgba(175,175,175,0.6);
-	background-color: rgba(238, 238, 238, 0.85);
 }
 
 #bottom {
@@ -63,7 +58,6 @@ body {
 	-webkit-box-shadow: inset 0px 65px 5px -65px rgba(0,0,0,1);
 	-moz-box-shadow: inset 0px 65px 5px -65px rgba(0,0,0,1);
 	box-shadow: inset 0px 65px 5px -65px rgba(0,0,0,1);
-	background-color: rgba(238, 238, 238, 0.85);
 }
 
 #bottom > #middle-line::after {
@@ -95,7 +89,6 @@ body {
 	left: calc(50vw - 2px);
 	width: 4px;
 	height: 12vh;
-	background: #0D80AC;
 }
 
 #bottom > #inner-line {
@@ -104,12 +97,10 @@ body {
 	position: relative;
 	white-space: nowrap;
 	overflow: hidden;
-	/* margin-left: 3vw; */
 }
 
 #bottom > #inner-line > #frame {
 	height: 13vh;
-	/* border-right: 1px solid black; */
 	position: absolute;
 	top: 0;
 	display: inline-block;
@@ -124,7 +115,6 @@ body {
 	box-shadow: 0px 0 3px -1px rgba(50,50,50,1);
 	background: white;
 	display: block;
-	/* margin-left: 3vw; */
 }
 
 #bottom > #years-line::before {
@@ -134,7 +124,6 @@ body {
 	content: "";
 	height: 0.9vh;
 	width: 100vw;
-	background-image: url("images/tinyline.png");
 	background-repeat: repeat-x;
 }
 
@@ -145,8 +134,7 @@ body {
 	left: 0;
 	height: 1.5vh;
 	width: 0.8vw;
-	background-image: url("images/tinyline.png");
-	background-repeat: repeat-x;
+	background-repeat: no-repeat;
 }
 
 #bottom > #years-line > #year-frame {
@@ -166,7 +154,6 @@ body {
 	height: 5.5vh;
 	min-width: 30px;
 	min-height: 54px;
-	background: white;
 	position: fixed;
 	left: 0;
 	bottom: 6.5vh;
@@ -176,7 +163,6 @@ body {
 	-webkit-box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.2);
 	-moz-box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.2);
 	box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.2);
-	/* z-index: 999; */
 }
 
 .zoom-in, .zoom-out, .zoom-in-hover, .zoom-out-hover {
@@ -216,7 +202,6 @@ body {
 	top: calc(13vh - 50px);
 	height: 46px;
 	width: 138px;
-	background: url("images/closebox.svg") no-repeat 0 0;
 	padding: 5px 10px 10px 5px;
 }
 
@@ -226,7 +211,6 @@ body {
 	overflow: hidden;
     text-overflow: ellipsis;
 	font-size: 10px;
-	color: gray;
 	display: block;
 	margin: 0 auto;
 }
@@ -237,5 +221,4 @@ body {
 	width: 5px;
 	height: 5px;
 	border-radius: 50%;
-	background-color: black;
 }

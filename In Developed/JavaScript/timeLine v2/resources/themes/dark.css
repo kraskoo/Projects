@@ -1,0 +1,51 @@
+﻿*, *::before, *::after {
+	color: white;
+}
+
+body {
+	background-color: #050505;
+}
+
+#top {
+	background-color: rgba(238, 238, 238, 0.85);
+}
+
+#bottom {
+	background-color: rgba(238, 238, 238, 0.85);
+}
+
+#bottom > #middle-line::before  {
+	background: #0D80AC;
+}
+
+#bottom > #zoom {
+	background: white;
+}
+
+#bottom > #years-line {
+	background: black;
+}
+
+#bottom > #years-line > #dot-event {
+	background-color: white;
+}
+
+#bottom > #years-line::before, #bottom > #years-line > #year-frame::before {
+	background-image: url("../images/tinyline-dark.png");
+}
+
+.closebox {
+	background: transparent url("../images/closebox.svg") no-repeat scroll 0px 0px;
+}
+
+.closebox > p {
+	color: gray;
+}
+
+.openbox {
+	background: transparent url("../images/openbox.svg") no-repeat scroll 0px 0px;
+}
+
+.openbox > p {
+	color: black;
+}

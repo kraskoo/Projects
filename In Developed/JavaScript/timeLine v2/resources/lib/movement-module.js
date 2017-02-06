@@ -74,7 +74,6 @@
 		if(isMouseDown) {
 			let clientXOnMove = ev.clientX - clientXOnStart;
 			let limit = clientXOnMove * -1;
-			console.log(limit);
 			if(isInRange(limit)) {
 				innerLine.style.left = clientXOnMove + "px";
 				moveYearsLine(clientXOnMove);

@@ -1,7 +1,10 @@
 ﻿(function() {
 	function replaceClassName(elementClassList, oldClass, newClass) {
-		if((elementClassList instanceof DOMTokenList) && elementClassList.contains(oldClass)) {
-			elementClassList.remove(oldClass);
+		if((elementClassList instanceof DOMTokenList)) {
+			if(elementClassList.contains(oldClass)) {
+				elementClassList.remove(oldClass);
+			}
+			
 			elementClassList.add(newClass);
 		}
 	};
@@ -32,6 +35,12 @@
 		},
 		unsetZoomOut: function(domTokenList) {
 			replaceClassName(domTokenList, "zoom-out-hover", "zoom-out");
+		},
+		setOpenbox: function(domTokenList) {
+			replaceClassName(domTokenList, "closebox", "openbox");
+		},
+		setClosebox: function(domTokenList) {
+			replaceClassName(domTokenList, "openbox", "closebox");
 		},
 		getStyleValueByElement: function(element, val) {
 			return window.getComputedStyle(element, null).getPropertyValue(val);

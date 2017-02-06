@@ -4,5 +4,6 @@
 	"dividerPerZoomLevel" : 5,
 	"zoomOnScroll" : true,
 	"zoomButtonsOn" : true,
-	"framesSortOrder" : "asc"
+	"framesSortOrder" : "asc",
+	"theme": "resources/themes/light.css"
 }
