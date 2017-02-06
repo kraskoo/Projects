@@ -8,8 +8,11 @@
 		innerLine = document.getElementById("inner-line");
 		yearsLine = document.getElementById("years-line");
 		yearsLineBefore = extmdl.css.pseudoStyleIfExists("#years-line::before");
-		lineWidth = bottom.scrollWidth;
 		screenWidth = screen.width;
+	};
+	
+	function initializeDependent() {
+		lineWidth = bottom.scrollWidth;
 		middleOfScreen = screen.width / 2;
 		innerLine.style.left = -screenWidth + "px";
 		yearsLine.style.left = -screenWidth + "px";
@@ -20,6 +23,15 @@
 		yearsLineBefore.width = width + "px";
 	};
 	
+	
+	function initializeMovement() {
+		initializeDependent();
+		bottom.addEventListener("mousedown", onDownEvent, false);
+		bottom.addEventListener("mouseup", onUpEvent, false);
+		bottom.addEventListener("mousemove", onMoveEvent, false);
+		bottom.addEventListener("mouseleave", resetMouseEvents, false);
+	};
+	
 	function lowerBound() {
 		return parseFloat(
 			extmdl.css.getStyleValueByElement(extmdl.data.first(), "left")
@@ -28,7 +40,7 @@
 	
 	function upperBound() {
 		let temproary = getLastFrameLeftPosition();
-		if(lastFrameLeft !== undefined && lastFrameLeft !== temproary && temproary > lastFrameLeft) {
+		if(lastFrameLeft !== undefined && temproary > lastFrameLeft) {
 			width += (temproary - lastFrameLeft);
 			innerLine.style.width = width + "px";
 			yearsLine.style.width = width + "px";
@@ -43,13 +55,6 @@
 		return parseFloat(
 			extmdl.css.getStyleValueByElement(extmdl.data.last(), "left")
 		);
-	};
-	
-	function initializeMovement() {
-		bottom.addEventListener("mousedown", onDownEvent, false);
-		bottom.addEventListener("mouseup", onUpEvent, false);
-		bottom.addEventListener("mousemove", onMoveEvent, false);
-		bottom.addEventListener("mouseleave", resetMouseEvents, false);
 	};
 	
 	function moveYearsLine(left) {
@@ -94,9 +99,21 @@
 	};
 	
 	function isInRange(next) {
-		console.log(lowerBound());
-		console.log(upperBound());
 		return lowerBound() <= next && next <= upperBound()
+	};
+	
+	function moveToRightIfIsNecessary() {
+		let innerLineLeft = parseFloat(
+			extmdl.css.getStyleValueByElement(innerLine, "left"));
+		let lastFrameLeft = parseFloat(
+			extmdl.css.getStyleValueByElement(extmdl.data.last(), "left")) + innerLineLeft;
+		if(lastFrameLeft < middleOfScreen) {
+			let difference = middleOfScreen - lastFrameLeft;
+			innerLine.style.left = (parseFloat(innerLine.style.left) + difference) + "px";
+			yearsLine.style.left = (parseFloat(yearsLine.style.left) + difference) + "px";
+			yearsLineBefore.left = (parseFloat(yearsLineBefore.left) - difference) + "px";
+		}
+		
 	};
 	
 	return {
@@ -104,6 +121,9 @@
 		initializeMovement: initializeMovement,
 		screenWidth: function() {
 			return screenWidth;
+		},
+		checkUpperBound: function() {
+			moveToRightIfIsNecessary();
 		}
 	}
 }());

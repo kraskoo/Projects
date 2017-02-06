@@ -51,6 +51,7 @@
 					if(checkIfCanZoomIn()) {
 						currentZoom = getLowerZoomLevel();
 						extmdl.initial.resizeFrames(currentZoom, true, zoomBound);
+						extmdl.movement.checkUpperBound();
 					} 
 				} else {
 					if(checkIfCanZoomOut()) {
@@ -91,6 +92,7 @@
 					extmdl.css.setZoomIn(target.classList);
 					currentZoom = getLowerZoomLevel();
 					extmdl.initial.resizeFrames(currentZoom, true, zoomBound);
+					extmdl.movement.checkUpperBound();
 				} 
 
 				if(!checkIfCanZoomIn()) extmdl.css.unsetZoomIn(target.classList);

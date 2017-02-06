@@ -9,7 +9,7 @@
 	function __innerSetter(response, instance, name) {
 		// Resolved scope pollution :)
 		(function() {
-			let scrResult = new Function("return " + response + ";");
+			let scrResult = new Function("return " + response);
 			let moduleInstance = {};
 			moduleInstance = scrResult();
 			for(method in moduleInstance) {
