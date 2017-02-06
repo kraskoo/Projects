@@ -12,8 +12,7 @@
 		data["dayFrames"] = {};
 		dayFrames = data["dayFrames"];
 		framesSortOrder = settings["framesSortOrder"];
-		leftSideStartBound = settings.leftSideStartBound + extmdl.movement.startPosition();
-		console.log(leftSideStartBound);
+		leftSideStartBound = settings.leftSideStartBound + extmdl.movement.screenWidth();
 		zIndex = (framesSortOrder === "desc") ? 1000 : 100000;
 		innerLineFrames = [];
 		yearFrames = [];

@@ -2,12 +2,14 @@
 	const defaultCloseBox = "url('resources/images/closebox.svg') no-repeat 0 0";
 	const defaultOpenBox = "url('resources/images/openbox.svg') no-repeat 0 0";
 	let currentZoom, dividerPerZoomLevel, lastSelectedZIndex, normalZoom,
-		zoomBound, zoomOnScroll, zoomButtonsOn;
+		middleLinePosition, screenWidth, zoomBound, zoomOnScroll, zoomButtonsOn;
 
 	function initialize() {
 		let settings = extmdl.initial.settings();
 		dividerPerZoomLevel = settings["dividerPerZoomLevel"];
 		normalZoom = settings["normalZoom"];
+		screenWidth = extmdl.movement.screenWidth();
+		middleLinePosition = (screenWidth / 2);
 		zoomOnScroll = settings["zoomOnScroll"];
 		zoomButtonsOn = settings["zoomButtonsOn"];
 		zoomBound = Math.round(normalZoom / (dividerPerZoomLevel + 1));

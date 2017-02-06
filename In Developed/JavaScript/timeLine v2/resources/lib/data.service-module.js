@@ -2,6 +2,18 @@
 	const sourceImagesPath = "source-images/";
 	let eventsById = {};
 	
+	function firstEvent() {
+		return eventsById[1];
+	};
+	
+	function lastEvent() {
+		return eventsById[count()];
+	}
+	
+	function count() {
+		return Object.keys(eventsById).length;
+	};
+	
 	function getIFrameContainerType(model) {
 		let iframe = document.createElement("iframe");
 		iframe.style.display = "none";
@@ -163,7 +175,13 @@
 			return eventsById[id];
 		},
 		getFrameCount: function() {
-			return Object.keys(eventsById).length;
+			return count();
+		},
+		first: function() {
+			return firstEvent();
+		},
+		last: function() {
+			return lastEvent();
 		}
 	};
 }());
