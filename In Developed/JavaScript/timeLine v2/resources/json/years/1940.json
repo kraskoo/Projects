@@ -11,15 +11,15 @@
 				},
 				{
 					"title":"Заглавийце 2 От първи",
-					"source":"pages/1940/january/january1st.xml"
+					"source":"pages/1940/january/january1-2nd-item.xml"
 				},
 				{
 					"title":"Трето заглавие от първи",
-					"source":"pages/1940/january/january1st.xml"
+					"source":"pages/1940/january/january1-3rd-item.xml"
 				},
 				{
 					"title":"Четвърто",
-					"source":"pages/1940/january/january1st.xml"
+					"source":"pages/1940/january/january1-4th-item.xml"
 				}
 			],
 			"8":
@@ -35,9 +35,9 @@
 				"title":"6ти февруари",
 				"source":"pages/1940/february/february06th.xml"
 			},
-			"8":
+			"28":
 			{
-				"title":"8ми февруари",
+				"title":"28ми февруари",
 				"source":"pages/1940/february/february28th.xml"
 			}
 		},
