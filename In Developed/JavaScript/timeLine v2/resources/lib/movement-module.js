@@ -1,10 +1,10 @@
 ﻿(function() {
-	let bottom, clientXOnStart, innerLine, isMouseDown, lastFrameLeft, linewidth, middleOfScreen,
-		onReleasePosition, onReleaseTime, onStartPosition, onStartTime, screenWidth,
-		width, yearsLine, yearsLineBefore;
+	let afterMoveAction, bottom, clientXOnMove, clientXOnStart, elapsedTime, innerLine,
+		isMouseDown, isMoveOnLeft, isMoved, lastFrameLeft, linewidth,
+		middleOfScreen, releaseTime, screenWidth, startTime, width, yearsLine, yearsLineBefore;
 		
 	function initialize() {
-		isMouseDown = false;
+		isMouseDown = isMoveOnLeft = isMoved = false;
 		bottom = document.getElementById("bottom");
 		innerLine = document.getElementById("inner-line");
 		yearsLine = document.getElementById("years-line");
@@ -69,7 +69,14 @@
 	
 	function onDownEvent(ev) {
 		if(!isMouseDown) {
-			onStartTime = ev.timeStamp;
+			let now = new Date();
+			let minutes = now.getMinutes();
+			let seconds = now.getSeconds();
+			let miliseconds = now.getMilliseconds();
+			startTime = parseInt(
+				(extmdl.string.fixNumberLength(minutes, 2)) +
+				(extmdl.string.fixNumberLength(seconds, 2)) +
+				(extmdl.string.fixNumberLength(miliseconds, 3)));
 			clientXOnStart = ev.clientX - innerLine.offsetLeft;
 			isMouseDown = true;
 		}
@@ -77,17 +84,35 @@
 	
 	function onUpEvent(ev) {
 		if(isMouseDown) {
-			onReleaseTime = ev.timeStamp;
-			console.log(onReleaseTime - onStartTime)
+			if(isMoved) {
+				let then = new Date();
+				let minutes = then.getMinutes();
+				let seconds = then.getSeconds();
+				let miliseconds = then.getMilliseconds();
+				releaseTime = parseInt(
+					(extmdl.string.fixNumberLength(minutes, 2)) +
+					(extmdl.string.fixNumberLength(seconds, 2)) +
+					(extmdl.string.fixNumberLength(miliseconds, 3)));
+				elapsedTime = releaseTime - startTime;
+				console.log(startTime);
+				console.log(releaseTime);
+				console.log(elapsedTime);
+				elapsedTime = 0;
+				startTime = 0;
+				releaseTime = 0;
+				isMoved = false;
+			}
+			
 			isMouseDown = false;
 		}
 	};
 	
 	function onMoveEvent(ev) {
 		if(isMouseDown) {
-			let clientXOnMove = ev.clientX - clientXOnStart;
+			clientXOnMove = ev.clientX - clientXOnStart;
 			let limit = clientXOnMove * -1;
 			if(isInRange(limit)) {
+				isMoved = true;
 				innerLine.style.left = clientXOnMove + "px";
 				moveYearsLine(clientXOnMove);
 			}

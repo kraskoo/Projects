@@ -21,6 +21,7 @@
 		theme.rel = "stylesheet";
 		theme.href = settings["theme"];
 		document.head.appendChild(theme);
+		extmdl.string.initialRepeat();
 	};
 	
 	function getSelectedDates() {
