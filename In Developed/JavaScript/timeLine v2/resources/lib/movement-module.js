@@ -1,6 +1,7 @@
 ﻿(function() {
-	let bottom, clientXOnStart, innerLine, isMouseDown, lastFrameLeft, linewidth,
-		middleOfScreen, screenWidth, width, yearsLine, yearsLineBefore;
+	let bottom, clientXOnStart, innerLine, isMouseDown, lastFrameLeft, linewidth, middleOfScreen,
+		onReleasePosition, onReleaseTime, onStartPosition, onStartTime, screenWidth,
+		width, yearsLine, yearsLineBefore;
 		
 	function initialize() {
 		isMouseDown = false;
@@ -51,6 +52,10 @@
 		return lastFrameLeft - middleOfScreen + 4;
 	};
 	
+	function getLineLeftPosition() {
+		return parseFloat(innerLine.style.left);
+	};
+	
 	function getLastFrameLeftPosition() {
 		return parseFloat(
 			extmdl.css.getStyleValueByElement(extmdl.data.last(), "left")
@@ -64,6 +69,7 @@
 	
 	function onDownEvent(ev) {
 		if(!isMouseDown) {
+			onStartTime = ev.timeStamp;
 			clientXOnStart = ev.clientX - innerLine.offsetLeft;
 			isMouseDown = true;
 		}
@@ -71,6 +77,8 @@
 	
 	function onUpEvent(ev) {
 		if(isMouseDown) {
+			onReleaseTime = ev.timeStamp;
+			console.log(onReleaseTime - onStartTime)
 			isMouseDown = false;
 		}
 	};
@@ -103,17 +111,14 @@
 	};
 	
 	function moveToRightIfIsNecessary() {
-		let innerLineLeft = parseFloat(
-			extmdl.css.getStyleValueByElement(innerLine, "left"));
-		let lastFrameLeft = parseFloat(
-			extmdl.css.getStyleValueByElement(extmdl.data.last(), "left")) + innerLineLeft;
+		let lineLeftPosition = getLineLeftPosition();
+		let lastFrameLeft = getLastFrameLeftPosition() + lineLeftPosition;
 		if(lastFrameLeft < middleOfScreen) {
 			let difference = middleOfScreen - lastFrameLeft;
-			innerLine.style.left = (parseFloat(innerLine.style.left) + difference) + "px";
-			yearsLine.style.left = (parseFloat(yearsLine.style.left) + difference) + "px";
-			yearsLineBefore.left = (parseFloat(yearsLineBefore.left) - difference) + "px";
+			innerLine.style.left = (lineLeftPosition + difference) + "px";
+			yearsLine.style.left = (lineLeftPosition + difference) + "px";
+			yearsLineBefore.left = ((lineLeftPosition * -1) - difference) + "px";
 		}
-		
 	};
 	
 	return {
