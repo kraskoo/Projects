@@ -25,17 +25,16 @@ let act = extmdl.animate
 		element = el;
 		let request = 0;
 		let stopped = true;
-		let style = element.getAttribute('style');
-		let left = parseFloat(extmdl.string.leftStyleRegex.exec(style)[1]);
+		let style = element.style;
+		let left = parseFloat(style.left);
 		let isSetToIncrease = left < x;
 		let condition = isSetToIncrease ? left < x : left > x;
 
 		function loop() {
 			if(!stopped) {
-				let nextLeft = isSetToIncrease ? left + interval : left - interval;
-				style = style.replace(extmdl.string.leftStyleRegex, ("left: " + (nextLeft)));
-				element.setAttribute('style', style);
-				left = parseFloat(extmdl.string.leftStyleRegex.exec(style)[1]);
+				let nextLeft = isSetToIncrease ? left - interval : left + interval;
+				style.left = nextLeft + "px";
+				left = parseFloat(style.left);
 				condition = isSetToIncrease ? left < x : left > x;
 				if(!condition) {
 					stop();

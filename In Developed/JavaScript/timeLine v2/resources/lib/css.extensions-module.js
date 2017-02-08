@@ -20,7 +20,7 @@
 			}
 		}
 		
-		return index > -1 ? cssRules.item(index).style : null;
+		return index > -1 ? cssRules.item(index) : null;
 	};
 	
 	return {

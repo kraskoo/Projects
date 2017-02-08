@@ -1,7 +1,7 @@
 ﻿(function() {
 	let afterMoveAction, bottom, clientXOnMove, clientXOnStart, elapsedTime, innerLine,
-		isMouseDown, isMoveOnLeft, isMoved, lastFrameLeft, linewidth,
-		middleOfScreen, releaseTime, screenWidth, startTime, width, yearsLine, yearsLineBefore;
+		isMouseDown, isMoveOnLeft, isMoved, lastFrameLeft, linewidth, middleOfScreen, releasePosition,
+		releaseTime, screenWidth, startPosition, startTime, width, yearsLine, yearsLineBefore;
 		
 	function initialize() {
 		isMouseDown = isMoveOnLeft = isMoved = false;
@@ -17,11 +17,11 @@
 		middleOfScreen = screen.width / 2;
 		innerLine.style.left = -screenWidth + "px";
 		yearsLine.style.left = -screenWidth + "px";
-		yearsLineBefore.left = -screenWidth + "px";
+		yearsLineBefore.style.left = -screenWidth + "px";
 		width = ((screenWidth * 2) + lineWidth);
 		innerLine.style.width = width + "px";
 		yearsLine.style.width = width + "px";
-		yearsLineBefore.width = width + "px";
+		yearsLineBefore.style.width = width + "px";
 	};
 	
 	
@@ -45,7 +45,7 @@
 			width += (temproary - lastFrameLeft);
 			innerLine.style.width = width + "px";
 			yearsLine.style.width = width + "px";
-			yearsLineBefore.width = width + "px";
+			yearsLineBefore.style.width = width + "px";
 		}
 		
 		lastFrameLeft = temproary;
@@ -53,7 +53,7 @@
 	};
 	
 	function getLineLeftPosition() {
-		return parseFloat(innerLine.style.left);
+		return innerLine.offsetLeft;
 	};
 	
 	function getLastFrameLeftPosition() {
@@ -64,11 +64,12 @@
 	
 	function moveYearsLine(left) {
 		yearsLine.style.left = left + "px";
-		yearsLineBefore.left = -left + "px";
+		yearsLineBefore.style.left = -left + "px";
 	};
 	
 	function onDownEvent(ev) {
 		if(!isMouseDown) {
+			clearAfterMove();
 			let now = new Date();
 			let minutes = now.getMinutes();
 			let seconds = now.getSeconds();
@@ -77,8 +78,22 @@
 				(extmdl.string.fixNumberLength(minutes, 2)) +
 				(extmdl.string.fixNumberLength(seconds, 2)) +
 				(extmdl.string.fixNumberLength(miliseconds, 3)));
+			startPosition = getLineLeftPosition();
 			clientXOnStart = ev.clientX - innerLine.offsetLeft;
 			isMouseDown = true;
+		}
+	};
+	
+	function onMoveEvent(ev) {
+		if(isMouseDown) {
+			clientXOnMove = ev.clientX - clientXOnStart;
+			let limit = clientXOnMove * -1;
+			if(isInRange(limit)) {
+				isMoveOnLeft = startPosition > getLineLeftPosition();
+				isMoved = true;
+				innerLine.style.left = clientXOnMove + "px";
+				moveYearsLine(clientXOnMove);
+			}
 		}
 	};
 	
@@ -94,29 +109,43 @@
 					(extmdl.string.fixNumberLength(seconds, 2)) +
 					(extmdl.string.fixNumberLength(miliseconds, 3)));
 				elapsedTime = releaseTime - startTime;
-				console.log(startTime);
-				console.log(releaseTime);
-				console.log(elapsedTime);
-				elapsedTime = 0;
-				startTime = 0;
-				releaseTime = 0;
-				isMoved = false;
+				let lineLeft = getLineLeftPosition();
+				releasePosition = lineLeft * -1;
+				startPosition *= -1;
+				let elapsed = startPosition - releasePosition;
+				let afterMovePosition = elapsed * (elapsedTime * 0.006);
+				if(isMoveOnLeft) {
+					let distanceToEnd = (lineLeft + upperBound());
+					if(afterMovePosition + distanceToEnd < 0) afterMovePosition = distanceToEnd;
+				} else {
+					let distanceToStart = (lineLeft + lowerBound());
+					if(distanceToStart + afterMovePosition > 0) afterMoveAction = distanceToStart;
+					console.log(distanceToStart);
+					console.log(afterMovePosition);
+				}
+				
+				let newPosition = lineLeft + afterMovePosition;
+				let interval = newPosition/200;
+				afterMoveAction = () => {
+					extmdl.animate.toX(innerLine, interval, newPosition).start();
+					extmdl.animate.toX(yearsLine, interval, newPosition).start();
+					extmdl.animate.toX(yearsLineBefore, interval, -newPosition).start();
+				};
+				afterMoveAction();
 			}
 			
 			isMouseDown = false;
 		}
 	};
 	
-	function onMoveEvent(ev) {
-		if(isMouseDown) {
-			clientXOnMove = ev.clientX - clientXOnStart;
-			let limit = clientXOnMove * -1;
-			if(isInRange(limit)) {
-				isMoved = true;
-				innerLine.style.left = clientXOnMove + "px";
-				moveYearsLine(clientXOnMove);
-			}
-		}
+	function clearAfterMove() {
+		elapsedTime = 0;
+		startTime = 0;
+		releaseTime = 0;
+		startPosition = 0;
+		releasePosition = 0;
+		isMoved = false;
+		isMoveOnLeft = false;
 	};
 	
 	function resetMouseEvents() {
@@ -142,7 +171,7 @@
 			let difference = middleOfScreen - lastFrameLeft;
 			innerLine.style.left = (lineLeftPosition + difference) + "px";
 			yearsLine.style.left = (lineLeftPosition + difference) + "px";
-			yearsLineBefore.left = ((lineLeftPosition * -1) - difference) + "px";
+			yearsLineBefore.style.left = ((lineLeftPosition * -1) - difference) + "px";
 		}
 	};
 	
