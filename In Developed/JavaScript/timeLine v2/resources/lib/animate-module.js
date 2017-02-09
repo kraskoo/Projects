@@ -32,7 +32,7 @@ let act = extmdl.animate
 
 		function loop() {
 			if(!stopped) {
-				let nextLeft = isSetToIncrease ? left - interval : left + interval;
+				let nextLeft = isSetToIncrease ? left + interval : left - interval;
 				style.left = nextLeft + "px";
 				left = parseFloat(style.left);
 				condition = isSetToIncrease ? left < x : left > x;

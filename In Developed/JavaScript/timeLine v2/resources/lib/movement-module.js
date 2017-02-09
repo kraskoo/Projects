@@ -1,10 +1,10 @@
 ﻿(function() {
-	let afterMoveAction, bottom, clientXOnMove, clientXOnStart, elapsedTime, innerLine,
-		isMouseDown, isMoveOnLeft, isMoved, lastFrameLeft, linewidth, middleOfScreen, releasePosition,
+	let afterMoveAction, bottom, canMove, clientXOnMove, clientXOnStart, elapsedTime, innerLine,
+		isMouseDown, isMoveOnLeft, lastFrameLeft, linewidth, middleOfScreen, releasePosition,
 		releaseTime, screenWidth, startPosition, startTime, width, yearsLine, yearsLineBefore;
 		
 	function initialize() {
-		isMouseDown = isMoveOnLeft = isMoved = false;
+		canMove = isMouseDown = isMoveOnLeft = false;
 		bottom = document.getElementById("bottom");
 		innerLine = document.getElementById("inner-line");
 		yearsLine = document.getElementById("years-line");
@@ -70,16 +70,9 @@
 	function onDownEvent(ev) {
 		if(!isMouseDown) {
 			clearAfterMove();
-			let now = new Date();
-			let minutes = now.getMinutes();
-			let seconds = now.getSeconds();
-			let miliseconds = now.getMilliseconds();
-			startTime = parseInt(
-				(extmdl.string.fixNumberLength(minutes, 2)) +
-				(extmdl.string.fixNumberLength(seconds, 2)) +
-				(extmdl.string.fixNumberLength(miliseconds, 3)));
+			startTime = getDateAsTimestampNextToMinute(new Date());
 			startPosition = getLineLeftPosition();
-			clientXOnStart = ev.clientX - innerLine.offsetLeft;
+			clientXOnStart = ev.clientX - startPosition;
 			isMouseDown = true;
 		}
 	};
@@ -89,53 +82,61 @@
 			clientXOnMove = ev.clientX - clientXOnStart;
 			let limit = clientXOnMove * -1;
 			if(isInRange(limit)) {
-				isMoveOnLeft = startPosition > getLineLeftPosition();
-				isMoved = true;
+				let lineOnLeft = getLineLeftPosition();
 				innerLine.style.left = clientXOnMove + "px";
 				moveYearsLine(clientXOnMove);
+				isMoveOnLeft = startPosition < lineOnLeft;
+				canMove = isMoveOnLeft ? distanceToStart() > 0 : distanceToEnd() < 0;
 			}
 		}
 	};
 	
+	function distanceToStart() {
+		return -getLineLeftPosition() - 5 - lowerBound();
+	};
+	
+	function distanceToEnd() {
+		return -getLineLeftPosition() + 5 - upperBound();
+	};
+	
 	function onUpEvent(ev) {
 		if(isMouseDown) {
-			if(isMoved) {
-				let then = new Date();
-				let minutes = then.getMinutes();
-				let seconds = then.getSeconds();
-				let miliseconds = then.getMilliseconds();
-				releaseTime = parseInt(
-					(extmdl.string.fixNumberLength(minutes, 2)) +
-					(extmdl.string.fixNumberLength(seconds, 2)) +
-					(extmdl.string.fixNumberLength(miliseconds, 3)));
+			if(canMove) {
+				releaseTime = getDateAsTimestampNextToMinute(new Date());
 				elapsedTime = releaseTime - startTime;
-				let lineLeft = getLineLeftPosition();
-				releasePosition = lineLeft * -1;
-				startPosition *= -1;
-				let elapsed = startPosition - releasePosition;
+				let lineOnLeft = getLineLeftPosition();
+				releasePosition = lineOnLeft;
+				let elapsed = releasePosition - startPosition;
 				let afterMovePosition = elapsed * (elapsedTime * 0.006);
 				if(isMoveOnLeft) {
-					let distanceToEnd = (lineLeft + upperBound());
-					if(afterMovePosition + distanceToEnd < 0) afterMovePosition = distanceToEnd;
+					let toStart = distanceToStart();
+					if(afterMovePosition > toStart) afterMovePosition = toStart + 2;
 				} else {
-					let distanceToStart = (lineLeft + lowerBound());
-					if(distanceToStart + afterMovePosition > 0) afterMoveAction = distanceToStart;
-					console.log(distanceToStart);
-					console.log(afterMovePosition);
+					let toEnd = distanceToEnd();
+					if(afterMovePosition < toEnd) afterMovePosition = toEnd - 2;
 				}
 				
-				let newPosition = lineLeft + afterMovePosition;
-				let interval = newPosition/200;
-				afterMoveAction = () => {
+				let newPosition = lineOnLeft + afterMovePosition;
+				let interval = 15;
+				afterMoveAction = (() => {
 					extmdl.animate.toX(innerLine, interval, newPosition).start();
 					extmdl.animate.toX(yearsLine, interval, newPosition).start();
 					extmdl.animate.toX(yearsLineBefore, interval, -newPosition).start();
-				};
-				afterMoveAction();
-			}
+				})();
+			} else clearAfterMove();
 			
 			isMouseDown = false;
 		}
+	};
+	
+	function getDateAsTimestampNextToMinute(date) {
+		let minutes = date.getMinutes();
+		let seconds = date.getSeconds();
+		let miliseconds = date.getMilliseconds();
+		return parseInt(
+			(extmdl.string.fixNumberLength(minutes, 2)) +
+			(extmdl.string.fixNumberLength(seconds, 2)) +
+			(extmdl.string.fixNumberLength(miliseconds, 3)));
 	};
 	
 	function clearAfterMove() {
