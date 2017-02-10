@@ -44,7 +44,11 @@
 		let client = new XMLHttpRequest();
 		client.addEventListener("readystatechange", function() {
 			if(client.readyState === this.DONE && client.status === 200) {
-				let script = client.responseText.replace(/\/\*[\s\S]+\*\//, "").trim();
+				let script = client.responseText
+					.replace(/\/\*[\s\S]+\*\//, "")
+					.replace(/\s*?\/\/.+/, "")
+					.trim();
+				console.log(script);
 				callback(script, instance, name);
 				countOfLoadedScripts++;
 			}

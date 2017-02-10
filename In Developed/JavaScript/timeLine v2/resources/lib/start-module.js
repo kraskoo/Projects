@@ -7,6 +7,8 @@
 	
 	return {
 		run: function(data) {
+			extmdl.animate.initialize();
+			extmdl.string.initialRepeat();
 			extmdl.movement.initialize();
 			extmdl.initial.initialize(data);
 			extmdl.zoom.initialize();

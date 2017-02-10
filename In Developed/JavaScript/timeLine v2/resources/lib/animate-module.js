@@ -8,6 +8,18 @@ let act = extmdl.animate
 	.nextToX(2, 50).start();
 */
 (function() {
+	function initialize() {
+		window.requestAnimationFrame = window.requestAnimationFrame ||
+			window.mozRequestAnimationFrame ||
+			window.webkitRequestAnimationFrame ||
+			window.msRequestAnimationFrame ||
+			function(f){return setTimeout(f, 1000/60)};
+		 
+		window.cancelAnimationFrame = window.cancelAnimationFrame ||
+			window.mozCancelAnimationFrame ||
+			function(requestID){clearTimeout(requestID)};
+	};
+	
 	let queue = [];
 	let element;
 	let currentAction;
@@ -40,17 +52,17 @@ let act = extmdl.animate
 					stop();
 				}
 				
-				request = window.requestAnimationFrame(loop);
+				request = requestAnimationFrame(loop);
 			}
 		};
 
 		function start() {
-			request = window.requestAnimationFrame(loop);
+			request = requestAnimationFrame(loop);
 			stopped = false;
 		};
-
+		
 		function stop() {
-			if(request) window.cancelAnimationFrame(request);
+			if(request) cancelAnimationFrame(request);
 			stopped = true;
 			let first = dequeue();
 			if(first !== null) {
@@ -74,6 +86,7 @@ let act = extmdl.animate
 	};
 	
 	return {
+		initialize: initialize,
 		toX: function(element, interval, x) {
 			currentAction = toX(element, interval, x);
 			return this;

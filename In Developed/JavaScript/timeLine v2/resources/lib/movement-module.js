@@ -145,7 +145,7 @@
 		releaseTime = 0;
 		startPosition = 0;
 		releasePosition = 0;
-		isMoved = false;
+		canMove = false;
 		isMoveOnLeft = false;
 	};
 	
