@@ -7,13 +7,15 @@ null  elapsed  initialValue  amountOfChange  duration
                     +----=unit=----+
 
 In current case look like this:
-	t			b 			c 			d
-	|			| 			| 			|
-currentTime	  start 	  change 	 duration
+	t           b           c           d
+    |           |           |           |
+currentTime   start       change     duration
 Where:
+	lastTime = animation.currentTime
+	change = (now - lastTime) * animation.timeScale
+	progress = animation.progress + (change / animation.duration);
 	change = end`(value)` - start`(value)`
-	currentTime = progress * duration, where progress = 0,
-	and updateProgress = duration * ((duration - elapsed) / 100)
+	currentTime = progress * duration
 */
 (function() {
 	return {
@@ -91,22 +93,22 @@ Where:
 		easeInElastic: function (t, b, c, d) {
 			let s = 1.70158; let p = 0; let a = c;
 			if (t == 0) return b; if ((t /= d) == 1) return b + c; if (!p) p = d * .3;
-			if (a < Math.abs(c)) { a = c; let s = p / 4; }
-			else let s = p / (2 * Math.PI) * Math.asin(c / a);
+			if (a < Math.abs(c)) { a = c; s = p / 4; }
+			else s = p / (2 * Math.PI) * Math.asin(c / a);
 			return -(a * Math.pow(2, 10 * (t -= 1)) * Math.sin((t * d - s) * (2 * Math.PI) / p)) + b;
 		},
 		easeOutElastic: function (t, b, c, d) {
 			let s = 1.70158; let p = 0; let a = c;
 			if (t == 0) return b; if ((t /= d) == 1) return b + c; if (!p) p = d * .3;
-			if (a < Math.abs(c)) { a = c; let s = p / 4; }
-			else let s = p / (2 * Math.PI) * Math.asin(c / a);
+			if (a < Math.abs(c)) { a = c; s = p / 4; }
+			else s = p / (2 * Math.PI) * Math.asin(c / a);
 			return a * Math.pow(2, -10 * t) * Math.sin((t * d - s) * (2 * Math.PI) / p) + c + b;
 		},
 		easeInOutElastic: function (t, b, c, d) {
 			let s = 1.70158; let p = 0; let a = c;
 			if (t == 0) return b; if ((t /= d / 2) == 2) return b + c; if (!p) p = d * (.3 * 1.5);
-			if (a < Math.abs(c)) { a = c; let s = p / 4; }
-			else let s = p / (2 * Math.PI) * Math.asin(c / a);
+			if (a < Math.abs(c)) { a = c; s = p / 4; }
+			else s = p / (2 * Math.PI) * Math.asin(c / a);
 			if (t < 1) return -.5 * (a * Math.pow(2, 10 * (t -= 1)) * Math.sin((t * d - s) * (2 * Math.PI) / p)) + b;
 			return a * Math.pow(2, -10 * (t -= 1)) * Math.sin((t * d - s) * (2 * Math.PI) / p) * .5 + c + b;
 		},
@@ -124,7 +126,7 @@ Where:
 			return c / 2 * ((t -= 2) * t * (((s *= (1.525)) + 1) * t + s) + 2) + b;
 		},
 		easeInBounce: function (t, b, c, d) {
-			return c - easings.easeOutBounce(d - t, 0, c, d) + b;
+			return c - extmdl.easings.easeOutBounce(d - t, 0, c, d) + b;
 		},
 		easeOutBounce: function (t, b, c, d) {
 			if ((t /= d) < (1 / 2.75)) {
@@ -138,11 +140,11 @@ Where:
 			}
 		},
 		easeInOutBounce: function (t, b, c, d) {
-			if (t < d / 2) return easings.easeInBounce(t * 2, 0, c, d) * .5 + b;
-			return easings.easeOutBounce(t * 2 - d, 0, c, d) * .5 + c * .5 + b;
+			if (t < d / 2) return extmdl.easings.easeInBounce(t * 2, 0, c, d) * .5 + b;
+			return extmdl.easings.easeOutBounce(t * 2 - d, 0, c, d) * .5 + c * .5 + b;
 		},
 		linear: function (t, b, c, d) {
 			return c * t / d + b;
 		}
-	}
+	};
 }());
