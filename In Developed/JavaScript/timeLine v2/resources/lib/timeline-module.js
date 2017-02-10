@@ -72,6 +72,19 @@
 			let monthStart = new Date(year, month, 1);
 			let monthEnd = new Date(year, month + 1, 1);
 			return Math.round((monthEnd - monthStart) / (oneDay));
+		},
+		getDateAsTimestampNextToMinute: function(date) {
+			if(!(date instanceof Date)) {
+				throw new Error("Instance of `date` must be Date type.");
+			}
+			
+			let minutes = date.getMinutes();
+			let seconds = date.getSeconds();
+			let miliseconds = date.getMilliseconds();
+			return parseInt(
+				(extmdl.string.fixNumberLength(minutes, 2)) +
+				(extmdl.string.fixNumberLength(seconds, 2)) +
+				(extmdl.string.fixNumberLength(miliseconds, 3)));
 		}
 	};
 }());

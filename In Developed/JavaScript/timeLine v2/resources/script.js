@@ -77,6 +77,7 @@
 			'animate': 'resources/lib/animate-module.js',
 			'css': 'resources/lib/css.extensions-module.js',
 			'data': 'resources/lib/data.service-module.js',
+			'easings': 'resources/lib/easings.js',
 			'movement': 'resources/lib/movement-module.js',
 			'initial': 'resources/lib/initial-module.js',
 			'parser': 'resources/lib/parser.js',

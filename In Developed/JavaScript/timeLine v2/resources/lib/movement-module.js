@@ -70,7 +70,7 @@
 	function onDownEvent(ev) {
 		if(!isMouseDown) {
 			clearAfterMove();
-			startTime = getDateAsTimestampNextToMinute(new Date());
+			startTime = extmdl.timeLine.getDateAsTimestampNextToMinute(new Date());
 			startPosition = getLineLeftPosition();
 			clientXOnStart = ev.clientX - startPosition;
 			isMouseDown = true;
@@ -91,18 +91,10 @@
 		}
 	};
 	
-	function distanceToStart() {
-		return -getLineLeftPosition() - 5 - lowerBound();
-	};
-	
-	function distanceToEnd() {
-		return -getLineLeftPosition() + 5 - upperBound();
-	};
-	
 	function onUpEvent(ev) {
 		if(isMouseDown) {
 			if(canMove) {
-				releaseTime = getDateAsTimestampNextToMinute(new Date());
+				releaseTime = extmdl.timeLine.getDateAsTimestampNextToMinute(new Date());
 				elapsedTime = releaseTime - startTime;
 				let lineOnLeft = getLineLeftPosition();
 				releasePosition = lineOnLeft;
@@ -127,16 +119,6 @@
 			
 			isMouseDown = false;
 		}
-	};
-	
-	function getDateAsTimestampNextToMinute(date) {
-		let minutes = date.getMinutes();
-		let seconds = date.getSeconds();
-		let miliseconds = date.getMilliseconds();
-		return parseInt(
-			(extmdl.string.fixNumberLength(minutes, 2)) +
-			(extmdl.string.fixNumberLength(seconds, 2)) +
-			(extmdl.string.fixNumberLength(miliseconds, 3)));
 	};
 	
 	function clearAfterMove() {
@@ -176,7 +158,21 @@
 		}
 	};
 	
+	function canOpenBox(date) {
+		return (extmdl.timeLine.getDateAsTimestampNextToMinute(date) - startTime < 100) ||
+			startTime === 0;
+	};
+	
+	function distanceToStart() {
+		return -getLineLeftPosition() - 5 - lowerBound();
+	};
+	
+	function distanceToEnd() {
+		return -getLineLeftPosition() + 5 - upperBound();
+	};
+	
 	return {
+		canOpenBox: canOpenBox,
 		initialize: initialize,
 		initializeMovement: initializeMovement,
 		screenWidth: function() {

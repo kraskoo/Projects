@@ -13,12 +13,28 @@ let act = extmdl.animate
 			window.mozRequestAnimationFrame ||
 			window.webkitRequestAnimationFrame ||
 			window.msRequestAnimationFrame ||
-			function(f){return setTimeout(f, 1000/60)};
+			function(func) { return setTimeout(func, 1000 / 60); };
 		 
 		window.cancelAnimationFrame = window.cancelAnimationFrame ||
 			window.mozCancelAnimationFrame ||
-			function(requestID){clearTimeout(requestID)};
+			function(requestId) { clearTimeout(requestId); };
 	};
+	
+	class Animation {
+		constructor(config) {
+			config = config || {};
+			this.target = config.target || {};
+			this.style = this.target.style || {};
+			this.properties = config.properties || {};
+			this.elapsed = 0;
+			this.duration = config.duration || 0.0001;
+			if(typeof config.easing === "string") {
+				this.easing = extmdl.easings[config.easing];
+			} else {
+				this.easing = extmdl.easings["linear"];
+			}
+		}
+	}
 	
 	let queue = [];
 	let element;
@@ -86,6 +102,7 @@ let act = extmdl.animate
 	};
 	
 	return {
+		Animation: Animation,
 		initialize: initialize,
 		toX: function(element, interval, x) {
 			currentAction = toX(element, interval, x);

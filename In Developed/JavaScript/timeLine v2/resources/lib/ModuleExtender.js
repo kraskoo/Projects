@@ -48,7 +48,6 @@
 					.replace(/\/\*[\s\S]+\*\//, "")
 					.replace(/\s*?\/\/.+/, "")
 					.trim();
-				console.log(script);
 				callback(script, instance, name);
 				countOfLoadedScripts++;
 			}
