@@ -6,6 +6,13 @@ let act = extmdl.animate
 	.nextToX(2, 500)
 	.nextToX(1, 600)
 	.nextToX(2, 50).start();
+	let innerLine = document.getElementById("inner-line");
+	let ani = new extmdl.animate.Animation({
+		target: innerLine,
+		duration: 1000,
+		properties: { opacity: { from: 1, to: 0 } },
+		easing: "easeOutCubic"
+	});
 */
 (function() {
 	function initialize() {
@@ -20,21 +27,116 @@ let act = extmdl.animate
 			function(requestId) { clearTimeout(requestId); };
 	};
 	
-	class Animation {
-		constructor(config) {
-			config = config || {};
-			this.target = config.target || {};
-			this.style = this.target.style || {};
-			this.properties = config.properties || {};
-			this.elapsed = 0;
-			this.duration = config.duration || 0.0001;
-			if(typeof config.easing === "string") {
-				this.easing = extmdl.easings[config.easing];
-			} else {
-				this.easing = extmdl.easings["linear"];
-			}
+	function extend(obj, extension) {
+		for(let key in extension) {
+			obj[key] = extension[key];
 		}
-	}
+	};
+	
+	let Animation = function(config) {
+		this.target = config.target || {};
+		this.style = config.target.style;
+		this.duration = config.duration || 0.0001;
+		this.properties = config.properties || {};
+		this.request = null;
+		if(typeof(config.easing) === "string") { this.easing = extmdl.easings[config.easing]; }
+		else { this.easing = extmdl.easings["linear"]; }
+		for(prop in this.properties) {
+			if(this.properties[prop]["to"] === undefined || this.properties[prop]["from"] === undefined) {
+				throw new Error("The `to` and the `from` properties are mandatory.");
+			}
+			
+			let to = this.properties[prop]["to"];
+			let matchTo = to.toString().match(extmdl.string.measurementStyleRegex);
+			if(matchTo !== null) this.properties[prop]["toUnit"] = matchTo[0];
+			to = parseFloat(to);
+			this.properties[prop]["to"] = to;
+			let from = this.properties[prop]["from"];
+			let matchFrom = from.toString().match(extmdl.string.measurementStyleRegex);
+			if(matchFrom !== null) this.properties[prop]["fromUnit"] = matchFrom[0];
+			from = parseFloat(from);
+			this.properties[prop]["from"] = from;
+			this.properties[prop]["current"] = from;
+			let isSetToIncrease = this.properties[prop]["isSetToIncrease"];
+			this.properties[prop]["isSetToIncrease"] = to > from;
+			this.properties[prop]["change"] =
+				isSetToIncrease ? from - to : to - from;
+			this.properties[prop]["hasMeasurementUnit"] = this.properties[prop]["fromUnit"] !== undefined;
+			this[prop] = {};
+			this[prop] = this.properties[prop];
+		}
+	};
+	
+	Animation.prototype = {
+		getTarget: function() {
+			return this.target;
+		},
+		getStyle: function() {
+			return this.style;
+		},
+		getDuration: function() {
+			return this.duration;
+		},
+		getEasing: function() {
+			return this.easing;
+		},
+		getRequest: function() {
+			return this.request;
+		},
+		animate: function() {
+			let self = this;
+			let isStopped = true;
+			let startTime = 0;
+			let progress = 0;
+			let timeFrameDuration = this.duration / 100;
+			let currentFrame = 0;
+			function resetClock(currentTime) {
+				startTime = currentTime;
+				currentFrame++;
+			};
+			
+			function loop() {
+				if(!isStopped) {
+					for(prop in self.properties) {
+						let currentTime =
+							extmdl.timeLine.getDateAsTimestampNextToMinute(new Date()) - startTime;
+						if(currentTime >= timeFrameDuration) {
+							let percentage = timeFrameDuration * currentFrame * 0.1;
+							console.log(percentage);
+							self.progress =
+								(self.easing(percentage,
+									self.properties[prop].from,
+									self.properties[prop].change,
+									self.duration) / 100);
+							self.properties[prop]["current"] +=
+								(self.properties[prop]["change"] * (self.progress / 100));
+							self.style[prop] =
+								(self.properties[prop]["hasMeasurementUnit"] ?
+									self.properties[prop]["current"] + self.properties[prop]["toUnit"] :
+									self.properties[prop]["current"]);
+							resetClock(currentTime);
+						}
+					}
+					
+					if(self.progress >= 1) stop();
+					self.request = requestAnimationFrame(loop);
+				}
+			}
+			
+			function start() {
+				startTime = extmdl.timeLine.getDateAsTimestampNextToMinute(new Date());
+				isStopped = false;
+				self.request = requestAnimationFrame(loop);
+			}
+			
+			function stop() {
+				if(self.request) cancelAnimationFrame(self.request);
+				isStopped = true;
+			}
+			
+			start();
+		}
+	};
 	
 	let queue = [];
 	let element;
@@ -56,14 +158,13 @@ let act = extmdl.animate
 		let style = element.style;
 		let left = parseFloat(style.left);
 		let isSetToIncrease = left < x;
-		let condition = isSetToIncrease ? left < x : left > x;
 
 		function loop() {
 			if(!stopped) {
 				let nextLeft = isSetToIncrease ? left + interval : left - interval;
 				style.left = nextLeft + "px";
 				left = parseFloat(style.left);
-				condition = isSetToIncrease ? left < x : left > x;
+				let condition = isSetToIncrease ? left < x : left > x;
 				if(!condition) {
 					stop();
 				}

@@ -11,11 +11,24 @@ In current case look like this:
     |           |           |           |
 currentTime   start       change     duration
 Where:
-	lastTime = animation.currentTime
-	change = (now - lastTime) * animation.timeScale
-	progress = animation.progress + (change / animation.duration);
-	change = end`(value)` - start`(value)`
-	currentTime = progress * duration
+	t = 0 (we’re just starting, so 0 seconds have passed)
+	b = 50 (the beginning value of the property being tweened)
+	c = 150 (the change in value – so the destination value of 200 minus the start value of 50 equals 150)
+	d = 1 (total duration of 1 second)
+	The functions returns float number between 0.. 1, which presenting percentage value of `progress`,
+	for an example if progress is equal to 0.65, this means that the elapsed time = 65% of duration
+	let div = extmdl.animate.createTestDiv();
+	let ani = new extmdl.animate.Animation({
+	target: div,
+	duration: 3000,
+	properties: {
+		left: {
+			from: "50px",
+			to: "600px"
+		}
+	},
+	easing: "easeOutExpo"});
+	ani.animate();
 */
 (function() {
 	return {

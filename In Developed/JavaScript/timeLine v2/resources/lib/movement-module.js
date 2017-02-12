@@ -116,7 +116,6 @@
 					extmdl.animate.toX(yearsLineBefore, interval, -newPosition).start();
 				})();
 			} else clearAfterMove();
-			
 			isMouseDown = false;
 		}
 	};
