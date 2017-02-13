@@ -6,13 +6,14 @@ let act = extmdl.animate
 	.nextToX(2, 500)
 	.nextToX(1, 600)
 	.nextToX(2, 50).start();
-	let innerLine = document.getElementById("inner-line");
+	let div = extmdl.animate.createTestDiv();
 	let ani = new extmdl.animate.Animation({
-		target: innerLine,
+		target: div,
 		duration: 1000,
-		properties: { opacity: { from: 1, to: 0 } },
+		properties: { left: { from: "50px", to: "600px" } },
 		easing: "easeOutCubic"
 	});
+	ani.animate();
 */
 (function() {
 	function initialize() {
@@ -88,34 +89,25 @@ let act = extmdl.animate
 			let isStopped = true;
 			let startTime = 0;
 			let progress = 0;
-			let timeFrameDuration = this.duration / 100;
-			let currentFrame = 0;
-			function resetClock(currentTime) {
-				startTime = currentTime;
-				currentFrame++;
-			};
+			let durationInSec = self.duration / 1000;
 			
 			function loop() {
 				if(!isStopped) {
 					for(prop in self.properties) {
 						let currentTime =
 							extmdl.timeLine.getDateAsTimestampNextToMinute(new Date()) - startTime;
-						if(currentTime >= timeFrameDuration) {
-							let percentage = timeFrameDuration * currentFrame * 0.1;
-							console.log(percentage);
-							self.progress =
-								(self.easing(percentage,
-									self.properties[prop].from,
-									self.properties[prop].change,
-									self.duration) / 100);
-							self.properties[prop]["current"] +=
-								(self.properties[prop]["change"] * (self.progress / 100));
-							self.style[prop] =
-								(self.properties[prop]["hasMeasurementUnit"] ?
-									self.properties[prop]["current"] + self.properties[prop]["toUnit"] :
-									self.properties[prop]["current"]);
-							resetClock(currentTime);
-						}
+						self.progress =
+							(self.easing(
+								currentTime,
+								self.properties[prop].current / self.properties[prop].to,
+								self.properties[prop].change / self.properties[prop].to,
+								self.duration));
+						console.log(self.progress);
+						self.properties[prop]["current"] += (self.progress * durationInSec);
+						self.style[prop] =
+							(self.properties[prop]["hasMeasurementUnit"] ?
+								self.properties[prop]["current"] + self.properties[prop]["toUnit"] :
+								self.properties[prop]["current"]);
 					}
 					
 					if(self.progress >= 1) stop();
