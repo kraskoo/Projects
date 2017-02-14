@@ -6,14 +6,16 @@ let act = extmdl.animate
 	.nextToX(2, 500)
 	.nextToX(1, 600)
 	.nextToX(2, 50).start();
-	let div = extmdl.animate.createTestDiv();
-	let ani = new extmdl.animate.Animation({
-		target: div,
-		duration: 1000,
-		properties: { left: { from: "50px", to: "600px" } },
-		easing: "easeOutCubic"
-	});
-	ani.animate();
+---------------------------------------         | 
+Good example of that ease function works fine   |
+---------------------------------------        \ /
+let div = extmdl.animate.createTestDiv();
+let a = new extmdl.animate.Animation({
+	target: div,
+	duration: 5000,
+	properties: { left: { from: "50px", to: "600px" }}, easing: "easeInElastic"
+});
+a.animate();
 */
 (function() {
 	function initialize() {
@@ -28,10 +30,12 @@ let act = extmdl.animate
 			function(requestId) { clearTimeout(requestId); };
 	};
 	
-	function extend(obj, extension) {
-		for(let key in extension) {
-			obj[key] = extension[key];
-		}
+	function convertPercentageToValue(part, value) {
+		return value * (part / 100);
+	};
+	
+	function convertValueToPercentage(part, value) {
+		return (value - part) / value;
 	};
 	
 	let Animation = function(config) {
@@ -69,41 +73,22 @@ let act = extmdl.animate
 	};
 	
 	Animation.prototype = {
-		getTarget: function() {
-			return this.target;
-		},
-		getStyle: function() {
-			return this.style;
-		},
-		getDuration: function() {
-			return this.duration;
-		},
-		getEasing: function() {
-			return this.easing;
-		},
-		getRequest: function() {
-			return this.request;
-		},
 		animate: function() {
 			let self = this;
 			let isStopped = true;
 			let startTime = 0;
-			let progress = 0;
-			let durationInSec = self.duration / 1000;
+			let startMilliseconds = 0;
 			
 			function loop() {
 				if(!isStopped) {
 					for(prop in self.properties) {
 						let currentTime =
-							extmdl.timeLine.getDateAsTimestampNextToMinute(new Date()) - startTime;
-						self.progress =
-							(self.easing(
-								currentTime,
-								self.properties[prop].current / self.properties[prop].to,
-								self.properties[prop].change / self.properties[prop].to,
-								self.duration));
-						console.log(self.progress);
-						self.properties[prop]["current"] += (self.progress * durationInSec);
+							extmdl.timeLine
+							.getDateAsTimestampNextToMinute(new Date())
+							.result() - startTime - startMilliseconds;
+						self.progress = self.easing(currentTime, 0, 1, self.duration);
+						self.properties[prop].current += (
+							(self.properties[prop].to - self.properties[prop].current) * self.progress);
 						self.style[prop] =
 							(self.properties[prop]["hasMeasurementUnit"] ?
 								self.properties[prop]["current"] + self.properties[prop]["toUnit"] :
@@ -116,7 +101,10 @@ let act = extmdl.animate
 			}
 			
 			function start() {
-				startTime = extmdl.timeLine.getDateAsTimestampNextToMinute(new Date());
+				let temproary = extmdl.timeLine.getDateAsTimestampNextToMinute(new Date());
+				startMilliseconds = temproary.milliseconds();
+				startTime = temproary.result();
+				startTime -= startMilliseconds;
 				isStopped = false;
 				self.request = requestAnimationFrame(loop);
 			}

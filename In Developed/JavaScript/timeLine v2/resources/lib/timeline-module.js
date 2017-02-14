@@ -78,14 +78,23 @@
 				throw new Error("Instance of `date` must be Date type.");
 			}
 			
-			let minutes = date.getMinutes();
-			let seconds = date.getSeconds();
-			let miliseconds = date.getMilliseconds();
-			return parseInt(
-				(extmdl.string.fixNumberLength(minutes, 2)) +
-				(extmdl.string.fixNumberLength(seconds, 2)) +
-				(extmdl.string.fixNumberLength(miliseconds, 3)));
-
+			let minutes = extmdl.string.fixNumberLength(date.getMinutes(), 2);
+			let seconds = extmdl.string.fixNumberLength(date.getSeconds(), 2);
+			let milliseconds = extmdl.string.fixNumberLength(date.getMilliseconds(), 3);
+			return {
+				minutes: function() {
+					return minutes;
+				},
+				seconds: function() {
+					return seconds;
+				},
+				milliseconds: function() {
+					return milliseconds;
+				},
+				result: function() {
+					return parseInt (minutes + seconds + milliseconds + "");
+				}
+			};
 		}
 	};
 }());

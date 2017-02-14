@@ -70,7 +70,7 @@
 	function onDownEvent(ev) {
 		if(!isMouseDown) {
 			clearAfterMove();
-			startTime = extmdl.timeLine.getDateAsTimestampNextToMinute(new Date());
+			startTime = extmdl.timeLine.getDateAsTimestampNextToMinute(new Date()).result();
 			startPosition = getLineLeftPosition();
 			clientXOnStart = ev.clientX - startPosition;
 			isMouseDown = true;
@@ -94,7 +94,7 @@
 	function onUpEvent(ev) {
 		if(isMouseDown) {
 			if(canMove) {
-				releaseTime = extmdl.timeLine.getDateAsTimestampNextToMinute(new Date());
+				releaseTime = extmdl.timeLine.getDateAsTimestampNextToMinute(new Date()).result();
 				elapsedTime = releaseTime - startTime;
 				let lineOnLeft = getLineLeftPosition();
 				releasePosition = lineOnLeft;
@@ -158,7 +158,7 @@
 	};
 	
 	function canOpenBox(date) {
-		return (extmdl.timeLine.getDateAsTimestampNextToMinute(date) - startTime < 100) ||
+		return (extmdl.timeLine.getDateAsTimestampNextToMinute(date).result() - startTime < 100) ||
 			startTime === 0;
 	};
 	
