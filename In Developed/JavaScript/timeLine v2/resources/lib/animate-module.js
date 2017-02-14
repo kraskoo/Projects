@@ -6,9 +6,9 @@ let act = extmdl.animate
 	.nextToX(2, 500)
 	.nextToX(1, 600)
 	.nextToX(2, 50).start();
----------------------------------------         | 
-Good example of that ease function works fine   |
----------------------------------------        \ /
+---------------------------------------               | 
+Good example of that's how ease function works fine   |
+---------------------------------------              \ /
 let div = extmdl.animate.createTestDiv();
 let a = new extmdl.animate.Animation({
 	target: div,
@@ -38,42 +38,42 @@ a.animate();
 		return (value - part) / value;
 	};
 	
-	let Animation = function(config) {
-		this.target = config.target || {};
-		this.style = config.target.style;
-		this.duration = config.duration || 0.0001;
-		this.properties = config.properties || {};
-		this.request = null;
-		if(typeof(config.easing) === "string") { this.easing = extmdl.easings[config.easing]; }
-		else { this.easing = extmdl.easings["linear"]; }
-		for(prop in this.properties) {
-			if(this.properties[prop]["to"] === undefined || this.properties[prop]["from"] === undefined) {
-				throw new Error("The `to` and the `from` properties are mandatory.");
+	class Animation {
+		constructor(config) {
+			this.target = config.target || {};
+			this.style = config.target.style;
+			this.duration = config.duration || 0.0001;
+			this.properties = config.properties || {};
+			this.request = null;
+			if(typeof(config.easing) === "string") { this.easing = extmdl.easings[config.easing]; }
+			else { this.easing = extmdl.easings["linear"]; }
+			for(let prop in this.properties) {
+				if(this.properties[prop]["to"] === undefined || this.properties[prop]["from"] === undefined) {
+					throw new Error("The `to` and the `from` properties are mandatory.");
+				}
+				
+				let to = this.properties[prop]["to"];
+				let matchTo = to.toString().match(extmdl.string.measurementStyleRegex);
+				if(matchTo !== null) this.properties[prop]["toUnit"] = matchTo[0];
+				to = parseFloat(to);
+				this.properties[prop]["to"] = to;
+				let from = this.properties[prop]["from"];
+				let matchFrom = from.toString().match(extmdl.string.measurementStyleRegex);
+				if(matchFrom !== null) this.properties[prop]["fromUnit"] = matchFrom[0];
+				from = parseFloat(from);
+				this.properties[prop]["from"] = from;
+				this.properties[prop]["current"] = from;
+				this.properties[prop]["isSetToIncrease"] = to > from;
+				let isSetToIncrease = this.properties[prop]["isSetToIncrease"];
+				this.properties[prop]["change"] =
+					isSetToIncrease ? from - to : to - from;
+				this.properties[prop]["hasMeasurementUnit"] = this.properties[prop]["fromUnit"] !== undefined;
+				this[prop] = {};
+				this[prop] = this.properties[prop];
 			}
-			
-			let to = this.properties[prop]["to"];
-			let matchTo = to.toString().match(extmdl.string.measurementStyleRegex);
-			if(matchTo !== null) this.properties[prop]["toUnit"] = matchTo[0];
-			to = parseFloat(to);
-			this.properties[prop]["to"] = to;
-			let from = this.properties[prop]["from"];
-			let matchFrom = from.toString().match(extmdl.string.measurementStyleRegex);
-			if(matchFrom !== null) this.properties[prop]["fromUnit"] = matchFrom[0];
-			from = parseFloat(from);
-			this.properties[prop]["from"] = from;
-			this.properties[prop]["current"] = from;
-			let isSetToIncrease = this.properties[prop]["isSetToIncrease"];
-			this.properties[prop]["isSetToIncrease"] = to > from;
-			this.properties[prop]["change"] =
-				isSetToIncrease ? from - to : to - from;
-			this.properties[prop]["hasMeasurementUnit"] = this.properties[prop]["fromUnit"] !== undefined;
-			this[prop] = {};
-			this[prop] = this.properties[prop];
 		}
-	};
-	
-	Animation.prototype = {
-		animate: function() {
+		
+		animate() {
 			let self = this;
 			let isStopped = true;
 			let startTime = 0;
@@ -81,21 +81,22 @@ a.animate();
 			
 			function loop() {
 				if(!isStopped) {
-					for(prop in self.properties) {
-						let currentTime =
-							extmdl.timeLine
-							.getDateAsTimestampNextToMinute(new Date())
-							.result() - startTime - startMilliseconds;
+					let currentTime =
+						extmdl.timeLine
+						.getDateAsTimestampNextToMinute(new Date())
+						.result() - startTime - startMilliseconds;
+					for(let prop in self.properties) {
 						self.progress = self.easing(currentTime, 0, 1, self.duration);
 						self.properties[prop].current += (
 							(self.properties[prop].to - self.properties[prop].current) * self.progress);
 						self.style[prop] =
-							(self.properties[prop]["hasMeasurementUnit"] ?
-								self.properties[prop]["current"] + self.properties[prop]["toUnit"] :
-								self.properties[prop]["current"]);
+							(self.properties[prop].hasMeasurementUnit ?
+								self.properties[prop].current + self.properties[prop].toUnit :
+								self.properties[prop].current);
 					}
 					
-					if(self.progress >= 1) stop();
+					if(self.progress >= 1 || currentTime > self.duration) stop();
+					console.log(self.progress);
 					self.request = requestAnimationFrame(loop);
 				}
 			}
@@ -114,7 +115,10 @@ a.animate();
 				isStopped = true;
 			}
 			
-			start();
+			return {
+				start: start,
+				stop: stop
+			}
 		}
 	};
 	

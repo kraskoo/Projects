@@ -4,7 +4,7 @@ let a = new extmdl.animate.Animation({
 	duration: 5000,
 	properties: { left: { from: "50px", to: "600px" }}, easing: "easeInQuad"
 });
-a.animate();
+let animation = a.animate();animation.start();
 
 let div = extmdl.animate.createTestDiv();
 let a = new extmdl.animate.Animation({
@@ -12,7 +12,7 @@ let a = new extmdl.animate.Animation({
 	duration: 5000,
 	properties: { left: { from: "50px", to: "600px" }}, easing: "easeOutQuad"
 });
-a.animate();
+let animation = a.animate();animation.start();
 
 let div = extmdl.animate.createTestDiv();
 let a = new extmdl.animate.Animation({
@@ -20,7 +20,7 @@ let a = new extmdl.animate.Animation({
 	duration: 5000,
 	properties: { left: { from: "50px", to: "600px" }}, easing: "easeInOutQuad"
 });
-a.animate();
+let animation = a.animate();animation.start();
 
 let div = extmdl.animate.createTestDiv();
 let a = new extmdl.animate.Animation({
@@ -28,7 +28,7 @@ let a = new extmdl.animate.Animation({
 	duration: 5000,
 	properties: { left: { from: "50px", to: "600px" }}, easing: "easeInCubic"
 });
-a.animate();
+let animation = a.animate();animation.start();
 
 let div = extmdl.animate.createTestDiv();
 let a = new extmdl.animate.Animation({
@@ -36,7 +36,7 @@ let a = new extmdl.animate.Animation({
 	duration: 5000,
 	properties: { left: { from: "50px", to: "600px" }}, easing: "easeOutCubic"
 });
-a.animate();
+let animation = a.animate();animation.start();
 
 let div = extmdl.animate.createTestDiv();
 let a = new extmdl.animate.Animation({
@@ -44,7 +44,7 @@ let a = new extmdl.animate.Animation({
 	duration: 5000,
 	properties: { left: { from: "50px", to: "600px" }}, easing: "easeInOutCubic"
 });
-a.animate();
+let animation = a.animate();animation.start();
 
 let div = extmdl.animate.createTestDiv();
 let a = new extmdl.animate.Animation({
@@ -52,7 +52,7 @@ let a = new extmdl.animate.Animation({
 	duration: 5000,
 	properties: { left: { from: "50px", to: "600px" }}, easing: "easeInQuart"
 });
-a.animate();
+let animation = a.animate();animation.start();
 
 let div = extmdl.animate.createTestDiv();
 let a = new extmdl.animate.Animation({
@@ -60,7 +60,7 @@ let a = new extmdl.animate.Animation({
 	duration: 5000,
 	properties: { left: { from: "50px", to: "600px" }}, easing: "easeOutQuart"
 });
-a.animate();
+let animation = a.animate();animation.start();
 
 let div = extmdl.animate.createTestDiv();
 let a = new extmdl.animate.Animation({
@@ -68,7 +68,7 @@ let a = new extmdl.animate.Animation({
 	duration: 5000,
 	properties: { left: { from: "50px", to: "600px" }}, easing: "easeInOutQuart"
 });
-a.animate();
+let animation = a.animate();animation.start();
 
 let div = extmdl.animate.createTestDiv();
 let a = new extmdl.animate.Animation({
@@ -76,7 +76,7 @@ let a = new extmdl.animate.Animation({
 	duration: 5000,
 	properties: { left: { from: "50px", to: "600px" }}, easing: "easeInQuint"
 });
-a.animate();
+let animation = a.animate();animation.start();
 
 let div = extmdl.animate.createTestDiv();
 let a = new extmdl.animate.Animation({
@@ -84,7 +84,7 @@ let a = new extmdl.animate.Animation({
 	duration: 5000,
 	properties: { left: { from: "50px", to: "600px" }}, easing: "easeOutQuint"
 });
-a.animate();
+let animation = a.animate();animation.start();
 
 let div = extmdl.animate.createTestDiv();
 let a = new extmdl.animate.Animation({
@@ -92,7 +92,7 @@ let a = new extmdl.animate.Animation({
 	duration: 5000,
 	properties: { left: { from: "50px", to: "600px" }}, easing: "easeInOutQuint"
 });
-a.animate();
+let animation = a.animate();animation.start();
 
 let div = extmdl.animate.createTestDiv();
 let a = new extmdl.animate.Animation({
@@ -100,7 +100,7 @@ let a = new extmdl.animate.Animation({
 	duration: 5000,
 	properties: { left: { from: "50px", to: "600px" }}, easing: "easeInSine"
 });
-a.animate();
+let animation = a.animate();animation.start();
 
 let div = extmdl.animate.createTestDiv();
 let a = new extmdl.animate.Animation({
@@ -108,7 +108,7 @@ let a = new extmdl.animate.Animation({
 	duration: 5000,
 	properties: { left: { from: "50px", to: "600px" }}, easing: "easeOutSine"
 });
-a.animate();
+let animation = a.animate();animation.start();
 
 let div = extmdl.animate.createTestDiv();
 let a = new extmdl.animate.Animation({
@@ -116,7 +116,7 @@ let a = new extmdl.animate.Animation({
 	duration: 5000,
 	properties: { left: { from: "50px", to: "600px" }}, easing: "easeInOutSine"
 });
-a.animate();
+let animation = a.animate();animation.start();
 
 let div = extmdl.animate.createTestDiv();
 let a = new extmdl.animate.Animation({
@@ -124,7 +124,7 @@ let a = new extmdl.animate.Animation({
 	duration: 5000,
 	properties: { left: { from: "50px", to: "600px" }}, easing: "easeInExpo"
 });
-a.animate();
+let animation = a.animate();animation.start();
 
 let div = extmdl.animate.createTestDiv();
 let a = new extmdl.animate.Animation({
@@ -132,7 +132,7 @@ let a = new extmdl.animate.Animation({
 	duration: 5000,
 	properties: { left: { from: "50px", to: "600px" }}, easing: "easeOutExpo"
 });
-a.animate();
+let animation = a.animate();animation.start();
 
 let div = extmdl.animate.createTestDiv();
 let a = new extmdl.animate.Animation({
@@ -140,7 +140,7 @@ let a = new extmdl.animate.Animation({
 	duration: 5000,
 	properties: { left: { from: "50px", to: "600px" }}, easing: "easeInOutExpo"
 });
-a.animate();
+let animation = a.animate();animation.start();
 
 let div = extmdl.animate.createTestDiv();
 let a = new extmdl.animate.Animation({
@@ -148,7 +148,7 @@ let a = new extmdl.animate.Animation({
 	duration: 5000,
 	properties: { left: { from: "50px", to: "600px" }}, easing: "easeInCirc"
 });
-a.animate();
+let animation = a.animate();animation.start();
 
 let div = extmdl.animate.createTestDiv();
 let a = new extmdl.animate.Animation({
@@ -156,7 +156,7 @@ let a = new extmdl.animate.Animation({
 	duration: 5000,
 	properties: { left: { from: "50px", to: "600px" }}, easing: "easeOutCirc"
 });
-a.animate();
+let animation = a.animate();animation.start();
 
 let div = extmdl.animate.createTestDiv();
 let a = new extmdl.animate.Animation({
@@ -164,7 +164,7 @@ let a = new extmdl.animate.Animation({
 	duration: 5000,
 	properties: { left: { from: "50px", to: "600px" }}, easing: "easeInOutCirc"
 });
-a.animate();
+let animation = a.animate();animation.start();
 
 let div = extmdl.animate.createTestDiv();
 let a = new extmdl.animate.Animation({
@@ -172,7 +172,7 @@ let a = new extmdl.animate.Animation({
 	duration: 5000,
 	properties: { left: { from: "50px", to: "600px" }}, easing: "easeInElastic"
 });
-a.animate();
+let animation = a.animate();animation.start();
 
 let div = extmdl.animate.createTestDiv();
 let a = new extmdl.animate.Animation({
@@ -180,7 +180,7 @@ let a = new extmdl.animate.Animation({
 	duration: 5000,
 	properties: { left: { from: "50px", to: "600px" }}, easing: "easeOutElastic"
 });
-a.animate();
+let animation = a.animate();animation.start();
 
 let div = extmdl.animate.createTestDiv();
 let a = new extmdl.animate.Animation({
@@ -188,7 +188,7 @@ let a = new extmdl.animate.Animation({
 	duration: 5000,
 	properties: { left: { from: "50px", to: "600px" }}, easing: "easeInOutElastic"
 });
-a.animate();
+let animation = a.animate();animation.start();
 
 let div = extmdl.animate.createTestDiv();
 let a = new extmdl.animate.Animation({
@@ -196,7 +196,7 @@ let a = new extmdl.animate.Animation({
 	duration: 5000,
 	properties: { left: { from: "50px", to: "600px" }}, easing: "easeInBack"
 });
-a.animate();
+let animation = a.animate();animation.start();
 
 let div = extmdl.animate.createTestDiv();
 let a = new extmdl.animate.Animation({
@@ -204,7 +204,7 @@ let a = new extmdl.animate.Animation({
 	duration: 5000,
 	properties: { left: { from: "50px", to: "600px" }}, easing: "easeOutBack"
 });
-a.animate();
+let animation = a.animate();animation.start();
 
 let div = extmdl.animate.createTestDiv();
 let a = new extmdl.animate.Animation({
@@ -212,7 +212,7 @@ let a = new extmdl.animate.Animation({
 	duration: 5000,
 	properties: { left: { from: "50px", to: "600px" }}, easing: "easeInOutBack"
 });
-a.animate();
+let animation = a.animate();animation.start();
 
 let div = extmdl.animate.createTestDiv();
 let a = new extmdl.animate.Animation({
@@ -220,7 +220,7 @@ let a = new extmdl.animate.Animation({
 	duration: 5000,
 	properties: { left: { from: "50px", to: "600px" }}, easing: "easeInBounce"
 });
-a.animate();
+let animation = a.animate();animation.start();
 
 let div = extmdl.animate.createTestDiv();
 let a = new extmdl.animate.Animation({
@@ -228,7 +228,7 @@ let a = new extmdl.animate.Animation({
 	duration: 5000,
 	properties: { left: { from: "50px", to: "600px" }}, easing: "easeOutBounce"
 });
-a.animate();
+let animation = a.animate();animation.start();
 
 let div = extmdl.animate.createTestDiv();
 let a = new extmdl.animate.Animation({
@@ -236,7 +236,7 @@ let a = new extmdl.animate.Animation({
 	duration: 5000,
 	properties: { left: { from: "50px", to: "600px" }}, easing: "easeInOutBounce"
 });
-a.animate();
+let animation = a.animate();animation.start();
 
 let div = extmdl.animate.createTestDiv();
 let a = new extmdl.animate.Animation({
@@ -244,4 +244,13 @@ let a = new extmdl.animate.Animation({
 	duration: 5000,
 	properties: { left: { from: "50px", to: "600px" }}, easing: "linear"
 });
-a.animate();
+let animation = a.animate();animation.start();
+
+let div = extmdl.animate.createTestDiv();
+let a = new extmdl.animate.Animation({
+	target: div,
+	duration: 250,
+	properties: { opacity: { from: 1, to: 0 }}, easing: "easeInBounce"
+});
+let animation = a.animate();
+animation.start();
