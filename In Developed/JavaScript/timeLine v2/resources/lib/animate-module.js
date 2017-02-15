@@ -12,10 +12,20 @@ Good example of that's how ease function works fine   |
 let div = extmdl.animate.createTestDiv();
 let a = new extmdl.animate.Animation({
 	target: div,
-	duration: 5000,
-	properties: { left: { from: "50px", to: "600px" }}, easing: "easeInElastic"
+	duration: 2500,
+	properties: {
+		top: {
+			from: "150px",
+			to: "400px"
+		},
+		left: {
+			from: "100px",
+			to: "300px"
+		}
+	},
+	easing: "easeInElastic"
 });
-a.animate();
+a.animate().start();
 */
 (function() {
 	function initialize() {
@@ -52,22 +62,44 @@ a.animate();
 					throw new Error("The `to` and the `from` properties are mandatory.");
 				}
 				
-				let to = this.properties[prop]["to"];
-				let matchTo = to.toString().match(extmdl.string.measurementStyleRegex);
-				if(matchTo !== null) this.properties[prop]["toUnit"] = matchTo[0];
-				to = parseFloat(to);
-				this.properties[prop]["to"] = to;
-				let from = this.properties[prop]["from"];
-				let matchFrom = from.toString().match(extmdl.string.measurementStyleRegex);
-				if(matchFrom !== null) this.properties[prop]["fromUnit"] = matchFrom[0];
-				from = parseFloat(from);
-				this.properties[prop]["from"] = from;
-				this.properties[prop]["current"] = from;
-				this.properties[prop]["isSetToIncrease"] = to > from;
-				let isSetToIncrease = this.properties[prop]["isSetToIncrease"];
-				this.properties[prop]["change"] =
-					isSetToIncrease ? from - to : to - from;
-				this.properties[prop]["hasMeasurementUnit"] = this.properties[prop]["fromUnit"] !== undefined;
+				let to = this.properties[prop].to;
+				let matchToAlphabet = to.toString().match(extmdl.string.alphabetRegex);
+				let matchToDigit = to.toString().match(extmdl.string.digitRegex);
+				if(matchToAlphabet !== null) {
+					this.properties[prop].toUnit = matchToAlphabet[0];
+					to = parseFloat(to);
+				}
+				
+				if(matchToDigit === null) {
+					to = this.properties[prop].to;
+					this.properties[prop].toUnit = "none";
+				}
+				
+				this.properties[prop].to = to;
+				let from = this.properties[prop].from;
+				let matchFromAlphabet = from.toString().match(extmdl.string.alphabetRegex);
+				let matchFromDigit = from.toString().match(extmdl.string.digitRegex);
+				if(matchFromAlphabet !== null) {
+					this.properties[prop].fromUnit = matchFromAlphabet[0];
+					from = parseFloat(from);
+				}
+				
+				if(matchFromDigit === null) {
+					from = this.properties[prop].from;
+					this.properties[prop]["fromUnit"] = "none";
+				}
+				
+				this.properties[prop]["from"] = this.properties[prop]["current"] = from;
+				if(this.properties[prop]["fromUnit"] !== "none") {
+					this.properties[prop]["isSetToIncrease"] = to > from;
+					let isSetToIncrease = this.properties[prop]["isSetToIncrease"];
+					this.properties[prop]["change"] =
+						isSetToIncrease ? from - to : to - from;
+				}
+				
+				this.properties[prop]["hasMeasurementUnit"] =
+					this.properties[prop]["fromUnit"] !== undefined &&
+					this.properties[prop]["fromUnit"] !== "none";
 				this[prop] = {};
 				this[prop] = this.properties[prop];
 			}
@@ -86,17 +118,18 @@ a.animate();
 						.getDateAsTimestampNextToMinute(new Date())
 						.result() - startTime - startMilliseconds;
 					for(let prop in self.properties) {
-						self.progress = self.easing(currentTime, 0, 1, self.duration);
-						self.properties[prop].current += (
-							(self.properties[prop].to - self.properties[prop].current) * self.progress);
-						self.style[prop] =
-							(self.properties[prop].hasMeasurementUnit ?
-								self.properties[prop].current + self.properties[prop].toUnit :
-								self.properties[prop].current);
+						if(self.properties[prop].fromUnit !== "none") {
+							self.progress = self.easing(currentTime, 0, 1, self.duration);
+							self.properties[prop].current += (
+								(self.properties[prop].to - self.properties[prop].current) * self.progress);
+							self.style[prop] =
+								(self.properties[prop].hasMeasurementUnit ?
+									self.properties[prop].current + self.properties[prop].toUnit :
+									self.properties[prop].current);
+						}
 					}
 					
 					if(self.progress >= 1 || currentTime > self.duration) stop();
-					console.log(self.progress);
 					self.request = requestAnimationFrame(loop);
 				}
 			}
@@ -113,6 +146,11 @@ a.animate();
 			function stop() {
 				if(self.request) cancelAnimationFrame(self.request);
 				isStopped = true;
+				for(let prop in self.properties) {
+					if(self.properties[prop].fromUnit === "none") {
+						self.style[prop] = self.properties[prop].to;
+					}
+				}
 			}
 			
 			return {

@@ -126,6 +126,7 @@
 	
 	function getImagePageContainerType(model) {
 		let container = document.createElement("div");
+		container.style.position = "relative";
 		let day = model.day;
 		let dayImages = day.images;
 		let header = document.createElement("p");
@@ -139,11 +140,19 @@
 			let wrapper = setupCurrentImage(currentImage, container, title, day, dayImages, false);
 			wrapper.style.display = "block";
 		} else {
+			let multipleImages = [];
 			for(let i = 0; i < dayImages.length; i++) {
 				let currentImage = dayImages[i].image;
 				let wrapper = setupCurrentImage(currentImage, container, title, day, dayImages[i], true);
+				wrapper.style.position = "absolute";
+				wrapper.style.top = "60px";
+				wrapper.style.left = 0;
 				wrapper.style.display = i === 0 ? "block" : "none";
+				wrapper.style.opacity = i !== 0 ? 0 : 1;
+				multipleImages.push(wrapper);
 			}
+			
+			extmdl.handler.getHandleOfMultipleImages(multipleImages);
 		}
 		
 		container.appendChild(header);
@@ -157,12 +166,15 @@
 			switch(model.type) {
 				case "image":
 					container = getImagePageContainerType(model);
+					container.setAttribute("model", "image");
 					break;
 				case "url":
 					container = getIFrameContainerType(model);
+					container.setAttribute("model", "url");
 					break;
 				case "text":
 					container = getTextPageContainerType(model);
+					container.setAttribute("model", "text");
 					break;
 			}
 			

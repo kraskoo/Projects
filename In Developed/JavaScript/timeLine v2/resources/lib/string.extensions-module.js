@@ -3,7 +3,8 @@
 	const leftStyleRegex = new RegExp(/left:.*?(\d+\.?\d+)/);
 	const topStyleRegex = new RegExp(/top:.*?(\d+\.?\d+)/);
 	const widthStyleRegex = new RegExp(/width:.*?(\d+\.?\d+)/);
-	const measurementStyleRegex = new RegExp(/([A-Za-z]+)/)
+	const digitRegex = new RegExp(/\d+/);
+	const alphabetRegex = new RegExp(/([A-Za-z]+)/);
 	
 	function initialRepeat() {
 		if (!String.prototype.repeat) {
@@ -36,7 +37,8 @@
 		leftStyleRegex: leftStyleRegex,
 		topStyleRegex: topStyleRegex,
 		widthStyleRegex: widthStyleRegex,
-		measurementStyleRegex: measurementStyleRegex,
+		digitRegex: digitRegex,
+		alphabetRegex: alphabetRegex,
 		initialRepeat: initialRepeat,
 		fixNumberLength: function(currentNumber, neededLength) {
 			let numAsString = currentNumber.toString();

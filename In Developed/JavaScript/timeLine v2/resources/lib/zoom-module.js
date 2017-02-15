@@ -33,15 +33,9 @@
 				extmdl.css.setClosebox(current.classList);
 				current.style.zIndex = lastSelectedZIndex;
 			}, false);
-			let top = document.getElementById("top");
 			allInnerEvents[i].addEventListener("click", function(ev) {
 				if(extmdl.movement.canOpenBox(new Date())) {
-					if(top.childNodes.length > 0) top.removeChild(top.childNodes[0]);
-					let current = ev.currentTarget;
-					let dayEventId = parseInt(current.getAttribute("data-id"));
-					let model = extmdl.repository.getDayById(dayEventId);
-					let container = extmdl.data.getContainerByModel(model);
-					top.appendChild(container);
+					extmdl.handler.handleTopContainer(ev);
 				}
 			}, false);
 		}
