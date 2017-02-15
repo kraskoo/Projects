@@ -40,14 +40,6 @@ a.animate().start();
 			function(requestId) { clearTimeout(requestId); };
 	};
 	
-	function convertPercentageToValue(part, value) {
-		return value * (part / 100);
-	};
-	
-	function convertValueToPercentage(part, value) {
-		return (value - part) / value;
-	};
-	
 	class Animation {
 		constructor(config) {
 			this.target = config.target || {};

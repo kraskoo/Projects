@@ -59,7 +59,7 @@
 		onStartChangePictureAnimations();
 	};
 	
-	function changePictureAnimations(previousIndex, finalAct) {
+	function changePictureAnimations(previousIndex) {
 		let previousImageAnimation = new extmdl.animate.Animation({
 			target: multipleImageCollection[previousIndex],
 			duration: 550,
@@ -137,9 +137,21 @@
 		return parseFloat(extmdl.css.getStyleValueByElement(topContainer, "width"));
 	};
 	
+	// (622, 6) => 37.32 or told otherwise, 6% from 622 = 37.32
+	function convertValueFromPercentage(value, percentage) {
+		return value * (percentage / 100);
+	};
+	
+	// (622, 311) => 0.5 or told otherwise 311 from 622 = 50%
+	function convertValueToPercentage(value, part) {
+		return part / value;
+	};
+	
 	return {
 		initialize: initialize,
 		handleTopContainer: handleTopContainer,
-		getHandleOfMultipleImages: getHandleOfMultipleImages
+		getHandleOfMultipleImages: getHandleOfMultipleImages,
+		convertValueToPercentage: convertValueToPercentage,
+		convertValueFromPercentage: convertValueFromPercentage
 	};
 }());

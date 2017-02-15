@@ -77,7 +77,10 @@
 		appendTextPropertiesByNodeElement(imageDescription, dayImage.description, "left");
 		imageWrapper.appendChild(img);
 		imageWrapper.appendChild(imageDescription);
-		img.addEventListener("load", function() {
+		img.addEventListener("load", function(ev) {
+			let imgTarget = ev.currentTarget;
+			let width = imgTarget.width;
+			let height = imgTarget.height;
 			parentContainer = container.parentNode;
 			container.appendChild(imageWrapper);
 			let halfWidth = 0;
@@ -99,7 +102,10 @@
 				imageWrapper.style.height = (parentContainerHeight - 143) + "px";
 				img.style.maxWidth = imageWrapper.style.maxWidth = parentContainerWidth + "px";
 				img.style.maxHeight = imageWrapper.style.maxHeight = (parentContainerHeight - 143) + "px";
-				imageDescription.style.width = img.width + "px";
+				let currentHeight = parseFloat(img.style.maxHeight);
+				let percentageHeight = extmdl.handler.convertValueToPercentage(height, currentHeight);
+				let currentWidth = (width * percentageHeight).toFixed(2);
+				imageDescription.style.width = currentWidth + "px";
 				img.style.display = "block";
 				img.style.margin = imageDescription.style.margin = "auto";
 			}
