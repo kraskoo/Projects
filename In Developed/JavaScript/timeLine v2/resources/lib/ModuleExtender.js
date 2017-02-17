@@ -32,8 +32,8 @@
 		}
 		
 		setTimeout(function() {
-			interval = setInterval(releaseOnInterval, 30);
-		}, 30);
+			interval = setInterval(releaseOnInterval, 50);
+		}, 50);
 	};
 	
 	context.countOfLoadedScripts = function() {
