@@ -18,14 +18,6 @@ body {
 	background: white;
 }
 
-#top > div > div > p {
-	color: #999999;
-}
-
-#bottom > #years-line > #dot-event {
-	background-color: black;
-}
-
 #bottom > #years-line::before, #bottom > #years-line > #year-frame::before {
 	background-image: url("../images/tinyline-light.png");
 }
@@ -34,14 +26,22 @@ body {
 	background: transparent url("../images/closebox.svg") no-repeat scroll 0px 0px;
 }
 
-.closebox > p {
-	color: gray;
-}
-
 .openbox {
 	background: transparent url("../images/openbox.svg") no-repeat scroll 0px 0px;
 }
 
+.closebox > p {
+	color: gray;
+}
+
 .openbox > p {
 	color: black;
+}
+
+.normal-text {
+	color: black;
+}
+
+.describe-text {
+	color: #999999;
 }

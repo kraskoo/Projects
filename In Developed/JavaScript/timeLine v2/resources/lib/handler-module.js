@@ -137,12 +137,12 @@
 		return parseFloat(extmdl.css.getStyleValueByElement(topContainer, "width"));
 	};
 	
-	// (622, 6) => 37.32 or told otherwise, 6% from 622 = 37.32
+	// (622, 6) => 37.32 or otherwise, 6% from 622 = 37.32
 	function convertValueFromPercentage(value, percentage) {
 		return value * (percentage / 100);
 	};
 	
-	// (622, 311) => 0.5 or told otherwise 311 from 622 = 50%
+	// (622, 311) => 0.5 or otherwise 311 from 622 = 50%
 	function convertValueToPercentage(value, part) {
 		return part / value;
 	};
