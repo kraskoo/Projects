@@ -39,8 +39,14 @@
 		setOpenbox: function(domTokenList) {
 			replaceClassName(domTokenList, "closebox", "openbox");
 		},
+		setNormalText: function(domTokenList) {
+			replaceClassName(domTokenList, "describe-text", "normal-text");
+		},
 		setClosebox: function(domTokenList) {
 			replaceClassName(domTokenList, "openbox", "closebox");
+		},
+		setDescribeText: function(domTokenList) {
+			replaceClassName(domTokenList, "normal-text", "describe-text");
 		},
 		getStyleValueByElement: function(element, val) {
 			return window.getComputedStyle(element, null).getPropertyValue(val);

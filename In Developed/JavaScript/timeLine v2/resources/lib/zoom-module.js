@@ -19,18 +19,30 @@
 		return currentZoom;
 	};
 	
+	function setOpenbox(current) {
+		let currentParagraph = current.childNodes[0];
+		extmdl.css.setOpenbox(current.classList);
+		extmdl.css.setNormalText(currentParagraph.classList);
+	};
+	
+	function setClosebox(current) {
+		let currentParagraph = current.childNodes[0];
+		extmdl.css.setClosebox(current.classList);
+		extmdl.css.setDescribeText(currentParagraph.classList);
+	};
+	
 	function initializeZoom() {
 		let allInnerEvents = document.querySelectorAll("#inner-event");
 		for(let i = 0; i < allInnerEvents.length; i++) {
 			allInnerEvents[i].addEventListener("mouseover", function(ev) {
 				let current = ev.currentTarget;
-				extmdl.css.setOpenbox(current.classList);
+				setOpenbox(current);
 				lastSelectedZIndex = current.style.zIndex;
 				current.style.zIndex = extmdl.timeLine.maxZIndex;
 			}, false);
 			allInnerEvents[i].addEventListener("mouseout", function(ev) {
 				let current = ev.currentTarget;
-				extmdl.css.setClosebox(current.classList);
+				setClosebox(current);
 				current.style.zIndex = lastSelectedZIndex;
 			}, false);
 			allInnerEvents[i].addEventListener("click", function(ev) {
@@ -70,8 +82,6 @@
 			zoomWrapper.setAttribute("id", "zoom");
 			zoomWrapper.appendChild(zIn);
 			zoomWrapper.appendChild(zOut);
-			let zoomIn = document.getElementById("zoom-in");
-			let zoomOut = document.getElementById("zoom-out");
 			zIn.addEventListener("mouseover", function(ev) {
 				if(checkIfCanZoomIn()) {
 					let target = ev.currentTarget;

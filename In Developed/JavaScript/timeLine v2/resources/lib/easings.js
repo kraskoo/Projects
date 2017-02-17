@@ -37,7 +37,7 @@ Where:
 	return {
 		easeInQuad: function (t, b, c, d) {
 			t /= d;
-			return c*t*t + b;
+			return c * t * t + b;
 		},
 		easeOutQuad: function (t, b, c, d) {
 			return -c * (t /= d) * (t - 2) + b;

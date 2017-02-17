@@ -96,6 +96,7 @@
 			if(canMove) {
 				releaseTime = extmdl.timeLine.getDateAsTimestampNextToMinute(new Date()).result();
 				elapsedTime = releaseTime - startTime;
+				console.log(elapsedTime);
 				let lineOnLeft = getLineLeftPosition();
 				releasePosition = lineOnLeft;
 				let elapsed = releasePosition - startPosition;

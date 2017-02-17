@@ -34,18 +34,18 @@ body {
 	background-image: url("../images/tinyline-dark.png");
 }
 
-.closebox {
-	background: transparent url("../images/closebox.svg") no-repeat scroll 0px 0px;
-}
-
-.closebox > p {
-	color: gray;
-}
-
 .openbox {
 	background: transparent url("../images/openbox.svg") no-repeat scroll 0px 0px;
 }
 
-.openbox > p {
+.closebox {
+	background: transparent url("../images/closebox.svg") no-repeat scroll 0px 0px;
+}
+
+.normal-text {
+	color: #999999;
+}
+
+.describe-text {
 	color: black;
 }

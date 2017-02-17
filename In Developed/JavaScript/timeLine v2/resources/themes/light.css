@@ -30,14 +30,6 @@ body {
 	background: transparent url("../images/openbox.svg") no-repeat scroll 0px 0px;
 }
 
-.closebox > p {
-	color: gray;
-}
-
-.openbox > p {
-	color: black;
-}
-
 .normal-text {
 	color: black;
 }

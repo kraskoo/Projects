@@ -205,6 +205,7 @@
 		}
 		
 		let paragraph = document.createElement("p");
+		extmdl.css.setDescribeText(paragraph.classList);
 		let dateMonth = extmdl.timeLine.getMonthAsBGName(date.month);
 		let dayFrameLabel = (date.day + " " + dateMonth + " " + date.year + " г.");
 		dayFrame.setAttribute("title", dayFrameLabel);

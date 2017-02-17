@@ -42,6 +42,7 @@
 		let container = document.createElement("div");
 		let font = model.font;
 		let header = document.createElement("p");
+		extmdl.css.setNormalText(header.classList);
 		if(font !== "default") container.style.fontFamily = font;
 		header.textContent = model.day.title.text;
 		appendTextPropertiesByNodeElement(header, model.day.title, "center");
@@ -50,6 +51,7 @@
 		let paragraphs = model.day.paragraphs;
 		for(let p = 0; p < paragraphs.length; p++) {
 			let paragraph = document.createElement("p");
+			extmdl.css.setNormalText(header.classList);
 			appendTextPropertiesByNodeElement(paragraph, paragraphs[p], "justify");
 			paragraph.textContent = paragraphs[p].text;
 			container.appendChild(paragraph);
@@ -101,7 +103,7 @@
 				imgTarget.style.maxHeight = imageWrapper.style.maxHeight = (parentContainerHeight - 143) + "px";
 				let currentHeight = parseFloat(imgTarget.style.maxHeight);
 				let percentageHeight = extmdl.handler.convertValueToPercentage(height, currentHeight);
-				let currentWidth = (width * (percentageHeight <= 1 ? percentageHeight : 1)).toFixed(2);
+				let currentWidth = (width * (percentageHeight < 1 ? percentageHeight : 1)).toFixed(2);
 				imageDescription.style.width = currentWidth + "px";
 				imgTarget.style.display = "block";
 				imgTarget.style.margin = imageDescription.style.margin = "auto";
@@ -135,6 +137,7 @@
 		let day = model.day;
 		let dayImages = day.images;
 		let header = document.createElement("p");
+		extmdl.css.setNormalText(header.classList);
 		let title = model.day.title;
 		header.textContent = title.text;
 		appendTextPropertiesByNodeElement(header, title, "center");
