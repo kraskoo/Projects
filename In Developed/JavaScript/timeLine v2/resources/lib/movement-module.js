@@ -10,6 +10,7 @@
 		yearsLine = document.getElementById("years-line");
 		yearsLineBefore = extmdl.css.pseudoStyleIfExists("#years-line::before");
 		screenWidth = screen.width;
+		afterMoveAction = null;
 	};
 	
 	function initializeDependent() {
@@ -96,32 +97,25 @@
 			if(canMove) {
 				releaseTime = extmdl.timeLine.getDateAsTimestampNextToMinute(new Date()).result();
 				elapsedTime = releaseTime - startTime;
-				console.log(elapsedTime);
 				let lineOnLeft = getLineLeftPosition();
 				releasePosition = lineOnLeft;
 				let elapsed = releasePosition - startPosition;
-				let afterMovePosition = elapsed * (elapsedTime * 0.006);
-				if(isMoveOnLeft) {
-					let toStart = distanceToStart();
-					if(afterMovePosition > toStart) afterMovePosition = toStart + 2;
-				} else {
-					let toEnd = distanceToEnd();
-					if(afterMovePosition < toEnd) afterMovePosition = toEnd - 2;
-				}
-				
-				let newPosition = lineOnLeft + afterMovePosition;
-				let interval = 15;
-				afterMoveAction = (() => {
-					extmdl.animate.toX(innerLine, interval, newPosition).start();
-					extmdl.animate.toX(yearsLine, interval, newPosition).start();
-					extmdl.animate.toX(yearsLineBefore, interval, -newPosition).start();
-				})();
+				if(Math.abs(elapsed) >= 160) {
+					afterMoveAction = extmdl.handler.moveToEndPoint(
+						elapsed, elapsedTime, releasePosition, isMoveOnLeft);
+					afterMoveAction.start();
+				} else clearAfterMove();
 			} else clearAfterMove();
 			isMouseDown = false;
 		}
 	};
 	
 	function clearAfterMove() {
+		if(afterMoveAction !== null) {
+			afterMoveAction.stop();
+		}
+		
+		afterMoveAction = null;
 		elapsedTime = 0;
 		startTime = 0;
 		releaseTime = 0;
@@ -159,7 +153,7 @@
 	};
 	
 	function canOpenBox(date) {
-		return (extmdl.timeLine.getDateAsTimestampNextToMinute(date).result() - startTime < 100) ||
+		return (extmdl.timeLine.getDateAsTimestampNextToMinute(date).result() - startTime < 300) ||
 			startTime === 0;
 	};
 	
@@ -173,8 +167,19 @@
 	
 	return {
 		canOpenBox: canOpenBox,
+		distanceToStart: distanceToStart,
+		distanceToEnd: distanceToEnd,
 		initialize: initialize,
 		initializeMovement: initializeMovement,
+		innerLine: function() {
+			return innerLine;
+		},
+		yearsLine: function() {
+			return yearsLine;
+		},
+		yearsLineBefore: function() {
+			return yearsLineBefore;
+		},
 		screenWidth: function() {
 			return screenWidth;
 		},

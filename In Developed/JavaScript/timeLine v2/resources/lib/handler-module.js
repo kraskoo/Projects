@@ -137,6 +137,73 @@
 		return parseFloat(extmdl.css.getStyleValueByElement(topContainer, "width"));
 	};
 	
+	function moveToEndPoint(distance, elapsedTime, releasePosition, isMoveOnLeft) {
+		let afterMovePosition = distance * (elapsedTime * 0.006);
+		if(isMoveOnLeft) {
+			let toStart = extmdl.movement.distanceToStart();
+			if(afterMovePosition > toStart) afterMovePosition = toStart;
+		} else {
+			let toEnd = extmdl.movement.distanceToEnd();
+			if(afterMovePosition < toEnd) afterMovePosition = toEnd;
+		}
+		
+		let newPosition = releasePosition + afterMovePosition;
+		let duration = parseInt(elapsedTime * 1.6);
+		let innerLineAnimation = new extmdl.animate.Animation({
+			target: extmdl.movement.innerLine(),
+			duration: duration,
+			properties: {
+				left: {
+					from: releasePosition + "px",
+					to: newPosition + "px"
+				}
+			},
+			easing: "easeInCubic"
+		});
+		let yearsLineAnimation = new extmdl.animate.Animation({
+			target: extmdl.movement.yearsLine(),
+			duration: duration,
+			properties: {
+				left: {
+					from: releasePosition + "px",
+					to: newPosition + "px"
+				}
+			},
+			easing: "easeInCubic"
+		});
+		let yearsLineBeforeAnimation = new extmdl.animate.Animation({
+			target: extmdl.movement.yearsLineBefore(),
+			duration: duration,
+			properties: {
+				left: {
+					from: (-1 * releasePosition) + "px",
+					to: (-1 * newPosition) + "px"
+				}
+			},
+			easing: "easeInCubic"
+		});
+		let moveAction = (function() {
+			return function() {
+				let animateInnerLine = innerLineAnimation.animate();
+				let animateYearsLine = yearsLineAnimation.animate();
+				let animateYearsLineBefore = yearsLineBeforeAnimation.animate();
+				return {
+					start: function() {
+						animateInnerLine.start();
+						animateYearsLine.start();
+						animateYearsLineBefore.start();
+					},
+					stop: function() {
+						animateInnerLine.stop();
+						animateYearsLine.stop();
+						animateYearsLineBefore.stop();
+					}
+				}
+			};
+		}()());
+		return moveAction;
+	};
+	
 	// (622, 6) => 37.32 or otherwise, 6% from 622 = 37.32
 	function convertValueFromPercentage(value, percentage) {
 		return value * (percentage / 100);
@@ -152,6 +219,7 @@
 		handleTopContainer: handleTopContainer,
 		getHandleOfMultipleImages: getHandleOfMultipleImages,
 		convertValueToPercentage: convertValueToPercentage,
-		convertValueFromPercentage: convertValueFromPercentage
+		convertValueFromPercentage: convertValueFromPercentage,
+		moveToEndPoint: moveToEndPoint
 	};
 }());
