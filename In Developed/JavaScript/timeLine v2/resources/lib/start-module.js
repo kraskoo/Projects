@@ -7,11 +7,11 @@
 	
 	return {
 		run: function(data) {
-			extmdl.animate.initialize();
-			extmdl.handler.initialize();
 			extmdl.string.initialRepeat();
 			extmdl.movement.initialize();
 			extmdl.initial.initialize(data);
+			extmdl.animate.initialize();
+			extmdl.handler.initialize();
 			extmdl.zoom.initialize();
 			run();
 		}
