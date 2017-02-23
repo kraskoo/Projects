@@ -17,7 +17,6 @@
 		let dayEventId = parseInt(current.getAttribute("data-id"));
 		let model = extmdl.repository.getDayById(dayEventId);
 		let modelContent = extmdl.data.getContainerByModel(model);
-		let modelType = modelContent.getAttribute("model");
 		topContainer.appendChild(modelContent);
 	};
 	

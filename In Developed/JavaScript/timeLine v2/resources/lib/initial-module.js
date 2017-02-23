@@ -6,6 +6,10 @@
 	function initialize(initData) {
 		data = initData;
 		settings = data.settings;
+		let theme = document.createElement("link");
+		theme.rel = "stylesheet";
+		theme.href = settings["theme"];
+		document.head.appendChild(theme);
 		currentFrameLeft = 0;
 		currentFrameWidth = 0;
 		currentlySelectedDates = [];
@@ -17,10 +21,6 @@
 		innerLineFrames = [];
 		yearFrames = [];
 		lastFrameTopPosition = -2;
-		let theme = document.createElement("link");
-		theme.rel = "stylesheet";
-		theme.href = settings["theme"];
-		document.head.appendChild(theme);
 	};
 	
 	function getSelectedDates() {

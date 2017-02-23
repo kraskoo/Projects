@@ -95,6 +95,14 @@
 				"title":"С повече от една снимка",
 				"source":"pages/1940/november/otherlayoutwithimages.xml"
 			}
+		},
+		"octomber":
+		{
+			"13":
+			{
+				"title":"С една снимка",
+				"source":"pages/1940/octomber/just-one-image.xml"
+			}
 		}
 	}
 }

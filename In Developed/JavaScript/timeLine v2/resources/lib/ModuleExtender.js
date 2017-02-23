@@ -32,7 +32,7 @@
 		}
 		
 		setTimeout(function() {
-			interval = setInterval(releaseOnInterval, 50);
+			interval = setInterval(releaseOnInterval, 30);
 		}, 50);
 	};
 	

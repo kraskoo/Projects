@@ -90,12 +90,11 @@
 				extmdl.css.getStyleValueByElement(parentContainer, "width")) - 4;
 			let parentContainerHeight = parseFloat(
 				extmdl.css.getStyleValueByElement(parentContainer, "height")) - 4;
-			if(!hasFullContainer) {
+			if(checkIfExtraInfoExists(day) && !hasFullContainer) {
 				halfWidth = parentContainerWidth / 2;
 				halfHeight = parentContainerHeight / 2;
 				let oneSixteen = (halfWidth / 8);
-				imageWrapper.style.maxWidth = imgTarget.style.maxWidth = "calc(" + halfWidth + "px - 5vw)";
-				imageWrapper.style.maxHeight = "calc(" + halfHeight + "px - 5vh)";
+				imageWrapper.style.minWidth = imgTarget.style.minWidth = "28vw";
 			} else {
 				imageWrapper.style.width = (parentContainerWidth - 68) + "px";
 				imageWrapper.style.height = (parentContainerHeight - 143) + "px";
@@ -113,10 +112,9 @@
 			if(checkIfExtraInfoExists(day) && !hasFullContainer) {
 				let extraInfo = day["extra-info"];
 				let extraInfoPage = document.createElement("div");
-				extraInfoPage.style.maxWidth = "calc(" + halfWidth + "px - 5vw)";
-				extraInfoPage.style.maxHeight = "calc(" + halfHeight + "px - 5vh)";
+				extraInfoPage.style.minWidth = "22vw";
 				extraInfoPage.style.float = extraInfo.alignment;
-				extraInfoPage.style.paddingTop = "10px";
+				extraInfoPage.style.paddingTop = "30px";
 				let extraInfoParagraph = document.createElement("p");
 				extraInfoPage.style.display = "block";
 				extraInfoPage.style.width = (halfWidth - 2) + "px";
