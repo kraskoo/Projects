@@ -1,0 +1,8 @@
+﻿<?xml version="1.0"?>
+<page type="image">
+	<title bold="false" italic="false">Заглавие с една снимка</title>
+	<images>
+		<image source="solar systems/Alpha-Centauri.jpg" />
+		<description bold="false" italic="true">"Hubble Space Telescope search for the transit of the Earth-mass exoplanet Alpha Centauri Bb"</description>
+	</images>
+</page>

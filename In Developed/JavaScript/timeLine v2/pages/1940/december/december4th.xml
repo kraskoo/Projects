@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0"?>
 <page type="text" font="Times New Roman">
-	<title size="30" bold="false" italic="false">Ако сте родени на 4 декември...</title>
-	<paragraph size="16" bold="true" italic="false">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas porttitor congue massa. Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.</paragraph>
-	<paragraph size="16" bold="false" italic="false">Nunc viverra imperdiet enim. Fusce est. Vivamus a tellus.</paragraph>
-	<paragraph size="16" bold="true" italic="true">Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Proin pharetra nonummy pede. Mauris et orci.</paragraph>
+	<title bold="false" italic="false">Ако сте родени на 4 декември...</title>
+	<paragraph bold="true" italic="false">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas porttitor congue massa. Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.</paragraph>
+	<paragraph bold="false" italic="false">Nunc viverra imperdiet enim. Fusce est. Vivamus a tellus.</paragraph>
+	<paragraph bold="true" italic="true">Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Proin pharetra nonummy pede. Mauris et orci.</paragraph>
 </page>

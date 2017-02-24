@@ -9,7 +9,7 @@ let act = extmdl.animate
 ---------------------------------------               | 
 Good example of that's how ease function works fine   |
 ---------------------------------------              \ /
-let div = extmdl.animate.createTestDiv();
+let div = extmdl.animate.createTestDiv();             v
 let a = new extmdl.animate.Animation({
 	target: div,
 	duration: 2500,

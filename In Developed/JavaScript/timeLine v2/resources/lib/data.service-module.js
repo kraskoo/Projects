@@ -1,5 +1,8 @@
 ﻿(function() {
 	const sourceImagesPath = "source-images/";
+	const widthPadding = 68;
+	const heightPadding = 143;
+	
 	let eventsById = {};
 	
 	function firstEvent() {
@@ -32,10 +35,23 @@
 	};
 	
 	function appendTextPropertiesByNodeElement(element, node, textAlign) {
-		element.style.fontSize = node.size + "px";
 		if(node.bold === "true") element.style.fontWeight = "bold";
 		if(node.italic === "true") element.style.fontStyle = "oblique";
 		element.style.textAlign = textAlign;
+	};
+	
+	function appendExtraInfo(container, day) {
+		let extraInfo = day["extra-info"];
+		let extraInfoPage = document.createElement("div");
+		extraInfoPage.style.width = "30vw";
+		extraInfoPage.style.float = extraInfo.alignment;
+		extraInfoPage.style.paddingTop = "2.4vh";
+		let extraInfoParagraph = document.createElement("p");
+		extraInfoPage.style.display = "block";
+		extraInfoParagraph.style.fontSize = "1vw";
+		extraInfoParagraph.textContent = extraInfo.text;
+		extraInfoPage.appendChild(extraInfoParagraph);
+		container.appendChild(extraInfoPage);
 	};
 	
 	function getTextPageContainerType(model) {
@@ -46,13 +62,15 @@
 		if(font !== "default") container.style.fontFamily = font;
 		header.textContent = model.day.title.text;
 		appendTextPropertiesByNodeElement(header, model.day.title, "center");
-		header.style.paddingBottom = "40px";
+		header.style.fontSize = "1.6vw";
+		header.style.paddingBottom = "2vh";
 		container.appendChild(header);
 		let paragraphs = model.day.paragraphs;
 		for(let p = 0; p < paragraphs.length; p++) {
 			let paragraph = document.createElement("p");
 			extmdl.css.setNormalText(header.classList);
 			appendTextPropertiesByNodeElement(paragraph, paragraphs[p], "justify");
+			paragraph.style.fontSize = "0.8vw";
 			paragraph.textContent = paragraphs[p].text;
 			container.appendChild(paragraph);
 		}
@@ -77,6 +95,7 @@
 		
 		imageDescription.textContent = dayImage.description.text;
 		appendTextPropertiesByNodeElement(imageDescription, dayImage.description, "left");
+		imageDescription.style.fontSize = "0.85vw";
 		imageWrapper.appendChild(img);
 		imageWrapper.appendChild(imageDescription);
 		img.addEventListener("load", function(ev) {
@@ -84,22 +103,18 @@
 			let width = imgTarget.width;
 			let height = imgTarget.height;
 			let parentContainer = container.parentNode;
-			let halfWidth = 0;
-			let halfHeight = 0;
 			let parentContainerWidth = parseFloat(
 				extmdl.css.getStyleValueByElement(parentContainer, "width")) - 4;
 			let parentContainerHeight = parseFloat(
 				extmdl.css.getStyleValueByElement(parentContainer, "height")) - 4;
 			if(checkIfExtraInfoExists(day) && !hasFullContainer) {
-				halfWidth = parentContainerWidth / 2;
-				halfHeight = parentContainerHeight / 2;
-				let oneSixteen = (halfWidth / 8);
-				imageWrapper.style.minWidth = imgTarget.style.minWidth = "28vw";
+				imageWrapper.style.paddingTop = "2vh";
+				imageWrapper.style.width = imgTarget.style.width = "30vw";
+				appendExtraInfo(container, day);
 			} else {
-				imageWrapper.style.width = (parentContainerWidth - 68) + "px";
-				imageWrapper.style.height = (parentContainerHeight - 143) + "px";
-				imgTarget.style.maxWidth = imageWrapper.style.maxWidth = parentContainerWidth + "px";
-				imgTarget.style.maxHeight = imageWrapper.style.maxHeight = (parentContainerHeight - 143) + "px";
+				imageWrapper.style.width = (parentContainerWidth - widthPadding) + "px";
+				imageWrapper.style.height = (parentContainerHeight - heightPadding) + "px";
+				imgTarget.style.maxHeight = imageWrapper.style.maxHeight = (parentContainerHeight - heightPadding) + "px";
 				let currentHeight = parseFloat(imgTarget.style.maxHeight);
 				let percentageHeight = extmdl.handler.convertValueToPercentage(height, currentHeight);
 				let currentWidth = (width * (percentageHeight < 1 ? percentageHeight : 1)).toFixed(2);
@@ -109,21 +124,6 @@
 			}
 			
 			container.appendChild(imageWrapper);
-			if(checkIfExtraInfoExists(day) && !hasFullContainer) {
-				let extraInfo = day["extra-info"];
-				let extraInfoPage = document.createElement("div");
-				extraInfoPage.style.minWidth = "22vw";
-				extraInfoPage.style.float = extraInfo.alignment;
-				extraInfoPage.style.paddingTop = "30px";
-				let extraInfoParagraph = document.createElement("p");
-				extraInfoPage.style.display = "block";
-				extraInfoPage.style.width = (halfWidth - 2) + "px";
-				extraInfoPage.style.height = (halfHeight - 2) + "px";
-				extraInfoParagraph.style.fontSize = (parseInt(title.size) - 10) + "px";
-				extraInfoParagraph.textContent = extraInfo.text;
-				extraInfoPage.appendChild(extraInfoParagraph);
-				container.appendChild(extraInfoPage);
-			}
 		}, false);
 		img.src = url;
 		return imageWrapper;
@@ -139,19 +139,20 @@
 		let title = model.day.title;
 		header.textContent = title.text;
 		appendTextPropertiesByNodeElement(header, title, "center");
+		header.style.fontSize = "1.6vw";
 		if(dayImages.length === 1) {
 			let dayImage = dayImages[0];
 			let currentImage = dayImage.image;
 			let wrapper = setupCurrentImage(currentImage, container, title, day, dayImage, false);
 			wrapper.style.display = "block";
-			wrapper.style.paddingTop = "10px";
+			wrapper.style.paddingTop = "2.4vh";
 		} else {
 			let multipleImages = [];
 			for(let i = 0; i < dayImages.length; i++) {
 				let currentImage = dayImages[i].image;
 				let wrapper = setupCurrentImage(currentImage, container, title, day, dayImages[i], true);
 				wrapper.style.position = "absolute";
-				wrapper.style.top = "50px";
+				wrapper.style.top = "6vh";
 				wrapper.style.left = 0;
 				wrapper.style.display = i === 0 ? "block" : "none";
 				wrapper.style.opacity = i !== 0 ? 0 : 1;

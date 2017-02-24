@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0"?>
 <page type="text" font="default">
-	<title size="30" bold="false" italic="false">Твърде много заглавия а е само първи.</title>
-	<paragraph size="16" bold="true" italic="false">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas porttitor congue massa. Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.</paragraph>
-	<paragraph size="16" bold="false" italic="false">Nunc viverra imperdiet enim. Fusce est. Vivamus a tellus.</paragraph>
+	<title bold="false" italic="false">Твърде много заглавия а е само първи.</title>
+	<paragraph bold="true" italic="false">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas porttitor congue massa. Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.</paragraph>
+	<paragraph bold="false" italic="false">Nunc viverra imperdiet enim. Fusce est. Vivamus a tellus.</paragraph>
 </page>

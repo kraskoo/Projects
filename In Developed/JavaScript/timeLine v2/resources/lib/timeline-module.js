@@ -92,7 +92,7 @@
 					return milliseconds;
 				},
 				result: function() {
-					return parseInt (minutes + seconds + milliseconds + "");
+					return parseInt(minutes + seconds + milliseconds + "");
 				}
 			};
 		}

@@ -40,15 +40,13 @@
 	};
 	
 	function changeToNext() {
-		let previousIndex = currentImageIndex;
-		currentImageIndex++;
+		let previousIndex = currentImageIndex++;
 		if(currentImageIndex === multipleImageCollection.length) currentImageIndex = 0;
 		changePicture(previousIndex);
 	};
 	
 	function changeToPrevious() {
-		let previousIndex = currentImageIndex;
-		currentImageIndex--;
+		let previousIndex = currentImageIndex--;
 		if(currentImageIndex === -1) currentImageIndex = multipleImageCollection.length - 1;
 		changePicture(previousIndex);
 	};
