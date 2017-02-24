@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0"?>
-<page type="text" font="default">
+<page type="text" font="Times New Roman">
 	<title bold="false" italic="false">Заглавие</title>
 	<paragraph bold="true" italic="false">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas porttitor congue massa. Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.</paragraph>
 	<paragraph bold="false" italic="false">Nunc viverra imperdiet enim. Fusce est. Vivamus a tellus.</paragraph>

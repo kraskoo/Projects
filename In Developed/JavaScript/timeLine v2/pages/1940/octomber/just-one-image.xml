@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0"?>
-<page type="image">
+<page type="image" font="default">
 	<title bold="false" italic="false">Заглавие с една снимка</title>
 	<images>
 		<image source="solar systems/Alpha-Centauri.jpg" />

@@ -34,9 +34,10 @@
 		container.style.display = "block";
 	};
 	
-	function appendTextPropertiesByNodeElement(element, node, textAlign) {
+	function appendTextPropertiesByNodeElement(element, node, font, textAlign) {
 		if(node.bold === "true") element.style.fontWeight = "bold";
 		if(node.italic === "true") element.style.fontStyle = "oblique";
+		if(font !== "default") element.style.fontFamily = font;
 		element.style.textAlign = textAlign;
 	};
 	
@@ -59,9 +60,8 @@
 		let font = model.font;
 		let header = document.createElement("p");
 		extmdl.css.setNormalText(header.classList);
-		if(font !== "default") container.style.fontFamily = font;
 		header.textContent = model.day.title.text;
-		appendTextPropertiesByNodeElement(header, model.day.title, "center");
+		appendTextPropertiesByNodeElement(header, model.day.title, font, "center");
 		header.style.fontSize = "1.6vw";
 		header.style.paddingBottom = "2vh";
 		container.appendChild(header);
@@ -69,7 +69,7 @@
 		for(let p = 0; p < paragraphs.length; p++) {
 			let paragraph = document.createElement("p");
 			extmdl.css.setNormalText(header.classList);
-			appendTextPropertiesByNodeElement(paragraph, paragraphs[p], "justify");
+			appendTextPropertiesByNodeElement(paragraph, paragraphs[p], font, "justify");
 			paragraph.style.fontSize = "0.8vw";
 			paragraph.textContent = paragraphs[p].text;
 			container.appendChild(paragraph);
@@ -83,7 +83,7 @@
 		return Object.keys(day).includes("extra-info");
 	};
 	
-	function setupCurrentImage(currentImage, container, title, day, dayImage, hasFullContainer) {
+	function setupCurrentImage(currentImage, container, title, day, dayImage, font, hasFullContainer) {
 		let url = (sourceImagesPath + currentImage.source);
 		let img = new Image();
 		let imageWrapper = document.createElement("div");
@@ -91,7 +91,7 @@
 		imageDescription.classList.add("describe-text");
 		if(!hasFullContainer) imageWrapper.style.float = currentImage.alignment;
 		imageDescription.textContent = dayImage.description.text;
-		appendTextPropertiesByNodeElement(imageDescription, dayImage.description, "left");
+		appendTextPropertiesByNodeElement(imageDescription, dayImage.description, font, "left");
 		imageDescription.style.fontSize = "0.85vw";
 		imageWrapper.appendChild(img);
 		imageWrapper.appendChild(imageDescription);
@@ -129,25 +129,26 @@
 	function getImagePageContainerType(model) {
 		let container = document.createElement("div");
 		container.style.position = "relative";
+		let font = model.font;
 		let day = model.day;
 		let dayImages = day.images;
 		let header = document.createElement("p");
 		extmdl.css.setNormalText(header.classList);
 		let title = model.day.title;
 		header.textContent = title.text;
-		appendTextPropertiesByNodeElement(header, title, "center");
+		appendTextPropertiesByNodeElement(header, title, font, "center");
 		header.style.fontSize = "1.6vw";
 		if(dayImages.length === 1) {
 			let dayImage = dayImages[0];
 			let currentImage = dayImage.image;
-			let wrapper = setupCurrentImage(currentImage, container, title, day, dayImage, false);
+			let wrapper = setupCurrentImage(currentImage, container, title, day, dayImage, font, false);
 			wrapper.style.display = "block";
 			wrapper.style.paddingTop = "2.4vh";
 		} else {
 			let multipleImages = [];
 			for(let i = 0; i < dayImages.length; i++) {
 				let currentImage = dayImages[i].image;
-				let wrapper = setupCurrentImage(currentImage, container, title, day, dayImages[i], true);
+				let wrapper = setupCurrentImage(currentImage, container, title, day, dayImages[i], font, true);
 				wrapper.style.position = "absolute";
 				wrapper.style.top = "6vh";
 				wrapper.style.left = 0;

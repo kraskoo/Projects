@@ -142,6 +142,10 @@ a.animate().start();
 					if(self.properties[prop].fromUnit === "none") {
 						self.style[prop] = self.properties[prop].to;
 					}
+					
+					if(parseInt(self.properties[prop].current) !== parseInt(self.properties[prop].to)) {
+						self.properties[prop].current = self.properties[prop].to;
+					}
 				}
 			}
 			
