@@ -97,8 +97,7 @@
 			if(canMove) {
 				releaseTime = extmdl.timeLine.getDateAsTimestampNextToMinute(new Date()).result();
 				elapsedTime = releaseTime - startTime;
-				let lineOnLeft = getLineLeftPosition();
-				releasePosition = lineOnLeft;
+				releasePosition = getLineLeftPosition();
 				let elapsed = releasePosition - startPosition;
 				if(Math.abs(elapsed) >= 160) {
 					afterMoveAction = extmdl.handler.moveToEndPoint(
@@ -111,10 +110,7 @@
 	};
 	
 	function clearAfterMove() {
-		if(afterMoveAction !== null) {
-			afterMoveAction.stop();
-		}
-		
+		if(afterMoveAction !== null) afterMoveAction.stop();
 		afterMoveAction = null;
 		elapsedTime = 0;
 		startTime = 0;

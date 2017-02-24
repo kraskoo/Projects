@@ -89,10 +89,7 @@
 		let imageWrapper = document.createElement("div");
 		let imageDescription = document.createElement("p");
 		imageDescription.classList.add("describe-text");
-		if(!hasFullContainer) {
-			imageWrapper.style.float = currentImage.alignment;
-		}
-		
+		if(!hasFullContainer) imageWrapper.style.float = currentImage.alignment;
 		imageDescription.textContent = dayImage.description.text;
 		appendTextPropertiesByNodeElement(imageDescription, dayImage.description, "left");
 		imageDescription.style.fontSize = "0.85vw";
