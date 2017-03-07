@@ -1,6 +1,6 @@
 ﻿(function() {
-	let currentZoom, dividerPerZoomLevel, lastSelectedZIndex, normalZoom,
-		middleLinePosition, screenWidth, zoomBound, zoomOnScroll, zoomButtonsOn;
+	let currentZoom, dividerPerZoomLevel, normalZoom, middleLinePosition,
+		screenWidth, zoomBound, zoomOnScroll, zoomButtonsOn;
 
 	function initialize() {
 		let settings = extmdl.initial.settings();
@@ -12,41 +12,13 @@
 		zoomButtonsOn = settings["zoomButtonsOn"];
 		zoomBound = Math.round(normalZoom / (dividerPerZoomLevel + 1));
 		currentZoom = normalZoom;
-		lastSelectedZIndex = 0;
 	};
 	
 	function getCurrentZoom() {
 		return currentZoom;
 	};
 	
-	function setOpenbox(current) {
-		let currentParagraph = current.childNodes[0];
-		extmdl.css.setOpenbox(current.classList);
-		extmdl.css.setNormalText(currentParagraph.classList);
-	};
-	
-	function setClosebox(current) {
-		let currentParagraph = current.childNodes[0];
-		extmdl.css.setClosebox(current.classList);
-		extmdl.css.setDescribeText(currentParagraph.classList);
-	};
-	
 	function initializeZoom() {
-		let allInnerEvents = document.querySelectorAll("#inner-event");
-		for(let i = 0; i < allInnerEvents.length; i++) {
-			allInnerEvents[i].addEventListener("mouseover", function(ev) {
-				let current = ev.currentTarget;
-				setOpenbox(current);
-				lastSelectedZIndex = current.style.zIndex;
-				current.style.zIndex = extmdl.timeLine.maxZIndex;
-			}, false);
-			allInnerEvents[i].addEventListener("mouseout", function(ev) {
-				let current = ev.currentTarget;
-				setClosebox(current);
-				current.style.zIndex = lastSelectedZIndex;
-			}, false);
-		}
-		
 		let innerLine = document.getElementById("inner-line");
 		if(zoomOnScroll) {
 			innerLine.addEventListener("wheel", function(ev) {
@@ -142,6 +114,9 @@
 	};
 	
 	return {
+		getLastZIndex: function() {
+			return lastSelectedZIndex;
+		},
 		initialize: initialize,
 		initializeZoom: initializeZoom,
 		currentZoom: getCurrentZoom

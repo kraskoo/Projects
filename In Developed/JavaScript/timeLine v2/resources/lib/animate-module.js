@@ -137,7 +137,6 @@ a.animate().start();
 			
 			function stop() {
 				if(self.request) cancelAnimationFrame(self.request);
-				isStopped = true;
 				for(let prop in self.properties) {
 					if(self.properties[prop].fromUnit === "none") {
 						self.style[prop] = self.properties[prop].to;
@@ -148,11 +147,16 @@ a.animate().start();
 						self.style[prop] = self.properties[prop].current;
 					}
 				}
+				
+				isStopped = true;
 			}
 			
 			return {
 				start: start,
-				stop: stop
+				stop: stop,
+				isStopped: function() {
+					return isStopped;
+				}
 			}
 		}
 	};

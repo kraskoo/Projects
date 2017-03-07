@@ -4,6 +4,7 @@
 		extmdl.handler.listenFramesOnClick();
 		extmdl.zoom.initializeZoom();
 		extmdl.movement.initializeMovement();
+		extmdl.handler.getFramesHandler();
 	};
 	
 	return {

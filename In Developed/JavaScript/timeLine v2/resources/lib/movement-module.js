@@ -10,12 +10,12 @@
 		yearsLine = document.getElementById("years-line");
 		yearsLineBefore = extmdl.css.pseudoStyleIfExists("#years-line::before");
 		screenWidth = screen.width;
+		middleOfScreen = screenWidth / 2;
 		afterMoveAction = null;
 	};
 	
 	function initializeDependent() {
 		lineWidth = bottom.scrollWidth;
-		middleOfScreen = screen.width / 2;
 		innerLine.style.left = -screenWidth + "px";
 		yearsLine.style.left = -screenWidth + "px";
 		yearsLineBefore.style.left = -screenWidth + "px";
@@ -166,7 +166,9 @@
 		distanceToEnd: distanceToEnd,
 		initialize: initialize,
 		initializeMovement: initializeMovement,
-		lineLeftPosition: getLineLeftPosition,
+		lineLeftPosition: function() {
+			return getLineLeftPosition();
+		},
 		middleOfScreen: function() {
 			return middleOfScreen;
 		},
