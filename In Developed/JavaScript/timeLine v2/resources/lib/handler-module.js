@@ -167,7 +167,7 @@
 		}
 		
 		changeImageAction = null;
-		currentImageIndex = -1;
+		currentImageIndex = 0;
 		multipleImageCollection = null;
 	};
 	
@@ -181,14 +181,20 @@
 	};
 	
 	function changeToNext() {
-		let nextIndex = currentImageIndex++;
-		if(currentImageIndex === multipleImageCollection.length) currentImageIndex = 0;
+		// let nextIndex = currentImageIndex++;
+		// if(currentImageIndex === multipleImageCollection.length) currentImageIndex = 0;
+		// I think these two rows below and these two rows above this comment has exactly the same meaning :)
+		let nextIndex = currentImageIndex;
+		currentImageIndex = (currentImageIndex + 1) % multipleImageCollection.length;
 		changePicture(nextIndex);
 	};
 	
 	function changeToPrevious() {
-		let previousIndex = currentImageIndex--;
-		if(currentImageIndex === -1) currentImageIndex = multipleImageCollection.length - 1;
+		// let previousIndex = currentImageIndex--;
+		// if(currentImageIndex === -1) currentImageIndex = multipleImageCollection.length - 1;
+		// I think these two rows below and these two rows above this comment has exactly the same meaning :)
+		let previousIndex = currentImageIndex;
+		currentImageIndex = (multipleImageCollection.length + (currentImageIndex - 1)) % multipleImageCollection.length;
 		changePicture(previousIndex);
 	};
 	
