@@ -1,12 +1,22 @@
 ﻿(function() {
-	let topContainer, currentImageIndex, multipleImageCollection, changeImageAction;
+	let changeImageAction, currentImageIndex, multipleImageCollection, topContainer;
 	function initialize() {
 		topContainer = document.getElementById("top");
 		resetCurrentImageCollection();
-		innerInitializer();
+		listenTopContainerOnClick();
 	};
 	
-	function innerInitializer() {
+	function listenFramesOnClick() {
+		let events = document.querySelectorAll("#inner-event");
+		for(let i = 0; i < events.length; i++) {
+			events[i].addEventListener("click", function(ev) {
+				if(extmdl.movement.canOpenBox(new Date()))
+					handleTopContainer(ev);
+			}, false);
+		}
+	};
+	
+	function listenTopContainerOnClick() {
 		topContainer.addEventListener("click", onClickTopContainer, false);
 	};
 	
@@ -15,9 +25,33 @@
 		if(topContainer.childNodes.length > 0) topContainer.removeChild(topContainer.childNodes[0]);
 		let current = container.currentTarget;
 		let dayEventId = parseInt(current.getAttribute("data-id"));
+		getHandleMovementToNextFrame(dayEventId);
 		let model = extmdl.repository.getDayById(dayEventId);
 		let modelContent = extmdl.data.getContainerByModel(model);
 		topContainer.appendChild(modelContent);
+	};
+	
+	function getHandleMovementToNextFrame(dayEventId) {
+		let currentFrame = extmdl.data.getFrameById(dayEventId);
+		let screenWidth = extmdl.movement.screenWidth();
+		let frameLeft = getLeftOnFrame(currentFrame);
+		let subtract = getSubtractionTimes(frameLeft, screenWidth);
+		let currentLeftPosition = (frameLeft - (subtract * screenWidth));
+		let middleScreen = extmdl.movement.middleOfScreen();
+		let isMoveOnLeft = currentLeftPosition > middleScreen;
+		let distance = currentLeftPosition - middleScreen;
+		let moveAction = moveToNewDestination(isMoveOnLeft, distance, middleScreen, 1500);
+		// moveAction.start();
+	};
+	
+	function getSubtractionTimes(frameLeft, screenWidth) {
+		let times = 0;
+		do times++; while(screenWidth * times >= frameLeft);
+		return times;
+	};
+	
+	function getLeftOnFrame(frame) {
+		return parseFloat(frame.style.left);
 	};
 	
 	function resetCurrentImageCollection() {
@@ -40,9 +74,9 @@
 	};
 	
 	function changeToNext() {
-		let previousIndex = currentImageIndex++;
+		let nextIndex = currentImageIndex++;
 		if(currentImageIndex === multipleImageCollection.length) currentImageIndex = 0;
-		changePicture(previousIndex);
+		changePicture(nextIndex);
 	};
 	
 	function changeToPrevious() {
@@ -134,18 +168,12 @@
 		return parseFloat(extmdl.css.getStyleValueByElement(topContainer, "width"));
 	};
 	
-	function moveToEndPoint(distance, elapsedTime, releasePosition, isMoveOnLeft) {
-		let afterMovePosition = distance * (elapsedTime * 0.006);
-		if(isMoveOnLeft) {
-			let toStart = extmdl.movement.distanceToStart();
-			if(afterMovePosition > toStart) afterMovePosition = toStart;
-		} else {
-			let toEnd = extmdl.movement.distanceToEnd();
-			if(afterMovePosition < toEnd) afterMovePosition = toEnd;
-		}
-		
-		let newPosition = releasePosition + afterMovePosition;
-		let duration = parseInt(elapsedTime * 1.6);
+	function moveToNewDestination(isMoveOnLeft, newDestination, releasePosition, duration) {
+		let toStart = extmdl.movement.distanceToStart();
+		let toEnd = extmdl.movement.distanceToEnd();
+		if(isMoveOnLeft && newDestination > toStart) newDestination = toStart;
+		else if(!isMoveOnLeft && newDestination < toEnd) newDestination = toEnd;
+		let newPosition = releasePosition + newDestination;
 		let innerLineAnimation = new extmdl.animate.Animation({
 			target: extmdl.movement.innerLine(),
 			duration: duration,
@@ -214,9 +242,10 @@
 	return {
 		initialize: initialize,
 		handleTopContainer: handleTopContainer,
+		listenFramesOnClick: listenFramesOnClick,
 		getHandleOfMultipleImages: getHandleOfMultipleImages,
 		convertValueToPercentage: convertValueToPercentage,
 		convertValueFromPercentage: convertValueFromPercentage,
-		moveToEndPoint: moveToEndPoint
+		moveToNewDestination: moveToNewDestination
 	};
 }());

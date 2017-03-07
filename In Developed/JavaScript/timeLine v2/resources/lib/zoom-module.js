@@ -45,11 +45,6 @@
 				setClosebox(current);
 				current.style.zIndex = lastSelectedZIndex;
 			}, false);
-			allInnerEvents[i].addEventListener("click", function(ev) {
-				if(extmdl.movement.canOpenBox(new Date())) {
-					extmdl.handler.handleTopContainer(ev);
-				}
-			}, false);
 		}
 		
 		let innerLine = document.getElementById("inner-line");

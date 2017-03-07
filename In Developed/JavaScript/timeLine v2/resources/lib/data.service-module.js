@@ -191,7 +191,7 @@
 		getFrameById: function(id) {
 			return eventsById[id];
 		},
-		getFrameCount: function() {
+		frameCount: function() {
 			return count();
 		},
 		first: function() {

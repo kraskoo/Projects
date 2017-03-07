@@ -99,11 +99,10 @@
 				elapsedTime = releaseTime - startTime;
 				releasePosition = getLineLeftPosition();
 				let elapsed = releasePosition - startPosition;
-				if(Math.abs(elapsed) >= 160) {
-					afterMoveAction = extmdl.handler.moveToEndPoint(
-						elapsed, elapsedTime, releasePosition, isMoveOnLeft);
-					afterMoveAction.start();
-				} else clearAfterMove();
+				let newDestination = (elapsed * (elapsedTime * 0.001)) * 2.5;
+				let duration = parseInt(elapsedTime * 1.5);
+				afterMoveAction = extmdl.handler.moveToNewDestination(isMoveOnLeft, newDestination, releasePosition, duration);
+				afterMoveAction.start();
 			} else clearAfterMove();
 			isMouseDown = false;
 		}
@@ -167,6 +166,10 @@
 		distanceToEnd: distanceToEnd,
 		initialize: initialize,
 		initializeMovement: initializeMovement,
+		lineLeftPosition: getLineLeftPosition,
+		middleOfScreen: function() {
+			return middleOfScreen;
+		},
 		innerLine: function() {
 			return innerLine;
 		},
