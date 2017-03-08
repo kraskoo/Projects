@@ -1,9 +1,16 @@
 ﻿(function() {
-	let changeFrameMoveAction, changeImageAction, currentImageIndex, multipleImageCollection,
-		previousFrame, lastSelectedFrame, hasHoveredFrame, selectionZIndex, topContainer;
+	let changeFrameMoveAction, changeImageAction, currentFrameIndex, currentImageIndex, multipleImageCollection,
+		hasHoverNextArrow, hasHoverPreviousArrow, nextArrowId, nextArrowBound, previousArrowBound, previousArrowId,
+		permittedHeight, previousFrame, lastSelectedFrame, hasHoveredFrame, selectionZIndex, topContainer;
 		
 	function initialize() {
+		hasHoverNextArrow = false;
+		hasHoverPreviousArrow = false;
+		nextArrowBound = null;
+		previousArrowBound = null;
 		topContainer = document.getElementById("top");
+		permittedHeight = window.screen.height -
+			parseFloat(extmdl.css.getStyleValueByElement(document.getElementById("bottom"), "height"));
 		resetCurrentImageCollection();
 		listenTopContainerOnClick();
 		selectionZIndex = extmdl.timeLine.maxZIndex + 1;
@@ -11,6 +18,46 @@
 		lastSelectedFrame = null;
 		previousFrame = null;
 		changeFrameMoveAction = null;
+		getHandleMouseOnWindow();
+	};
+	
+	function getHandleMouseOnWindow() {
+		window.addEventListener("mousemove", mouseMovement, false);
+	};
+	
+	function mouseMovement(ev) {
+		if(ev.clientY < permittedHeight) {
+			if(nextArrowBound === null && extmdl.css.getNextArrowClassOnHover().width !== "") {
+				nextArrowBound = (function(x) {
+					return (window.screen.width - parseFloat(extmdl.css.getNextArrowClassOnHover().width)) <= x;
+				});
+				previousArrowBound = (function(x) {
+					return parseFloat(extmdl.css.getPreviousArrowClassOnHover().width) >= x;
+				});
+				previousArrowId = document.getElementById("previous-arrow");
+				nextArrowId = document.getElementById("next-arrow");
+			}
+			
+			if(previousArrowBound !== null && previousArrowBound(ev.clientX)) {
+				hasHoverPreviousArrow = true;
+				extmdl.css.setPreviousArrowOnHover(previousArrowId.classList);
+				extmdl.css.getMouseCursor("pointer");
+			} else if(hasHoverPreviousArrow) {
+				hasHoverPreviousArrow = false;
+				extmdl.css.setPreviousArrowOnNormal(previousArrowId.classList);
+				extmdl.css.getMouseCursor("default");
+			}
+			
+			if(nextArrowBound !== null && nextArrowBound(ev.clientX)) {
+				hasHoverNextArrow = true;
+				extmdl.css.setNextArrowOnHover(nextArrowId.classList);
+				extmdl.css.getMouseCursor("pointer");
+			} else if(hasHoverNextArrow) {
+				hasHoverNextArrow = false;
+				extmdl.css.setNextArrowOnNormal(nextArrowId.classList);
+				extmdl.css.getMouseCursor("default");
+			}
+		}
 	};
 	
 	function getFramesHandler() {

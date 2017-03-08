@@ -76,7 +76,14 @@
 				}
 			}
 		}
-	}
+	};
+	
+	function getSvgAsBase64String(xml) {
+		let serializer = new XMLSerializer();
+		let svg = serializer.serializeToString(xml);
+		let svgToBase64 = window.btoa(svg);
+		return ("data:image/svg+xml;base64," + svgToBase64);
+	};
 	
 	return {
 		setYearsData: function(years, data) {
@@ -90,6 +97,7 @@
 		getDayById: function(id) {
 			return daysById[id];
 		},
+		getSvgAsBase64String: getSvgAsBase64String,
 		checkDataFiles: function(outterDataCount) {
 			return eventCount === count && outterDataCount === yearsCount;
 		},

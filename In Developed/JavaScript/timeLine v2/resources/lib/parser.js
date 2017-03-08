@@ -107,10 +107,29 @@
 		}
 	};
 	
-	function redirectToXmlWorker(response, onResponse) {
-		let domParser = new DOMParser();
-		let xml = domParser.parseFromString(response, "application/xml");
-		parseXml(xml, onResponse);
+	function getHeaderByContentType(contentType) {
+		if(typeof(contentType) !== "string") {
+			throw new Error(
+				"The function accept only one parameter in `string` type. Anything else is unacceptable or it is not nessesary.");
+		}
+		
+		switch(contentType) {
+			case "xml": return "application/xml";
+			case "svg": return "image/svg+xml";
+			default: throw new Error("Unknow content type.");
+		}
+	};
+	
+	function redirectToXmlWorker(response, onResponse, contentType = "xml") {
+		let header = getHeaderByContentType(contentType);
+			let domParser = new DOMParser();
+			let xml = domParser.parseFromString(response, header);
+		if(contentType === "xml") {
+			parseXml(xml, onResponse);
+		} else if(contentType === "svg") {
+			xml.rootElement.style.fill = "rgb(0, 0, 255)";
+			onResponse(xml);
+		}
 	};
 	
 	function redirectToJsonWorker(response, onResponse) {
@@ -148,11 +167,13 @@
 		onResponse(json);
 	};
 	
-	function redirectResponse(url, callback, onResponse) {
+	function redirectResponse(url, callback, onResponse, contentType = null) {
 		let xhttp = new XMLHttpRequest();
 		xhttp.addEventListener("readystatechange", function() {
 			if(xhttp.readyState === this.DONE && xhttp.status === 200) {
-				callback(xhttp.response, onResponse);
+				contentType === null ?
+					callback(xhttp.response, onResponse) :
+					callback(xhttp.response, onResponse, contentType);
 			}
 		}, false);
 		xhttp.open("GET", url, true);
@@ -171,6 +192,13 @@
 				url,
 				redirectToJsonWorker,
 				onParsedResponse);
+		},
+		acceptSvg: function(url, onParsedResponse) {
+			redirectResponse(
+				url,
+				redirectToXmlWorker,
+				onParsedResponse,
+				"svg");
 		}
 	};
 }());
