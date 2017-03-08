@@ -225,17 +225,17 @@
 		currentlySelectedDates.push(dotDayFrame);
 	};
 	
-	function setupChangePageArrows(xml, isLeftArrowOnSet = true) {
+	function setupChangePageArrows(xml, arrowElements, isLeftArrowOnSet = true) {
 		let root = xml.rootElement;
 		let size = settings["arrowsSize"];
 		root.height.baseVal.value = size;
 		root.width.baseVal.value = size;
 		if(isLeftArrowOnSet) {
 			let leftArrowString = extmdl.repository.getSvgAsBase64String(root);
-			extmdl.data.appendPreviousArrowStringToId(leftArrowString, size);
+			extmdl.data.setupPreviousArrowElements(leftArrowString, size, arrowElements);
 		} else {
 			let rightArrowString = extmdl.repository.getSvgAsBase64String(root);
-			extmdl.data.appendNextArrowStringToId(rightArrowString, size);
+			extmdl.data.setupNextArrowElements(rightArrowString, size, arrowElements);
 		}
 	};
 	
@@ -254,12 +254,25 @@
 		innerLineFrames: getInnerLineFrames,
 		settings: getSettings,
 		setupChangePageArrows: function() {
-			let leftSvgXmlArrow = extmdl.parser.acceptSvg(
-					"resources/images/arrow-point-to-left.svg",
-					(xml) => { setupChangePageArrows(xml); });
-			let rightSvgXmlArrow = extmdl.parser.acceptSvg(
-					"resources/images/arrow-point-to-right.svg",
-					(xml) => { setupChangePageArrows(xml, false); });
+			let arrowPackedElements = extmdl.css.getPackedScreenArrowElements();
+			let nextArrowElements = (function() {
+				return {
+					nextArrowIdStyle: arrowPackedElements.nextArrowIdStyle(),
+					nextHoverArrowClass: arrowPackedElements.nextHoverArrowClass(),
+					nextArrowClassNormal: arrowPackedElements.nextArrowClassNormal()
+				}
+			}());
+			let previousArrowElements = (function() {
+				return {
+					previousArrowIdStyle: arrowPackedElements.previousArrowIdStyle(),
+					previousHoverArrowClass: arrowPackedElements.previousHoverArrowClass(),
+					previousArrowClassNormal: arrowPackedElements.previousArrowClassNormal()
+				}
+			}());
+			extmdl.parser.acceptSvg("resources/images/arrow-point-to-left.svg",
+					(xml) => { setupChangePageArrows(xml, previousArrowElements); });
+			extmdl.parser.acceptSvg("resources/images/arrow-point-to-right.svg",
+					(xml) => { setupChangePageArrows(xml, nextArrowElements, false); });
 		},
 		leftSideStartBound: getLeftSideStartBound,
 		yearFrames: getYearFrames

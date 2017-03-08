@@ -1,16 +1,17 @@
 ﻿(function() {
 	function run() {
 		extmdl.initial.renderYearAndEvents(extmdl.zoom.currentZoom());
+		extmdl.initial.setupChangePageArrows();
 		extmdl.handler.listenFramesOnClick();
 		extmdl.zoom.initializeZoom();
 		extmdl.movement.initializeMovement();
 		extmdl.handler.getFramesHandler();
-		extmdl.initial.setupChangePageArrows();
+		extmdl.handler.getHandleMouseOnWindow();
 	};
 	
 	return {
 		run: function(data) {
-			extmdl.css.createScreenArrowsIds();
+			extmdl.css.initializeScreenArrowsParts();
 			extmdl.string.initialRepeat();
 			extmdl.movement.initialize();
 			extmdl.initial.initialize(data);

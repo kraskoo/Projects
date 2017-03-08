@@ -175,12 +175,12 @@
 		styleId.top = calcTopPosition;
 	};
 	
-	function appendPreviousArrowStringToId(base64String, size) {
-		extmdl.css.getPreviousArrowClassNormal().width = "50px";
-		let previousArrow = document.createElement("div");
-		let previousStyleId = extmdl.css.getPreviousIdStyle();
-		let previousArrowClassOnHover = extmdl.css.getPreviousArrowClassOnHover();
-		previousArrowClassOnHover.width = (size + 65) + "px";
+	function setupPreviousArrowElements(base64String, size, previousArrowElements) {
+		previousArrowElements.previousArrowClassNormal.width = size + "px";
+		let previousArrow = document.createElement("div");		
+		let previousStyleId = previousArrowElements.previousArrowIdStyle;
+		let previousArrowClassOnHover = previousArrowElements.previousHoverArrowClass;
+		previousArrowClassOnHover.width = (size + 35) + "px";
 		setupCommonProperties(previousStyleId, size);
 		previousStyleId.background = "url(" + base64String + ") no-repeat center left";
 		previousArrow.setAttribute("id", "previous-arrow");
@@ -188,12 +188,12 @@
 		document.body.insertBefore(previousArrow, document.body.childNodes[0]);
 	};
 	
-	function appendNextArrowStringToId(base64String, size) {
-		extmdl.css.getNextArrowClassNormal().width = "50px";
+	function setupNextArrowElements(base64String, size, nextArrowElements) {
+		nextArrowElements.nextArrowClassNormal.width = size + "px";
 		let nextArrow = document.createElement("div");
-		let nextStyleId = extmdl.css.getNextIdStyle();
-		let nextArrowClassOnHover = extmdl.css.getNextArrowClassOnHover();
-		nextArrowClassOnHover.width = (size + 65) + "px";
+		let nextStyleId = nextArrowElements.nextArrowIdStyle;
+		let nextArrowClassOnHover = nextArrowElements.nextHoverArrowClass;
+		nextArrowClassOnHover.width = (size + 35) + "px";
 		setupCommonProperties(nextStyleId, size);
 		nextStyleId.background = "url(" + base64String + ") no-repeat center right";
 		nextArrow.setAttribute("id", "next-arrow");
@@ -236,7 +236,7 @@
 		last: function() {
 			return lastEvent();
 		},
-		appendPreviousArrowStringToId: appendPreviousArrowStringToId,
-		appendNextArrowStringToId: appendNextArrowStringToId
+		setupPreviousArrowElements: setupPreviousArrowElements,
+		setupNextArrowElements: setupNextArrowElements
 	};
 }());

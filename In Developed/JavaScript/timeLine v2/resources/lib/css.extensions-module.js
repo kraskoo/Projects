@@ -45,41 +45,45 @@
 		return document.head.children[2].sheet;
 	};
 	
-	function createScreenArrowsIds() {
+	function initializeScreenArrows() {
 		let previousArrowId = "#previous-arrow { position: absolute; }";
 		let nextArrowId = "#next-arrow { position: absolute; }";
+		let previousArrowNormalClass = ".previous-arrow-normal { left: 15px; }";
+		let nextArrowNormalClass = ".next-arrow-normal { right: 15px; }";
+		let previousArrowHoverClass = ".previous-arrow-hover { left: 0; }";
+		let nextArrowHoverClass = ".next-arrow-hover { right: 0; }";
 		getMainCss().insertRule(previousArrowId, 0);
 		getMainCss().insertRule(nextArrowId, 1);
-		let previousArrowClassOnNonHover = ".previous-arrow-normal { left: 15px; cursor: default; }";
-		let previousArrowClassOnHover = ".previous-arrow-hover { left: 0; cursor: pointer; }";
-		let nextArrowClassOnNonHover = ".next-arrow-normal { right: 15px; cursor: default; }";
-		let nextArrowClassOnHover = ".next-arrow-hover { right: 0; cursor: pointer; }";
-		getMainCss().insertRule(previousArrowClassOnHover, 2);
-		getMainCss().insertRule(nextArrowClassOnHover, 3);
-		getMainCss().insertRule(previousArrowClassOnNonHover, 4);
-		getMainCss().insertRule(nextArrowClassOnNonHover, 5);
+		getMainCss().insertRule(previousArrowHoverClass, 2);
+		getMainCss().insertRule(nextArrowNormalClass, 3);
+		getMainCss().insertRule(previousArrowNormalClass, 4);
+		getMainCss().insertRule(nextArrowHoverClass, 5);
 	};
 	
 	return {
-		createScreenArrowsIds: createScreenArrowsIds,
+		initializeScreenArrowsParts: initializeScreenArrows,
 		getMouseCursor: getMouseCursor,
-		getPreviousIdStyle: function() {
-			return getMainCss().cssRules.item(0).style;
-		},
-		getNextIdStyle: function() {
-			return getMainCss().cssRules.item(1).style;
-		},
-		getPreviousArrowClassNormal: function() {
-			return getMainCss().cssRules.item(4).style;
-		},
-		getNextArrowClassNormal: function() {
-			return getMainCss().cssRules.item(5).style;
-		},
-		getPreviousArrowClassOnHover: function() {
-			return getMainCss().cssRules.item(2).style;
-		},
-		getNextArrowClassOnHover: function() {
-			return getMainCss().cssRules.item(3).style;
+		getPackedScreenArrowElements: function() {
+			return {
+				previousArrowIdStyle: function() {
+					return getMainCss().cssRules.item(0).style;
+				},
+				nextArrowIdStyle: function() {
+					return getMainCss().cssRules.item(1).style;
+				},
+				previousHoverArrowClass: function() {
+					return getMainCss().cssRules.item(2).style;
+				},
+				nextHoverArrowClass: function() {
+					return getMainCss().cssRules.item(3).style;
+				},
+				previousArrowClassNormal: function() {
+					return getMainCss().cssRules.item(4).style;
+				},
+				nextArrowClassNormal: function() {
+					return getMainCss().cssRules.item(5).style;
+				}
+			}
 		},
 		setPreviousArrowOnHover: function(domTokenList) {
 			replaceClassName(domTokenList, "previous-arrow-normal", "previous-arrow-hover");

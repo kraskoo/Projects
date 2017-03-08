@@ -58,9 +58,7 @@
 			}
 		}
 		
-		if(onResponse) {
-			onResponse(page);
-		}
+		if(onResponse) { onResponse(page); }
 	};
 	
 	function parseTextPageXml(xml, onResponse) {
@@ -102,9 +100,7 @@
 			}
 		}
 		
-		if(onResponse) {
-			onResponse(page);
-		}
+		if(onResponse) { onResponse(page); }
 	};
 	
 	function getHeaderByContentType(contentType) {
@@ -122,14 +118,10 @@
 	
 	function redirectToXmlWorker(response, onResponse, contentType = "xml") {
 		let header = getHeaderByContentType(contentType);
-			let domParser = new DOMParser();
-			let xml = domParser.parseFromString(response, header);
-		if(contentType === "xml") {
-			parseXml(xml, onResponse);
-		} else if(contentType === "svg") {
-			xml.rootElement.style.fill = "rgb(0, 0, 255)";
-			onResponse(xml);
-		}
+		let domParser = new DOMParser();
+		let xml = domParser.parseFromString(response, header);
+		if(contentType === "xml") { parseXml(xml, onResponse); }
+		else if(contentType === "svg") { onResponse(xml); }
 	};
 	
 	function redirectToJsonWorker(response, onResponse) {
