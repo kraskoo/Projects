@@ -170,7 +170,7 @@
 		styleId.position = "absolute";
 		let middleSize = (size / 2);
 		let innerLineHeight = parseFloat(extmdl.css.getStyleValueByElement(document.getElementById("inner-line"), "height"));
-		let calcSize = (middleSize < innerLineHeight ? middleSize - innerLineHeight : middleSize + innerLineHeight);
+		let calcSize = middleSize - innerLineHeight;
 		let calcTopPosition = "calc(50vh + " + calcSize + "px)";
 		styleId.top = calcTopPosition;
 	};
