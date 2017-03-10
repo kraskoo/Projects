@@ -196,12 +196,13 @@
 		let textContainerTop = getCalculatedHeight(previousStyleId, size) + parseFloat(previousStyleId.height);
 		leftArrowTextContainer.setAttribute("id", "under-left-arrow");
 		leftArrowTextContainer.style.top = "calc(50vh + " + textContainerTop + "px)";
-		leftArrowTextContainer.style.width = (parseFloat(previousArrowClassOnHover.width) + 10) + "px";
+		leftArrowTextContainer.style.width = (parseFloat(previousArrowClassOnHover.width) + 15) + "px";
 		let dateParagraph = getDateParagraph();
 		extmdl.css.setDescribeText(dateParagraph.classList, true);
 		dateParagraph.style.textAlign = "left";
 		leftArrowTextContainer.appendChild(dateParagraph);
 		let titleParagraph = getTitleParagraph();
+		titleParagraph.style.textAlign = "left";
 		extmdl.css.setDescribeText(titleParagraph.classList);
 		leftArrowTextContainer.appendChild(titleParagraph);
 		document.body.insertBefore(leftArrowTextContainer, document.body.childNodes[0]);
@@ -222,12 +223,13 @@
 		let textContainerTop = getCalculatedHeight(nextStyleId, size) + parseFloat(nextStyleId.height);
 		rightArrowTextContainer.setAttribute("id", "under-right-arrow");
 		rightArrowTextContainer.style.top = "calc(50vh + " + textContainerTop + "px)";
-		rightArrowTextContainer.style.width = parseFloat(nextArrowClassOnHover.width + 10) + "px";
+		rightArrowTextContainer.style.width = parseFloat(nextArrowClassOnHover.width + 15) + "px";
 		let dateParagraph = getDateParagraph();
 		extmdl.css.setDescribeText(dateParagraph.classList, true);
 		dateParagraph.style.textAlign = "right";
 		rightArrowTextContainer.appendChild(dateParagraph);
 		let titleParagraph = getTitleParagraph();
+		titleParagraph.style.textAlign = "right";
 		extmdl.css.setDescribeText(titleParagraph.classList);
 		rightArrowTextContainer.appendChild(titleParagraph);
 		document.body.insertBefore(rightArrowTextContainer, document.body.childNodes[0]);
@@ -236,20 +238,19 @@
 	function getDateParagraph() {
 		let dateParagraph = document.createElement("p");
 		dateParagraph.style.width = "100%";
-		dateParagraph.style.fontSize = "0.66vw";
-		dateParagraph.style.fontWeight = "bold";
+		dateParagraph.style.fontSize = "0.45vw";
 		dateParagraph.style.fontVariant = "small-caps";
+		dateParagraph.style.fontStyle = "italic";
 		dateParagraph.style.paddingTop = "2vh";
-		dateParagraph.style.paddingBottom = "1vh";
+		dateParagraph.style.paddingBottom = "0.5vh";
 		return dateParagraph
 	};
 	
 	function getTitleParagraph() {
 		let titleParagraph = document.createElement("p");
 		titleParagraph.style.width = "100%";
-		titleParagraph.style.fontSize = "0.9vw";
+		titleParagraph.style.fontSize = "0.7vw";
 		titleParagraph.style.fontVariant = "small-caps";
-		titleParagraph.style.textAlign = "right";
 		return titleParagraph;
 	}
 	

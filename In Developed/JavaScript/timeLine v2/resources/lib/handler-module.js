@@ -9,6 +9,7 @@
 		hasHoverPreviousArrow = false;
 		nextArrowBound = null;
 		previousArrowBound = null;
+		changeImageAction = null;
 		currentFrameIndex = -1;
 		topContainer = document.getElementById("top");
 		resetCurrentImageCollection();
@@ -20,20 +21,7 @@
 		changeFrameMoveAction = null;
 	};
 	
-	function nextAndPreviousFrames() {
-		let count = extmdl.repository.count();
-		let previousIndex = getPreviousIndex(currentFrameIndex, count);
-		let nextIndex = getNextIndex(currentFrameIndex, count);
-		let previousFrame = extmdl.data.getFrameById(previousIndex + 1);
-		let nextFrame = extmdl.data.getFrameById(nextIndex + 1);
-		return {
-			nextFrame: nextFrame,
-			previousFrame: previousFrame
-		}
-	};
-	
-	function handleTopContainer(currentFrame, dayEventId = null) {
-		if(dayEventId === null) dayEventId = currentFrame.getAttribute("data-id");				
+	function handleTopContainer(currentFrame, dayEventId) {			
 		if(topContainer.childNodes.length > 0) topContainer.removeChild(topContainer.childNodes[0]);
 		removeFramesHandler();
 		getBackToNormalStateLastFrame();
@@ -47,41 +35,40 @@
 		topContainer.appendChild(modelContent);
 	};
 	
-	function moveAtFirst() {
-		getMovedToNextFrame();
+	function setArrowsTextContent(arrow, frame) {
+		if(arrow !== null && arrow.date !== null && arrow.title !== null && frame !== null) {
+			arrow.date.textContent = frame.getAttribute("title");
+			arrow.title.textContent = frame.getAttribute("head-title");
+		}
 	};
 	
-	function setArrowsTextContent(previousFrame, nextFrame) {
-		let nextArrow = getNextArrow();
-		let previousArrow = getPreviousArrow();
-		nextArrow.date.textContent = nextFrame.getAttribute("title");
-		nextArrow.title.textContent = nextFrame.getAttribute("head-title");
-		previousArrow.date.textContent = previousFrame.getAttribute("title");
-		previousArrow.title.textContent = previousFrame.getAttribute("head-title");
+	function moveToDayFrame() {
+		let currentFrame = extmdl.data.getFrameById(currentFrameIndex + 1);
+		let dayEventId = parseInt(currentFrame.getAttribute("data-id"))
+		getHandleMovementToNextFrame(currentFrame);
+		handleTopContainer(currentFrame, dayEventId);
+		setArrowsTextContent(getNextArrow(), nextDayFrame());
+		setArrowsTextContent(getPreviousArrow(), previousDayFrame());
 	};
 	
 	function getMovedToNextFrame() {
-		let count = extmdl.repository.count();
-		currentFrameIndex = getNextIndex(currentFrameIndex, count);
-		let nextAndPrevious = nextAndPreviousFrames();
-		let previousFrame = nextAndPrevious.previousFrame;
-		let nextFrame = nextAndPrevious.nextFrame;
-		let currentFrame = extmdl.data.getFrameById(currentFrameIndex + 1);
-		getHandleMovementToNextFrame(currentFrame);
-		handleTopContainer(currentFrame);
-		setArrowsTextContent(previousFrame, nextFrame);
+		currentFrameIndex = getNextIndex(currentFrameIndex, extmdl.repository.count());
+		moveToDayFrame();
 	};
 	
 	function getMovedToPreviousFrame() {
-		let count = extmdl.repository.count();
-		currentFrameIndex = getPreviousIndex(currentFrameIndex, count);
-		let nextAndPrevious = nextAndPreviousFrames();
-		let previousFrame = nextAndPrevious.previousFrame;
-		let nextFrame = nextAndPrevious.nextFrame;
-		let currentFrame = extmdl.data.getFrameById(currentFrameIndex + 1);
-		getHandleMovementToNextFrame(currentFrame);
-		handleTopContainer(currentFrame);
-		setArrowsTextContent(previousFrame, nextFrame);
+		currentFrameIndex = getPreviousIndex(currentFrameIndex, extmdl.repository.count());
+		moveToDayFrame();
+	};
+	
+	function nextDayFrame() {
+		let nextIndex = getNextIndex(currentFrameIndex, extmdl.repository.count());
+		return extmdl.data.getFrameById(nextIndex + 1);
+	};
+	
+	function previousDayFrame() {
+		let previousIndex = getPreviousIndex(currentFrameIndex, extmdl.repository.count());
+		return extmdl.data.getFrameById(previousIndex + 1);
 	};
 	
 	function getNextIndex(index, count) {
@@ -115,8 +102,8 @@
 	};
 	
 	function getHandleMouseOnWindow() {
-		moveAtFirst();
 		window.addEventListener("mousemove", mouseMovement, false);
+		getMovedToNextFrame();
 	};
 	
 	function mouseMovement(ev) {
@@ -135,7 +122,6 @@
 				extmdl.css.setDescribeText(getPreviousArrow().title.classList);
 				extmdl.css.setDescribeText(getPreviousArrow().date.classList, true);
 				window.removeEventListener("click", getMovedToPreviousFrame, false);
-				// setArrowsTextContent();
 			}
 			
 			if(getNextArrowBound(ev.clientX)) {
@@ -145,7 +131,6 @@
 				extmdl.css.setNormalText(getNextArrow().title.classList);
 				extmdl.css.setNormalText(getNextArrow().date.classList, true);
 				window.addEventListener("click", getMovedToNextFrame, false);
-				// setArrowsTextContent();
 			} else if(hasHoverNextArrow) {
 				hasHoverNextArrow = false;
 				extmdl.css.getMouseCursor("default");
@@ -255,8 +240,7 @@
 		if(containsImageCollection()) resetCurrentImageCollection();
 		let current = container.currentTarget;
 		let dayEventId = parseInt(current.getAttribute("data-id"));
-		let currentFrame = extmdl.data.getFrameById(dayEventId);
-		handleTopContainer(currentFrame, dayEventId);
+		handleTopContainer(current, dayEventId);
 	};
 	
 	function getHandleOfPreviousFrameId(dayEventId) {
@@ -268,9 +252,8 @@
 		let current = extmdl.data.getFrameById(dayEventId);
 		previousFrame = (function() {
 			let thisFrameZIndex = getFrameZIndex(current);
-			let currentFrame = current;
 			return {
-				frame: currentFrame,
+				frame: current,
 				orginId: dayEventId,
 				originZIndex: thisFrameZIndex
 			}
@@ -296,10 +279,7 @@
 	};
 	
 	function resetCurrentImageCollection() {
-		if(changeImageAction !== undefined && changeImageAction !== null) {
-			onStopChangePictureAnimations();
-		}
-		
+		if(changeImageAction !== null) onStopChangePictureAnimations();
 		changeImageAction = null;
 		currentImageIndex = 0;
 		multipleImageCollection = null;
@@ -489,7 +469,6 @@
 		listenFramesOnClick: listenFramesOnClick,
 		getHandleMouseOnWindow: getHandleMouseOnWindow,
 		getHandleOfMultipleImages: getHandleOfMultipleImages,
-		getFramesHandler: getFramesHandler,
 		convertValueToPercentage: convertValueToPercentage,
 		convertValueFromPercentage: convertValueFromPercentage,
 		moveToNewDestination: moveToNewDestination
