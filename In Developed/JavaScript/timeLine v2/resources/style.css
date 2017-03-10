@@ -222,3 +222,23 @@
 	height: 5px;
 	border-radius: 50%;
 }
+
+#under-left-arrow, #under-right-arrow {
+	position: absolute;
+}
+
+#under-left-arrow, #under-left-arrow > *, #under-right-arrow, #under-right-arrow > * {
+	cursor: default;
+}
+
+#under-left-arrow {
+	left: 0;
+}
+
+#under-right-arrow {
+	right: 0;
+}
+
+#under-left-arrow:hover, #under-left-arrow > *:hover, #under-right-arrow:hover, #under-right-arrow > *:hover {
+	cursor: pointer;
+}

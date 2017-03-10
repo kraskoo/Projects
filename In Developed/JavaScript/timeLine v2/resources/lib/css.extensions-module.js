@@ -48,10 +48,10 @@
 	function initializeScreenArrows() {
 		let previousArrowId = "#previous-arrow { position: absolute; }";
 		let nextArrowId = "#next-arrow { position: absolute; }";
-		let previousArrowNormalClass = ".previous-arrow-normal { left: 15px; }";
-		let nextArrowNormalClass = ".next-arrow-normal { right: 15px; }";
-		let previousArrowHoverClass = ".previous-arrow-hover { left: 0; }";
-		let nextArrowHoverClass = ".next-arrow-hover { right: 0; }";
+		let previousArrowNormalClass = ".previous-arrow-normal { left: 15px; cursor: default; }";
+		let nextArrowNormalClass = ".next-arrow-normal { right: 15px; cursor: default; }";
+		let previousArrowHoverClass = ".previous-arrow-hover { left: 0; cursor: pointer; }";
+		let nextArrowHoverClass = ".next-arrow-hover { right: 0; cursor: pointer; }";
 		getMainCss().insertRule(previousArrowId, 0);
 		getMainCss().insertRule(nextArrowId, 1);
 		getMainCss().insertRule(previousArrowHoverClass, 2);
@@ -112,14 +112,14 @@
 		setOpenbox: function(domTokenList) {
 			replaceClassName(domTokenList, "closebox", "openbox");
 		},
-		setNormalText: function(domTokenList) {
-			replaceClassName(domTokenList, "describe-text", "normal-text");
-		},
 		setClosebox: function(domTokenList) {
 			replaceClassName(domTokenList, "openbox", "closebox");
 		},
-		setDescribeText: function(domTokenList) {
-			replaceClassName(domTokenList, "normal-text", "describe-text");
+		setNormalText: function(domTokenList, isTransparent = false) {
+			replaceClassName(domTokenList, isTransparent ? "transparent-text" : "describe-text", "normal-text");
+		},
+		setDescribeText: function(domTokenList, isTransparent = false) {
+			replaceClassName(domTokenList, "normal-text", isTransparent ? "transparent-text" : "describe-text");
 		},
 		getStyleValueByElement: function(element, val) {
 			return window.getComputedStyle(element, null).getPropertyValue(val);

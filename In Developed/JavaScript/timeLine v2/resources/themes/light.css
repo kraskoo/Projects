@@ -37,3 +37,7 @@ body {
 .describe-text {
 	color: #999999;
 }
+
+.transparent-text {
+	color: transparent;
+}

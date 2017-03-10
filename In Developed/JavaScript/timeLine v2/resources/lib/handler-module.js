@@ -1,13 +1,15 @@
 ﻿(function() {
-	let changeFrameMoveAction, changeImageAction, currentFrameIndex, currentImageIndex, multipleImageCollection,
-		hasHoverNextArrow, hasHoverPreviousArrow, nextArrowId, nextArrowBound, previousArrowBound, previousArrowId,
-		permittedHeight, previousFrame, lastSelectedFrame, hasHoveredFrame, selectionZIndex, topContainer;
+	let changeFrameMoveAction, changeImageAction, currentFrameIndex, currentImageIndex,
+		multipleImageCollection, hasHoverNextArrow, hasHoverPreviousArrow, nextArrowId, nextArrowBound,
+		previousArrowBound, previousArrowId, permittedHeight, previousFrame, lastSelectedFrame, hasHoveredFrame,
+		selectionZIndex, topContainer;
 		
 	function initialize() {
 		hasHoverNextArrow = false;
 		hasHoverPreviousArrow = false;
 		nextArrowBound = null;
 		previousArrowBound = null;
+		currentFrameIndex = -1;
 		topContainer = document.getElementById("top");
 		resetCurrentImageCollection();
 		listenTopContainerOnClick();
@@ -16,6 +18,78 @@
 		lastSelectedFrame = null;
 		previousFrame = null;
 		changeFrameMoveAction = null;
+	};
+	
+	function nextAndPreviousFrames() {
+		let count = extmdl.repository.count();
+		let previousIndex = getPreviousIndex(currentFrameIndex, count);
+		let nextIndex = getNextIndex(currentFrameIndex, count);
+		let previousFrame = extmdl.data.getFrameById(previousIndex + 1);
+		let nextFrame = extmdl.data.getFrameById(nextIndex + 1);
+		return {
+			nextFrame: nextFrame,
+			previousFrame: previousFrame
+		}
+	};
+	
+	function handleTopContainer(currentFrame, dayEventId = null) {
+		if(dayEventId === null) dayEventId = currentFrame.getAttribute("data-id");				
+		if(topContainer.childNodes.length > 0) topContainer.removeChild(topContainer.childNodes[0]);
+		removeFramesHandler();
+		getBackToNormalStateLastFrame();
+		getHandleOfPreviousFrameId(dayEventId);
+		getHandleMovementToNextFrame(currentFrame);
+		currentFrame.style.zIndex = selectionZIndex;
+		setOpenbox(currentFrame);
+		getFramesHandler();
+		let model = extmdl.repository.getDayById(dayEventId);
+		let modelContent = extmdl.data.getContainerByModel(model);
+		topContainer.appendChild(modelContent);
+	};
+	
+	function moveAtFirst() {
+		getMovedToNextFrame();
+	};
+	
+	function setArrowsTextContent(previousFrame, nextFrame) {
+		let nextArrow = getNextArrow();
+		let previousArrow = getPreviousArrow();
+		nextArrow.date.textContent = nextFrame.getAttribute("title");
+		nextArrow.title.textContent = nextFrame.getAttribute("head-title");
+		previousArrow.date.textContent = previousFrame.getAttribute("title");
+		previousArrow.title.textContent = previousFrame.getAttribute("head-title");
+	};
+	
+	function getMovedToNextFrame() {
+		let count = extmdl.repository.count();
+		currentFrameIndex = getNextIndex(currentFrameIndex, count);
+		let nextAndPrevious = nextAndPreviousFrames();
+		let previousFrame = nextAndPrevious.previousFrame;
+		let nextFrame = nextAndPrevious.nextFrame;
+		let currentFrame = extmdl.data.getFrameById(currentFrameIndex + 1);
+		getHandleMovementToNextFrame(currentFrame);
+		handleTopContainer(currentFrame);
+		setArrowsTextContent(previousFrame, nextFrame);
+	};
+	
+	function getMovedToPreviousFrame() {
+		let count = extmdl.repository.count();
+		currentFrameIndex = getPreviousIndex(currentFrameIndex, count);
+		let nextAndPrevious = nextAndPreviousFrames();
+		let previousFrame = nextAndPrevious.previousFrame;
+		let nextFrame = nextAndPrevious.nextFrame;
+		let currentFrame = extmdl.data.getFrameById(currentFrameIndex + 1);
+		getHandleMovementToNextFrame(currentFrame);
+		handleTopContainer(currentFrame);
+		setArrowsTextContent(previousFrame, nextFrame);
+	};
+	
+	function getNextIndex(index, count) {
+		return (index + 1) % count;
+	};
+	
+	function getPreviousIndex(index, count) {
+		return (count + (index - 1)) % count;
 	};
 	
 	function getPreviousArrowBound(x) {
@@ -27,12 +101,12 @@
 				parseFloat(extmdl.css.getPackedScreenArrowElements().nextHoverArrowClass().width)) <= x;
 	};
 	
-	function getPreviousArrowId() {
-		return document.getElementById("previous-arrow");
+	function getPreviousArrow() {
+		return extmdl.data.previousArrowElements();
 	};
 	
-	function getNextArrowId() {
-		return document.getElementById("next-arrow");
+	function getNextArrow() {
+		return extmdl.data.nextArrowElements();
 	};
 	
 	function getPermittedHeight() {
@@ -41,6 +115,7 @@
 	};
 	
 	function getHandleMouseOnWindow() {
+		moveAtFirst();
 		window.addEventListener("mousemove", mouseMovement, false);
 	};
 	
@@ -48,22 +123,36 @@
 		if(ev.clientY < getPermittedHeight()) {
 			if(getPreviousArrowBound(ev.clientX)) {
 				hasHoverPreviousArrow = true;
-				extmdl.css.setPreviousArrowOnHover(getPreviousArrowId().classList);
 				extmdl.css.getMouseCursor("pointer");
+				extmdl.css.setPreviousArrowOnHover(getPreviousArrow().arrow.classList);
+				extmdl.css.setNormalText(getPreviousArrow().title.classList);
+				extmdl.css.setNormalText(getPreviousArrow().date.classList, true);
+				window.addEventListener("click", getMovedToPreviousFrame, false);
 			} else if(hasHoverPreviousArrow) {
 				hasHoverPreviousArrow = false;
-				extmdl.css.setPreviousArrowOnNormal(getPreviousArrowId().classList);
 				extmdl.css.getMouseCursor("default");
+				extmdl.css.setPreviousArrowOnNormal(getPreviousArrow().arrow.classList);
+				extmdl.css.setDescribeText(getPreviousArrow().title.classList);
+				extmdl.css.setDescribeText(getPreviousArrow().date.classList, true);
+				window.removeEventListener("click", getMovedToPreviousFrame, false);
+				// setArrowsTextContent();
 			}
 			
 			if(getNextArrowBound(ev.clientX)) {
 				hasHoverNextArrow = true;
-				extmdl.css.setNextArrowOnHover(getNextArrowId().classList);
 				extmdl.css.getMouseCursor("pointer");
+				extmdl.css.setNextArrowOnHover(getNextArrow().arrow.classList);
+				extmdl.css.setNormalText(getNextArrow().title.classList);
+				extmdl.css.setNormalText(getNextArrow().date.classList, true);
+				window.addEventListener("click", getMovedToNextFrame, false);
+				// setArrowsTextContent();
 			} else if(hasHoverNextArrow) {
 				hasHoverNextArrow = false;
-				extmdl.css.setNextArrowOnNormal(getNextArrowId().classList);
 				extmdl.css.getMouseCursor("default");
+				extmdl.css.setNextArrowOnNormal(getNextArrow().arrow.classList);
+				extmdl.css.setDescribeText(getNextArrow().title.classList);
+				extmdl.css.setDescribeText(getNextArrow().date.classList, true);
+				window.removeEventListener("click", getMovedToNextFrame, false);
 			}
 		}
 	};
@@ -153,7 +242,7 @@
 		for(let i = 0; i < events.length; i++) {
 			events[i].addEventListener("click", function(ev) {
 				if(extmdl.movement.canOpenBox(new Date()))
-					handleTopContainer(ev);
+					handleTopContainerOnClick(ev);
 			}, false);
 		}
 	};
@@ -162,22 +251,12 @@
 		topContainer.addEventListener("click", onClickTopContainer, false);
 	};
 	
-	function handleTopContainer(container) {
+	function handleTopContainerOnClick(container) {
 		if(containsImageCollection()) resetCurrentImageCollection();
-		if(topContainer.childNodes.length > 0) topContainer.removeChild(topContainer.childNodes[0]);
 		let current = container.currentTarget;
 		let dayEventId = parseInt(current.getAttribute("data-id"));
 		let currentFrame = extmdl.data.getFrameById(dayEventId);
-		removeFramesHandler();
-		getBackToNormalStateLastFrame();
-		getHandleOfPreviousFrameId(dayEventId);
-		getHandleMovementToNextFrame(currentFrame);
-		currentFrame.style.zIndex = selectionZIndex;
-		setOpenbox(currentFrame);
-		getFramesHandler();
-		let model = extmdl.repository.getDayById(dayEventId);
-		let modelContent = extmdl.data.getContainerByModel(model);
-		topContainer.appendChild(modelContent);
+		handleTopContainer(currentFrame, dayEventId);
 	};
 	
 	function getHandleOfPreviousFrameId(dayEventId) {
@@ -236,20 +315,14 @@
 	};
 	
 	function changeToNext() {
-		// let nextIndex = currentImageIndex++;
-		// if(currentImageIndex === multipleImageCollection.length) currentImageIndex = 0;
-		// I think these two rows below and these two rows above this comment has exactly the same meaning :)
 		let nextIndex = currentImageIndex;
-		currentImageIndex = (currentImageIndex + 1) % multipleImageCollection.length;
+		currentImageIndex = getNextIndex(currentImageIndex, multipleImageCollection.length);
 		changePicture(nextIndex);
 	};
 	
 	function changeToPrevious() {
-		// let previousIndex = currentImageIndex--;
-		// if(currentImageIndex === -1) currentImageIndex = multipleImageCollection.length - 1;
-		// I think these two rows below and these two rows above this comment has exactly the same meaning :)
 		let previousIndex = currentImageIndex;
-		currentImageIndex = (multipleImageCollection.length + (currentImageIndex - 1)) % multipleImageCollection.length;
+		currentImageIndex = getPreviousIndex(currentImageIndex, multipleImageCollection.length);
 		changePicture(previousIndex);
 	};
 	

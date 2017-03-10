@@ -165,12 +165,18 @@
 		return container;
 	};
 	
+	function getCalculatedHeight(styleId, size) {
+		let middleSize = (size / 2);
+		let innerLineHeight =
+			parseFloat(extmdl.css.getStyleValueByElement(document.getElementById("inner-line"), "height"));
+		let calcSize = middleSize - innerLineHeight;
+		return calcSize;
+	};
+	
 	function setupCommonProperties(styleId, size) {
 		styleId.height = size + "px";
 		styleId.position = "absolute";
-		let middleSize = (size / 2);
-		let innerLineHeight = parseFloat(extmdl.css.getStyleValueByElement(document.getElementById("inner-line"), "height"));
-		let calcSize = middleSize - innerLineHeight;
+		let calcSize = getCalculatedHeight(styleId, size);
 		let calcTopPosition = "calc(50vh + " + calcSize + "px)";
 		styleId.top = calcTopPosition;
 	};
@@ -186,6 +192,19 @@
 		previousArrow.setAttribute("id", "previous-arrow");
 		extmdl.css.setPreviousArrowOnNormal(previousArrow.classList);
 		document.body.insertBefore(previousArrow, document.body.childNodes[0]);
+		let leftArrowTextContainer = document.createElement("div");
+		let textContainerTop = getCalculatedHeight(previousStyleId, size) + parseFloat(previousStyleId.height);
+		leftArrowTextContainer.setAttribute("id", "under-left-arrow");
+		leftArrowTextContainer.style.top = "calc(50vh + " + textContainerTop + "px)";
+		leftArrowTextContainer.style.width = (parseFloat(previousArrowClassOnHover.width) + 10) + "px";
+		let dateParagraph = getDateParagraph();
+		extmdl.css.setDescribeText(dateParagraph.classList, true);
+		dateParagraph.style.textAlign = "left";
+		leftArrowTextContainer.appendChild(dateParagraph);
+		let titleParagraph = getTitleParagraph();
+		extmdl.css.setDescribeText(titleParagraph.classList);
+		leftArrowTextContainer.appendChild(titleParagraph);
+		document.body.insertBefore(leftArrowTextContainer, document.body.childNodes[0]);
 	};
 	
 	function setupNextArrowElements(base64String, size, nextArrowElements) {
@@ -199,7 +218,40 @@
 		nextArrow.setAttribute("id", "next-arrow");
 		extmdl.css.setNextArrowOnNormal(nextArrow.classList);
 		document.body.insertBefore(nextArrow, document.body.childNodes[0]);
+		let rightArrowTextContainer = document.createElement("div");
+		let textContainerTop = getCalculatedHeight(nextStyleId, size) + parseFloat(nextStyleId.height);
+		rightArrowTextContainer.setAttribute("id", "under-right-arrow");
+		rightArrowTextContainer.style.top = "calc(50vh + " + textContainerTop + "px)";
+		rightArrowTextContainer.style.width = parseFloat(nextArrowClassOnHover.width + 10) + "px";
+		let dateParagraph = getDateParagraph();
+		extmdl.css.setDescribeText(dateParagraph.classList, true);
+		dateParagraph.style.textAlign = "right";
+		rightArrowTextContainer.appendChild(dateParagraph);
+		let titleParagraph = getTitleParagraph();
+		extmdl.css.setDescribeText(titleParagraph.classList);
+		rightArrowTextContainer.appendChild(titleParagraph);
+		document.body.insertBefore(rightArrowTextContainer, document.body.childNodes[0]);
 	};
+	
+	function getDateParagraph() {
+		let dateParagraph = document.createElement("p");
+		dateParagraph.style.width = "100%";
+		dateParagraph.style.fontSize = "0.66vw";
+		dateParagraph.style.fontWeight = "bold";
+		dateParagraph.style.fontVariant = "small-caps";
+		dateParagraph.style.paddingTop = "2vh";
+		dateParagraph.style.paddingBottom = "1vh";
+		return dateParagraph
+	};
+	
+	function getTitleParagraph() {
+		let titleParagraph = document.createElement("p");
+		titleParagraph.style.width = "100%";
+		titleParagraph.style.fontSize = "0.9vw";
+		titleParagraph.style.fontVariant = "small-caps";
+		titleParagraph.style.textAlign = "right";
+		return titleParagraph;
+	}
 	
 	return {
 		getContainerByModel: function(model) {
@@ -237,6 +289,26 @@
 			return lastEvent();
 		},
 		setupPreviousArrowElements: setupPreviousArrowElements,
-		setupNextArrowElements: setupNextArrowElements
+		setupNextArrowElements: setupNextArrowElements,
+		previousArrowElements: function() {
+			let arrow = document.getElementById("previous-arrow");
+			let date = document.querySelector("#under-left-arrow > p:nth-child(1)");
+			let title = document.querySelector("#under-left-arrow > p:nth-child(2)");
+			return {
+				arrow: arrow,
+				date: date,
+				title: title
+			}
+		},
+		nextArrowElements: function() {
+			let arrow = document.getElementById("next-arrow");
+			let date = document.querySelector("#under-right-arrow > p:nth-child(1)");
+			let title = document.querySelector("#under-right-arrow > p:nth-child(2)");
+			return {
+				arrow: arrow,
+				date: date,
+				title: title
+			}
+		}
 	};
 }());
