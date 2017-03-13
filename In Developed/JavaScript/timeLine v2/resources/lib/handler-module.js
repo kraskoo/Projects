@@ -30,6 +30,8 @@
 		currentFrame.style.zIndex = selectionZIndex;
 		setOpenbox(currentFrame);
 		getFramesHandler();
+		currentFrameIndex = dayEventId - 1;
+		setArrowsContent();
 		let model = extmdl.repository.getDayById(dayEventId);
 		let modelContent = extmdl.data.getContainerByModel(model);
 		topContainer.appendChild(modelContent);
@@ -47,6 +49,10 @@
 		let dayEventId = parseInt(currentFrame.getAttribute("data-id"))
 		getHandleMovementToNextFrame(currentFrame);
 		handleTopContainer(currentFrame, dayEventId);
+		setArrowsContent();
+	};
+	
+	function setArrowsContent() {
 		setArrowsTextContent(getNextArrow(), nextDayFrame());
 		setArrowsTextContent(getPreviousArrow(), previousDayFrame());
 	};
