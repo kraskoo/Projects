@@ -61,15 +61,19 @@
 		return countOfLoadedScripts() === moduleCount;
 	};
 	
-	function extendModules(pathByNames) {
+	function extendModules(pathByNames, callback) {
 		moduleCount = Object.keys(pathByNames).length;
-		for(module in pathByNames) {
+		for(let module in pathByNames) {
 			if(!moduleNames.includes(module)) {
 				moduleNames.push(module);
 				extmdl[module] = {};
-				extendOn(pathByNames[module], extmdl[module], module);
+				extendOn(pathByNames[module], module, function(result) {
+					extmdl[module] = result;
+				});
 			}
 		}
+		
+		callback();
 	};
 	
 	function setupModules() {
@@ -87,13 +91,7 @@
 			'string': 'resources/lib/string.extensions-module.js',
 			'timeLine': 'resources/lib/timeline-module.js',
 			'zoom': 'resources/lib/zoom-module.js'
-		});
-		
-		proceedToInitialState();
-	};
-	
-	function proceedToInitialState() {
-		proceedLoading(hasFullyLoadedModules, initializing);
+		}, initializing);
 	};
 	
 	setupModules();
