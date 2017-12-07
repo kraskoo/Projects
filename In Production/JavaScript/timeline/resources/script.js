@@ -1,6 +1,6 @@
 (function () {
 	const monthRegex1 = /^\d{1,2} [a-zA-ZА-Яа-я]+$/;
-	const monthRegex2 = /^\d{1,2} - \d{1,2} [А-Яа-я]+$/;
+	const monthRegex2 = /^\d{1,2} - \d{1,2} [a-zA-ZА-Яа-я]+$/;
 	const monthRegex3 = /^\d{1,2} [a-zA-ZА-Яа-я]+? - \d{1,2} [a-zA-ZА-Яа-я]+$/;
 	const oneDay = 24 * 60 * 60 * 1000;
 	const months = [ "january", "february", "march", "april", "may", "june", "july", "august", "september", "octomber", "november", "december" ];
