@@ -1,0 +1,186 @@
+{
+	"config": {
+		"colors": {
+			"gray": "#7a7363",
+			"green": "#46563c",
+			"brown": "#57452d"
+		},
+		"divHeights": [ 7, 30, 53 ],
+		"yearDivider": "2000"
+	},
+	"defitions": {
+		"1": {
+			"name": "Category-1",
+			"color": "gray"
+		},
+		"2": {
+			"name": "Category-2",
+			"color": "green"
+		},
+		"3": {
+			"name": "Category-3",
+			"color": "brown"
+		},
+		"4": {
+			"name": "Category-4",
+			"color": "brown"
+		}
+	},
+	"events": {
+		"2014": {
+			"1": {
+				"15 july": "Some english text",
+				"19 july": "Some english text",
+				"21 юли": "Some english text",
+				"22 юли": [
+					"Some english text.",
+					"Some english text."
+				],
+				"2 август": "Some english text",
+				"2 - 11 август": "Some english text",
+				"4 август": "Some english text",
+				"5 август": "Some english text",
+				"6 август": "Some english text",
+				"8 - 12 август": "Some english text",
+				"10 август": "Some english text",
+				"23 - 30 август": "Some english text",
+				"26 август": "Some english text",
+				"1 септември": "Some english text",
+				"9 - 14 септември": "Some english text",
+				"30 октомври": "Some english text",
+				"3 ноември - 2 декември": "Some english text"
+			}
+		},
+		"2015": {
+			"1": {
+				"6 февруари": "Some english text",
+				"13 април": "Some english text",
+				"25 септември": "Some english text",
+				"22 декември": "Some english text"
+			},
+			"2": {
+				"24 август": [
+					"Some english text.",
+					"Some english text."
+				],
+				"9 септември": "Some english text",
+				"27 септември": "Some english text",
+				"1 октомври": [
+					"Some english text.",
+					"Some english text."
+				],
+				"14 октомври": "Some english text",
+				"17 октомври - 21 ноември": "Some english text",
+				"20 октомври": "Some english text",
+				"23 октомври": "Some english text",
+				"1 - 24 ноември": "Some english text",
+				"6 ноември": "Some english text"
+			},
+			"3": {
+				"19 януари": "Some english text",
+				"30 януари": "Some english text",
+				"31 януари": "Some english text",
+				"9 април": "Some english text",
+				"7 май": "Some english text",
+				"1 декември": "Some english text"
+			}
+		},
+		"2016": {
+			"1": {
+				"7 февруари": "Some english text",
+				"9 януари": "Some english text",
+				"23 февруари": "Some english text",
+				"25 февруари": "Some english text",
+				"1 април": "Some english text",
+				"4 юни": "Some english text",
+				"20 декември": "Some english text"
+			},
+			"2": {
+				"5 януари": "Some english text",
+				"22 януари": "Some english text",
+				"21 април": "Some english text",
+				"22 април": "Some english text",
+				"25 май": "Some english text",
+				"26 май": "Some english text",
+				"9 - 18 август": "Some english text",
+				"17 август": "Some english text",
+				"18 август": "Some english text",
+				"1 септември": "Some english text",
+				"5 септември": "Some english text",
+				"5 - 6 септември": "Some english text",
+				"5 - 7 септември": "Some english text",
+				"12 септември": "Some english text",
+				"30 септември": "Some english text",
+				"30 септември - 4 октомври": "Some english text",
+				"1 октомври": "Some english text",
+				"2 октомври": "Some english text",
+				"6 - 11 октомври": "Some english text",
+				"14 октомври": "Some english text",
+				"19 октомври": "Some english text",
+				"23 октомври": "Some english text",
+				"19 ноември": "Some english text",
+				"23 ноември": "Some english text",
+				"29 ноември": "Some english text",
+				"13 декември": "Some english text"
+			},
+			"4": {
+				"26 февруари": "Some english text",
+				"30 март": "Some english text",
+				"5 юни": "Some english text",
+				"1 юли": "Some english text",
+				"12 - 30 септември": "Some english text"
+			}
+		},
+		"2017": {
+			"1": {
+				"31 януари": "Some english text",
+				"6 април": "Some english text",
+				"27 юни": "Some english text",
+				"24 октомври": "Some english text"
+			},
+			"2": {
+				"11 - 19 март": "Some english text",
+				"21 април - 9 май": "Some english text",
+				"22 април": "Some english text",
+				"1 май": "Some english text",
+				"16 май": "Some english text",
+				"26 май": "Some english text",
+				"4 юни": "Some english text",
+				"8 юли": "Some english text",
+				"25 ноември": "Some english text"
+			},
+			"4": {
+				"12 февруари": "Some english text",
+				"17 март": "Some english text",
+				"4 април": "Some english text",
+				"20 ноември": "Some english text"
+			}
+		},
+		"2018": {
+			"1": {
+				"3 март": "Some english text",
+				"8 - 13 август": "Some english text",
+				"26 септември - 13 октомври": "Some english text",
+				"24 октомври": "Some english text",
+				"25 октомври": "Some english text",
+				"30 октомври": "Some english text",
+				"3 ноември": "Some english text",
+				"11 ноември": "Some english text"
+			},
+			"2": {
+				"10 май": "Some english text",
+				"18 май": "Some english text",
+				"29 - 31 май": "Some english text",
+				"6 - 9 юни": "Some english text",
+				"18 август": "Some english text",
+				"9 септември": "Some english text",
+				"15 септември": "Some english text",
+				"16 - 19 септември": "Some english text",
+				"20 - 25 септември": "Some english text",
+				"27 септември": "Some english text",
+				"29 септември": "Some english text",
+				"2 - 4 октомври": "Some english text"
+			}
+		}
+	}
+}
